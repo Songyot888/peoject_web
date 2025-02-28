@@ -72,5 +72,4 @@
             <button type="submit" class="login-btn">Login</button>
         </form>
     </div>
-</body>
-</html>
+
