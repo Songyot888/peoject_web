@@ -6,7 +6,7 @@ declare(strict_types=1);
 // Constant values for router
 const ALLOW_METHODS = ['GET', 'POST'];
 const INDEX_URI = '';
-const HOME_ROUTE = 'home';
+const HOME_ROUTE = 'new';
 
 // Normalize URI
 function normalizeUri(string $uri): string
