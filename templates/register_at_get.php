@@ -1,135 +1,129 @@
 <style>
+    body {
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        color: #333;
+        font-family: Arial, sans-serif;
+    }
+
     section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 80px 20px 20px;
-}
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px 20px 20px;
+    }
 
-/* Registration container styles */
-.regis-at-container {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 40px;
-    border-radius: 15px;
-    width: 80%;
-    max-width: 1000px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
-    text-align: center;
-}
+    .regis-at-container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 15px;
+        width: 80%;
+        max-width: 1000px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
 
-h1 {
-    font-size: 2.8rem;
-    margin-bottom: 30px;
-}
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 30px;
+        color: #ff6f61;
+    }
 
-/* Activity container styles */
-.activity-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-/* Activity image styles */
-.activity-image img {
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 2px solid #fff;
-}
-
-/* Activity details styles */
-.activity-details {
-    color: white;
-    text-align: left;
-    flex: 1;
-    max-width: 500px;
-}
-
-/* Activity description */
-.activity-description {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
-
-/* Status container for participants and status dot */
-.status-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.status-text {
-    font-size: 1rem;
-    margin: 0;
-}
-
-.status-dot {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-/* Status colors */
-.status-dot.green {
-    background-color: #28a745;
-}
-
-/* Register button styling */
-.register-button {
-    padding: 12px 20px;
-    font-size: 1.1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.register-button:hover {
-    background-color: #0056b3;
-}
-
-
-.back-button {
-    padding: 12px 25px;
-    font-size: 1.1rem;
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.back-button:hover {
-    background-color: #5a6268;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
     .activity-container {
-        flex-direction: column;
-        padding: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
     }
 
     .activity-image img {
-        width: 200px;
-        height: 200px;
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        border: 3px solid #ff6f61;
+    }
+
+    .activity-details {
+        color: #333;
+        text-align: left;
+        flex: 1;
+        max-width: 500px;
+    }
+
+    .activity-description {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+    .status-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .status-text {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+
+    .status-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .status-dot.green {
+        background-color: #28a745;
+    }
+
+    .register-button, .back-button {
+        padding: 15px 25px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s ease;
     }
 
     .register-button {
-        width: 100%;
+        background-color: #ff6f61;
+        color: white;
     }
-}
+
+    .register-button:hover {
+        background-color: #e35d56;
+    }
+
+    .back-button {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+
+    @media (max-width: 768px) {
+        .activity-container {
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .activity-image img {
+            width: 220px;
+            height: 220px;
+        }
+
+        .register-button, .back-button {
+            width: 100%;
+        }
+    }
 </style>
 <section>
-<div class="regis-at-container">
+    <div class="regis-at-container">
         <h1>Activity</h1>
         <div class="activity-container">
             <div class="activity-image">
