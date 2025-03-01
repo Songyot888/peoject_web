@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #87CEFA; /* สีฟ้าสดใส */
         }
 
         .container {

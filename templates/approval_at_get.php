@@ -1,55 +1,70 @@
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
     section {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 80px 20px 20px;
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4); /* สีสดใสขึ้น */
-        height: 100vh;
+        padding: 50px 20px;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        min-height: 100vh;
+        width: 100%;
     }
 
     .approval-container {
         background: rgba(255, 255, 255, 0.9);
         padding: 40px;
         border-radius: 15px;
-        width: 80%;
-        max-width: 1000px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 1200px;
+        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
         text-align: center;
     }
 
     h1 {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
         margin-bottom: 30px;
         color: #333;
     }
 
     .user-list {
-        margin-bottom: 30px;
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px;
     }
 
     .user-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px;
+        padding: 20px;
         background-color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 10px;
-        border-radius: 10px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
     }
 
     .user-info {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
     }
 
     .user-icon {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         background-color: #ff758c;
         color: white;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -57,27 +72,27 @@
     }
 
     .user-name {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         color: #333;
     }
 
     .user-status {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
     }
 
     input[type="radio"] {
-        transform: scale(1.2);
+        transform: scale(1.5);
         cursor: pointer;
     }
 
     .detail-button {
-        padding: 6px 12px;
+        padding: 8px 15px;
         background-color: #ff758c;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 8px;
         font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.3s ease;
@@ -89,20 +104,23 @@
 
     .button-container {
         display: flex;
-        justify-content: space-between;
-        gap: 15px;
-        margin-top: 20px;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 25px;
+    }
+
+    .deny-button, .apply-button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .deny-button {
-        padding: 12px 20px;
         background-color: #ff5252;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
     }
 
     .deny-button:hover {
@@ -110,39 +128,11 @@
     }
 
     .apply-button {
-        padding: 12px 20px;
         background-color: #42a5f5;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
     }
 
     .apply-button:hover {
         background-color: #1e88e5;
-    }
-
-    footer {
-        display: flex;
-        justify-content: center;
-        margin-top: 30px;
-    }
-
-    .back-button {
-        padding: 12px 25px;
-        font-size: 1.1rem;
-        background-color: #6c757d;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .back-button:hover {
-        background-color: #5a6268;
     }
 </style>
 
@@ -173,7 +163,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button class="deny-button">Deny</button>
+            <button class="deny-button">Delete</button>
             <button class="apply-button">Apply</button>
         </div>
     </div>

@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            background: #87CEFA; /* สีฟ้าสดใส */
         }
 
         .container {
@@ -44,7 +44,7 @@
 
         button {
             width: 100%;
-            background: #ff758c;
+            background: #667eea;
             color: white;
             border: none;
             padding: 10px;
@@ -55,7 +55,7 @@
         }
 
         button:hover {
-            background: #ff5e78;
+            background: #667eea;
         }
 
         .login-link {
@@ -65,7 +65,7 @@
         }
 
         .login-link a {
-            color: #ff758c;
+            color: #667eea;
             text-decoration: none;
         }
     </style>
