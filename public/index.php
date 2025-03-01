@@ -13,21 +13,23 @@ session_start();
 // Include router to index.php 
 require_once INCLUDES_DIR . '/router.php';
 require_once INCLUDES_DIR . '/view.php';
-require_once INCLUDES_DIR . '/db.php';
+require_once INCLUDES_DIR . '/config.php';
 
 // Call dispatch to handle requests
 // echo '$_SERVER["REQUEST_URI"]='.$_SERVER['REQUEST_URI'];
-const PUBLIC_ROUTES = ['/'];
-if (in_array(strtolower($_SERVER['REQUEST_URI']), PUBLIC_ROUTES)) {
-    dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
-    exit;
-} elseif (isset($_SESSION['timestamp']) && time() - $_SESSION['timestamp'] < 30 * 60) {
-    // 30 minutes.
-    $unix_timestamp = time();
-    $_SESSION['timestamp'] = $unix_timestamp;
-    dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
-} else {
-    unset($_SESSION['timestamp']);
-    header('Location: /');
-    exit;
-}
+// const PUBLIC_ROUTES = ['/','/login'];
+
+// if (in_array(strtolower($_SERVER['REQUEST_URI']), PUBLIC_ROUTES)) {
+//     dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+//     exit;
+// } elseif (isset($_SESSION['timestamp']) && time() - $_SESSION['timestamp'] < 30 * 60) {
+//     // 30 minutes.
+//     $unix_timestamp = time();
+//     $_SESSION['timestamp'] = $unix_timestamp;
+//     dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
+// } else {
+//     unset($_SESSION['timestamp']);
+//     header('Location: /');
+//     exit;
+// }
+dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
