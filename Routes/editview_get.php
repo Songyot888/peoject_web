@@ -1,2 +1,2 @@
 <?php
-    randerView('view_get');
+    randerView('editview_get');
