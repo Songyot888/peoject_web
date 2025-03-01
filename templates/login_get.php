@@ -22,7 +22,8 @@
         }
 
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
@@ -59,7 +60,6 @@
             gap: 5px;
             white-space: nowrap;
         }
-
 
         button {
             width: 100%;
@@ -109,3 +109,5 @@
         </form>
         <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
     </div>
+</body>
+</html>
