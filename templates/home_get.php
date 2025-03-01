@@ -72,7 +72,3 @@
         <button class="button" onclick="window.location.href='/login';">Login</button>
         <button class="button" onclick="window.location.href='/register';">Sign up</button>
     </div>
-
-</body>
-
-</html>

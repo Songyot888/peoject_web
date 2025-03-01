@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+
     <style>
         * {
             margin: 0;
@@ -74,8 +69,7 @@
             text-decoration: none;
         }
     </style>
-</head>
-<body>
+
     <div class="container">
         <h1>Register</h1>
         <form action="register-action.php" method="POST">
@@ -93,5 +87,4 @@
         </form>
         <p class="login-link">Already have an account? <a href="/login">Login</a></p>
     </div>
-</body>
-</html>
+

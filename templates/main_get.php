@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Activity Club</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style>
-        body {
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-        }
         .navbar {
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -57,8 +47,7 @@
             padding: 20px;
         }
     </style>
-</head>
-<body>
+<section>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
@@ -136,5 +125,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+</section>

@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Activity</title>
+
     <style>
         body {
             margin: 0;
@@ -117,8 +112,7 @@
             background-color: #0056b3;
         }
     </style>
-</head>
-<body>
+    
     <div class="edit-container">
         <h1>Edit Activity</h1>
 
@@ -152,7 +146,6 @@
             </div>
         </form>
     </div>
-
     <script>
         function previewFile() {
             const file = document.getElementById("file-upload").files[0];
@@ -165,5 +158,3 @@
             }
         }
     </script>
-</body>
-</html>

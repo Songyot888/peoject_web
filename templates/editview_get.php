@@ -144,7 +144,7 @@ button {
 }
 </style>
 <section>
-<div class="editview-container">
+    <div class="editview-container">
         <h1>View Activity</h1>
         <div class="form-container">
             <div class="activity-image">

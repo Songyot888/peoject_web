@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
     <style>
         * {
             margin: 0;
@@ -92,9 +86,8 @@
             color: #333;
         }
     </style>
-</head>
 
-<body>
+<section>
     <div class="container">
         <h1>Login</h1>
         <form action="login-action.php" method="POST">
@@ -109,5 +102,5 @@
         </form>
         <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
     </div>
-</body>
-</html>
+</section>
+    
