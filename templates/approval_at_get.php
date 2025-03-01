@@ -223,4 +223,4 @@ footer {
                 <button class="apply-button">Apply</button>
             </div>
         </div>
-    </section>
+</section>
