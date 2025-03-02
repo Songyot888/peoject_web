@@ -18,37 +18,34 @@
         return $success;
     }
     
-    
-
-    function login($name, $password, $remember)
+    function login(String $username, String $password): array|bool
     {
-        $conn = getConnection(); 
+        $conn = getConnection();
+        $sql = 'SELECT * FROM User WHERE Name = ?';
+        
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("❌ SQL ERROR: " . $conn->error);
+        }
     
-        $query = "SELECT * FROM User WHERE username = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $name);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-
-            if ($remember) {
-                setcookie("username", $name, time() + (86400 * 7), "/"); // 30 วัน
-                setcookie("password", $name, time() + (86400 * 7), "/");
-            } else {
-                setcookie("username", "", time() - 3600, "/"); 
-                setcookie("password", "", time() - 3600, "/");
-            }
-
-            header("Location: /login");
-            exit();
+        
+        if ($result->num_rows == 0) {
+            return false; // ไม่พบผู้ใช้
+        }
+    
+        $row = $result->fetch_assoc();
+    
+        if (password_verify($password, $row['password'])) {
+            return $row; // เข้าสู่ระบบสำเร็จ
         } else {
-            echo "<script>alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!');</script>";
+            return false; // รหัสผ่านผิด
         }
     }
     
+
 
 function logout(): void
 {
