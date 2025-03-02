@@ -16,5 +16,4 @@ function getConnection():mysqli
 require_once DATABASE_DIR . '/user.php';
 require_once DATABASE_DIR . '/event.php';
 require_once DATABASE_DIR . '/event_img.php';
-require_once DATABASE_DIR . '/attendee_event.php';
-require_once DATABASE_DIR . '/event_attendee_link.php';
+require_once DATABASE_DIR . '/jointable.php';

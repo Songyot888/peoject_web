@@ -138,35 +138,48 @@
         }
     </style>
 
-    <section>
-        <div class="approval-container">
-            <h1>Activity Approval</h1>
+<section>
+    <div class="approval-container">
+        <h1>Activity Approval</h1>
+        <form method="POST" action="/approval_at"> <!-- ฟอร์มที่ใช้ POST -->
             <div class="user-list">
-                <div class="user-item">
-                    <div class="user-info">
-                        <div class="user-icon">U</div>
-                        <div class="user-name">User 1</div>
-                    </div>
-                    <div class="user-status">
-                        <button class="detail-button">Detail</button>
-                        <input type="radio" name="status1">
-                    </div>
-                </div>
+                <?php 
+                $event_id = 25;
 
-                <div class="user-item">
-                    <div class="user-info">
-                        <div class="user-icon">U</div>
-                        <div class="user-name">User 2</div>
-                    </div>
-                    <div class="user-status">
-                        <button class="detail-button">Detail</button>
-                        <input type="radio" name="status2">
-                    </div>
-                </div>
+                $users = join_event($event_id);  
+                $grouped_users = [];
+
+                // จัดกลุ่มผู้ใช้ตาม event_id
+                foreach ($users as $user) {
+                    $grouped_users[$user['event_id']][] = $user;
+                }
+
+                // แสดงผู้ใช้ที่เข้าร่วมกิจกรรมเดียวกัน
+                foreach ($grouped_users as $event_id => $event_users):
+                ?>
+                    <h2>Event ID: <?= $event_id ?></h2>
+                    <?php foreach ($event_users as $user): ?>
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-icon">U</div>
+                                <div class="user-name"><?= htmlspecialchars($user['Name']) ?></div> <!-- แสดงชื่อผู้ใช้ -->
+                            </div>
+                            <div class="user-status">
+                                <button type="button" class="detail-button">Detail</button>
+                                <!-- ใช้ radio เพื่อให้เลือกสถานะ -->
+                                <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
+                                <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
             </div>
+
             <div class="button-container">
-                <button class="deny-button">Delete</button>
-                <button class="apply-button">Apply</button>
+                <button type="submit" class="apply-button" name="action" value="apply">Apply</button> <!-- ปุ่ม Apply -->
             </div>
-        </div>
-    </section>
+        </form>
+    </div>
+</section>
+
+

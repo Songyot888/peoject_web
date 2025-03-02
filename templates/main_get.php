@@ -1,13 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: /login_get");
-    exit();
-}
-
-echo "<p>ยินดีต้อนรับ, " . $_SESSION['username'] . "!</p>";
-?>
 
     <style>
         body {
