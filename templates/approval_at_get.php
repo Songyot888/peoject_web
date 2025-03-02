@@ -166,6 +166,7 @@
                             </div>
                             <div class="user-status">
                                 <button type="button" class="detail-button">Detail</button>
+                                <!-- ใช้ radio เพื่อให้เลือกสถานะ -->
                                 <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
                                 <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
                             </div>
@@ -180,3 +181,5 @@
         </form>
     </div>
 </section>
+
+

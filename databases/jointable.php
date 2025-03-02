@@ -26,18 +26,19 @@
 }
 
 
-function updateUserEventStatus($user_id, $event_id, $status) {
+// ฟังก์ชันสำหรับอัปเดตสถานะของผู้ใช้ในฐานข้อมูล
+function updateUserStatus($user_id, $status) {
     $conn = getConnection();
-    $updateQuery = "UPDATE User_Event SET status = ? WHERE User_id = ? AND event_id = ?";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param("sii", $status, $user_id, $event_id);
-    
+    $sql = "UPDATE User_Event SET status = ? WHERE User_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $status, $user_id); 
     if ($stmt->execute()) {
-        echo "สถานะได้ถูกอัปเดต!";
+        randerView('approval_at_get');
     } else {
-        echo "เกิดข้อผิดพลาดในการอัปเดตสถานะ!";
+        randerView('approval_at_get');
     }
 
+    // ปิดการเชื่อมต่อฐานข้อมูล
     $stmt->close();
     $conn->close();
 }

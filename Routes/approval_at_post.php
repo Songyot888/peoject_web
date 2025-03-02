@@ -1,10 +1,12 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        foreach ($_POST as $user_id => $status) {
-            if (strpos($user_id, 'status') === 0) {
-                $user_id = substr($user_id, 6);  // ตัดคำว่า 'status' ออก
-                // อัปเดตสถานะในฐานข้อมูล
-                updateUserEventStatus($user_id, $event_id, $status);
-            }
-        }
+// ตรวจสอบเมื่อฟอร์มถูกส่ง
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
+    // รับค่าจากฟอร์ม
+    $statusData = $_POST['status'];
+
+    // เรียกใช้ฟังก์ชันเพื่ออัปเดตสถานะสำหรับผู้ใช้แต่ละคน
+    foreach ($statusData as $userId => $status) {
+        updateUserStatus($userId, $status); 
     }
+}
+?>
