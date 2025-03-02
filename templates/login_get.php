@@ -4,6 +4,8 @@
     if (isset($_SESSION['alert']) && !empty($_SESSION['alert'])) {
         if ($_SESSION['alert'] === 'เข้าสู่ระบบสำเร็จ') {
             echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
+        }else{
+            echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
         } 
         unset($_SESSION['alert']);
     } 
@@ -123,36 +125,11 @@
             <h1>Login</h1>
             <form action="/login" method="POST">
                 <input type="text" name="username" placeholder="Username" required>
-                <div class="ps-con">
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                    <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
-                </div>
-                
-                <div class="remember-me">
-                    <label>
-                        <input type="checkbox" name="remember"> Remember me
-                    </label>
-                </div>
+                <input type="password" name="password" id="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
             <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
         </div>
-    </section>
-    <script>
-        function togglePassword() {
-            var passwordField = document.getElementById("password");
-            var toggleIcon = document.getElementById("toggleIcon");
-
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                toggleIcon.classList.remove("fa-eye-slash");
-                toggleIcon.classList.add("fa-eye"); // เปลี่ยนเป็นเปิดตา
-            } else {
-                passwordField.type = "password";
-                toggleIcon.classList.remove("fa-eye");
-                toggleIcon.classList.add("fa-eye-slash"); // เปลี่ยนเป็นปิดตา
-            }
-        }
-    </script>
+</section>
 
     <?php require_once 'footer.php' ?>
