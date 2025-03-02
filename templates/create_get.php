@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Activity</title>
-    <style>
+<?php
+    $User_id = ['User_id'];
+?>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -118,15 +115,16 @@
             background-color: #27ae60;
         }
     </style>
-</head>
-<body>
 
     <div class="create-container">
+        <!-- Image Upload Section -->
         <div class="activity-image" onclick="document.getElementById('file-upload').click();">
             <img id="preview-image" src="" alt="Click to upload">
             <span id="upload-text">Click to upload image</span>
             <input type="file" id="file-upload" name="image" accept="image/*" onchange="previewFile()">
         </div>
+
+        <!-- Create Activity Form -->
         <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
             <h1>Create Activity</h1>
             <input type="text" name="activity-name" placeholder="Enter activity name" required>
@@ -134,9 +132,13 @@
             <input type="date" name="start-date" required>
             <input type="date" name="end-date" required>
             <textarea name="description" placeholder="Describe the activity..." required></textarea>
-            
+            <input type="hidden" name="status" value="active" required>
+            <input type="hidden" name="User_id" value="<?php $User_id; ?>" required> 
+
             <div class="button-container">
+                <!-- Cancel Button to Go Back -->
                 <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
+                <!-- Submit Button -->
                 <button type="submit" class="create-button">Create</button>
             </div>
         </form>
@@ -163,6 +165,3 @@
             window.history.back();
         }
     </script>
-
-</body>
-</html>

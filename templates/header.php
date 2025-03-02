@@ -25,6 +25,9 @@
 
 <body>
 <header>
+<?php
+        if (isset($_SESSION['timestamp'])) {
+        ?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Navbar</a>
@@ -58,14 +61,14 @@
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <button class="btn btn-danger logout-btn">Logout</button>
+          <a class="btn btn-danger logout-btn" href="/logout"> Logout </a>
     </div>
   </div>
 </nav>
+<?php
+        }
+    ?>
 </header>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-rbsA2VBKQGpUFnj46y1c9iUqD+OMwE8lV3qQWth/1lD6D9tGtJ+KjU5Wq5qF3hG5" crossorigin="anonymous"></script>
-</body>
 
-</html>

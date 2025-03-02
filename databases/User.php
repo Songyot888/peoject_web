@@ -7,17 +7,17 @@
         $sql = "INSERT INTO User (Email, Name, password, gender) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssss", $email, $username, $hashed_password, $gender);
-        
+
         // Execute the query and return success
         $success = $stmt->execute();
-        
+
         $stmt->close();
         $conn->close();
-        
+
         return $success;
     }
-    
-    
+
+
     function login(String $username, String $password): array|bool
 {
     $conn = getConnection();
@@ -40,8 +40,7 @@
         return false;
     }
 }
-    
-    
+
 function logout(): void
 {
     unset($_SESSION['timestamp']);
