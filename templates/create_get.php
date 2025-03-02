@@ -1,47 +1,51 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Activity</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
-        html, body {
-            height: 100%;
-            width: 100%;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #87CEFA, #4682B4);
-            color: white;
+        body {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: linear-gradient(135deg, #87CEFA, #4682B4);
+            color: white;
         }
 
         .create-container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 60px 80px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
             border-radius: 15px;
             width: 95%;
-            max-width: 1200px;
+            max-width: 1000px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.6);
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
-            gap: 50px;
+            text-align: center;
         }
 
         .activity-image {
-            width: 350px;
-            height: 350px;
+            width: 200px;
+            height: 200px;
             border-radius: 10px;
             border: 2px solid white;
             overflow: hidden;
             cursor: pointer;
-            flex-shrink: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
         }
 
         .activity-image img {
@@ -58,43 +62,39 @@
         .create-form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             width: 100%;
-        }
-
-        .create-form h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 10px;
+            max-width: 500px;
         }
 
         .create-form input,
         .create-form textarea {
-            padding: 15px;
+            padding: 12px;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 1.2rem;
+            font-size: 1rem;
             width: 100%;
         }
 
         .create-form textarea {
             resize: vertical;
-            height: 150px;
+            height: 100px;
         }
 
         .button-container {
             display: flex;
             justify-content: space-between;
-            gap: 30px;
+            gap: 20px;
+            margin-top: 15px;
         }
 
         button {
-            padding: 16px 24px;
-            font-size: 1.2rem;
+            padding: 12px;
+            font-size: 1rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
             width: 48%;
@@ -110,37 +110,37 @@
         }
 
         .create-button {
-            background-color: #87CEFA;
+            background-color: #2ecc71;
             color: white;
         }
 
         .create-button:hover {
-            background-color: #4682B4;
+            background-color: #27ae60;
         }
     </style>
 </head>
+<body>
 
-    <section>
-        <div class="create-container">
-            <div class="activity-image" onclick="document.getElementById('file-upload').click();">
-                <img id="preview-image" src="" alt="Click to upload">
-                <span id="upload-text">Click to upload image</span>
-                <input type="file" id="file-upload" accept="image/*" onchange="previewFile()">
-            </div>
-            <form class="create-form" action="submit_activity.php" method="POST" enctype="multipart/form-data">
-                <h1>Create Activity</h1>
-                <input type="text" id="activity-name" name="activity-name" placeholder="Enter activity name" required>
-                <input type="number" id="participants" name="participants" placeholder="Number of participants" required>
-                <input type="date" id="start-date" name="start-date" required>
-                <input type="date" id="end-date" name="end-date" required>
-                <textarea id="description" name="description" placeholder="Describe the activity..." rows="4" required></textarea>
-                <div class="button-container">
-                    <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
-                    <button type="submit" class="create-button">Create</button>
-                </div>
-            </form>
+    <div class="create-container">
+        <div class="activity-image" onclick="document.getElementById('file-upload').click();">
+            <img id="preview-image" src="" alt="Click to upload">
+            <span id="upload-text">Click to upload image</span>
+            <input type="file" id="file-upload" name="image" accept="image/*" onchange="previewFile()">
         </div>
-    </section>
+        <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
+            <h1>Create Activity</h1>
+            <input type="text" name="activity-name" placeholder="Enter activity name" required>
+            <input type="number" name="participants" placeholder="Number of participants" required>
+            <input type="date" name="start-date" required>
+            <input type="date" name="end-date" required>
+            <textarea name="description" placeholder="Describe the activity..." required></textarea>
+            
+            <div class="button-container">
+                <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
+                <button type="submit" class="create-button">Create</button>
+            </div>
+        </form>
+    </div>
 
     <script>
         function previewFile() {
@@ -163,3 +163,6 @@
             window.history.back();
         }
     </script>
+
+</body>
+</html>

@@ -94,7 +94,7 @@
     <div class="activity-container">
         
         <!-- ปุ่มเพิ่มกิจกรรม -->
-        <div class="activity-card" onclick="location.href='create.php'">
+        <div class="activity-card" onclick="location.href='/create';">
             <i class="fas fa-upload upload-icon"></i>
         </div>
 
