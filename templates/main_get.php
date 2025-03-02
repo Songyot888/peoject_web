@@ -1,19 +1,18 @@
-
-    <style>
+<?php
+    require_once 'header.php';
+?>
+<style>
         body {
             min-height: 100vh;
-            /* ทำให้หน้าเว็บมีความสูงไม่น้อยกว่าขนาดของ viewport */
         }
 
         .container {
             width: 100%;
             padding-bottom: 50px;
-            /* เพิ่มระยะห่างด้านล่าง */
         }
 
         .activity-container {
             margin-top: 20px;
-
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
@@ -27,20 +26,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             border-radius: 10px;
             text-align: center;
-            padding: 20px;
+            transition: 0.3s;
+            cursor: pointer;
         }
 
-        .activity-card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            height: 400px;
-            transition: 0.3s;
+        .activity-card:hover {
+            background-color: #bbb;
         }
 
         .activity-card .content {
@@ -62,7 +56,6 @@
             opacity: 1;
         }
 
-
         .activity-card img {
             width: 100%;
             height: 180px;
@@ -71,16 +64,9 @@
             margin-top: 10px;
         }
 
-        .activity-card .content {
-            margin-top: 10px;
-            text-align: center;
-        }
-
         .large-activity-card {
             width: calc(100% + 200px);
-            /* ขยายข้างละ 100px */
             max-width: 1700px;
-            /* ป้องกันการขยายเกินขนาดหน้าจอ */
             height: 600px;
             background-color: #bbb;
             display: flex;
@@ -90,44 +76,50 @@
             border-radius: 10px;
             text-align: center;
             margin-left: -100px;
-            /* ขยับไปทางซ้าย 100px เพื่อให้สมดุล */
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: black;
         }
     </style>
 
+<h2 class="text1-dark" style="margin-top: 20px; margin-left: 30px;">Activity Club</h2>
+<div class="container">
+    <div class="container d-flex justify-content-start">
+        <div class="large-activity-card">
+            <h3>Main Activity</h3>
+        </div>
+    </div>
+    <div class="activity-container">
+        
+        <!-- ปุ่มเพิ่มกิจกรรม -->
+        <div class="activity-card" onclick="location.href='create.php'">
+            <i class="fas fa-upload upload-icon"></i>
+        </div>
 
-    <h2 class="text1-dark" style="margin-top: 20px; margin-left: 30px;">Activity Club</h2>
-    <div class="container">
-        <div class="container d-flex justify-content-start">
-            <div class="large-activity-card">
-                <h3>Main Activity</h3>
+        <!-- กิจกรรมที่มีอยู่ -->
+        <div class="activity-card">
+            <div class="content">
+                <p>Activity 1</p>
+            </div>
+            <img src="https://via.placeholder.com/300x180" alt="Activity 1">
+            <div class="content">
+                <button class="btn btn-primary" onclick="location.href='view.php?id=1'">View</button>
+                <button class="btn btn-success" onclick="location.href='sign.php?id=1'">Sign</button>
             </div>
         </div>
-        <div class="activity-container">
-
-            <div class="activity-card">
-                <span>+</span>
+        <div class="activity-card">
+            <div class="content">
+                <p>Activity 2</p>
             </div>
-            <div class="activity-card">
-                <div class="content">
-                    <p>Activity 1</p>
-                </div>
-                <img src="https://via.placeholder.com/300x180" alt="Activity 1">
-                <div class="content">
-                    <button class="btn btn-primary">View</button>
-                    <button class="btn btn-success">Sign</button>
-                </div>
-            </div>
-            <div class="activity-card">
-                <div class="content">
-                    <p>Activity 2</p>
-                </div>
-                <img src="https://via.placeholder.com/300x180" alt="Activity 2">
-                <div class="content">
-                    <button class="btn btn-primary">View</button>
-                    <button class="btn btn-success">Sign</button>
-                </div>
+            <img src="https://via.placeholder.com/300x180" alt="Activity 2">
+            <div class="content">
+                <button class="btn btn-primary" onclick="location.href='view.php?id=2'">View</button>
+                <button class="btn btn-success" onclick="location.href='sign.php?id=2'">Sign</button>
             </div>
         </div>
     </div>
+</div>
 
-    <?php require_once 'footer.php' ?>
+<?php require_once 'footer.php'; ?>
