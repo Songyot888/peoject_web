@@ -1,5 +1,5 @@
 <?php
-    $User_id = ['User_id'];
+    $User_id = $_SESSION['User_id'];
 ?>
 <style>
         * {
@@ -132,8 +132,8 @@
             <input type="date" name="start-date" required>
             <input type="date" name="end-date" required>
             <textarea name="description" placeholder="Describe the activity..." required></textarea>
-            <input type="hidden" name="status" value="active" required>
-            <input type="hidden" name="User_id" value="<?php $User_id; ?>" required> 
+            <input type="hidden" name="status" value="Open" required>
+            <input type="hidden" name="User_id" value="<?=$User_id?>">
 
             <div class="button-container">
                 <!-- Cancel Button to Go Back -->
