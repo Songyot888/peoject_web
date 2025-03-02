@@ -33,9 +33,10 @@ function updateUserStatus($user_id, $status) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $status, $user_id); 
     if ($stmt->execute()) {
-        randerView('approval_at_get');
+        header('Location: /approval_at');
     } else {
-        randerView('approval_at_get');
+        header('Location: /approval_at');
+        exit;
     }
 
     // ปิดการเชื่อมต่อฐานข้อมูล
