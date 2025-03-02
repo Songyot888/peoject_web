@@ -1,12 +1,17 @@
 <?php
-    if (isset($_SESSION['email']) && isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['confirm_password'])) {
-        $email = $_SESSION['email'];
-        $username = $_SESSION['username'];
-        $password = $_SESSION['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!empty($_POST['username']) && !empty($_POST['password'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $remember = isset($_POST['remember']);
 
-        if (register($email , $username , $password)) {
-            
-        }else{
-            
+        if (login($username, $password, $remember)) {
+            $_SESSION['alert'] = 'เข้าสู่ระบบสำเร็จ';
+            randerView('main_get');
+        } else {
+            $_SESSION['alert'] = 'เข้าสู่ระบบไม่สำเร็จ';
+            randerView('login_get');
         }
     }
+}
+?>

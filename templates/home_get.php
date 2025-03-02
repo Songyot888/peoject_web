@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Club</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        
+        *{
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: Arial, sans-serif;
         }
 
         body {
@@ -61,15 +56,23 @@
         .button:hover {
             background: #5a67d8;
         }
-    </style>
-</head>
 
-<body>
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+    </style>
 
     <div class="container-0">
         <h1>Activity Club</h1>
         <p>กิจกรรมที่ทุกคนรอ...คอย</p>
-
         <button class="button" onclick="window.location.href='/login';">Login</button>
         <button class="button" onclick="window.location.href='/register';">Sign up</button>
     </div>
+
+    <?php require_once 'footer.php' ?>

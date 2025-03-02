@@ -1,4 +1,13 @@
-
+<?php
+    echo "<section>";
+    if (isset($_SESSION['alert']) && !empty($_SESSION['alert'])) {
+        if ($_SESSION['alert'] === 'เข้าสู่ระบบสำเร็จ') {
+            echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
+        } 
+        unset($_SESSION['alert']);
+    } 
+    echo "</section>";
+?>
     <style>
         * {
             margin: 0;
@@ -38,6 +47,18 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
+        }
+
+        .ps-con {
+            position: relative;
+        }
+
+        .ps-con i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
 
         .remember-me {
@@ -85,22 +106,52 @@
             font-size: 0.9rem;
             color: #333;
         }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
     </style>
 
 <section>
-    <div class="container">
-        <h1>Login</h1>
-        <form action="login-action.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <div class="remember-me">
-                <label>
-                    <input type="checkbox" name="remember"> Remember me
-                </label>
-            </div>
-            <button type="submit">Login</button>
-        </form>
-        <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
-    </div>
-</section>
-    
+        <div class="container">
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <div class="ps-con">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
+                </div>
+                
+                <div class="remember-me">
+                    <label>
+                        <input type="checkbox" name="remember"> Remember me
+                    </label>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
+        </div>
+    </section>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            var toggleIcon = document.getElementById("toggleIcon");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye"); // เปลี่ยนเป็นเปิดตา
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash"); // เปลี่ยนเป็นปิดตา
+            }
+        }
+    </script>
+
+    <?php require_once 'footer.php' ?>

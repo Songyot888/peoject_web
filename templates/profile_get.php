@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Profile</title>
+
     <style>
         body {
             background: #87CEFA; /* สีฟ้าสดใส */
@@ -83,10 +78,8 @@
             background-color: #0056b3;
         }
     </style>
-</head>
-<body>
-
-    <div class="container">
+<section>
+<div class="container">
         <div class="profile">
             <img src="profile.png" alt="">
             <div class="profile-name">
@@ -124,6 +117,5 @@
             </div>
         </div>
     </div>
-
-</body>
-</html>
+</section>
+    

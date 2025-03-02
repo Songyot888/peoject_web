@@ -1,3 +1,4 @@
+
 <style>
     body {
         margin: 0;
@@ -125,23 +126,24 @@
         }
     }
 </style>
-<section>
-    <div class="editview-container">
-        <h1>View Activity</h1>
-        <div class="form-container">
-            <div class="activity-image">
-                <img src="placeholder-image.jpg" alt="Activity Image">
-            </div>
-            <div class="activity-details">
-                <p class="activity-description">
-                    Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like training races, long jumps, and even fun games that bring laughter to everyone.
-                </p>
-                <div class="button-container">
-                    <button class="view-button">View</button>
-                    <button class="edit-button">Edit</button>
-                    <button class="delete-button">Delete</button>
+
+    <section>
+        <div class="editview-container">
+            <h1>View Activity</h1>
+            <div class="form-container">
+                <div class="activity-image">
+                    <img src="placeholder-image.jpg" alt="Activity Image">
+                </div>
+                <div class="activity-details">
+                    <p class="activity-description">
+                        Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like training races, long jumps, and even fun games that bring laughter to everyone.
+                    </p>
+                    <div class="button-container">
+                        <button class="view-button">View</button>
+                        <button class="edit-button">Edit</button>
+                        <button class="delete-button">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>

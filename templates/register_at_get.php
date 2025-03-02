@@ -1,4 +1,5 @@
-<style>
+
+    <style>
     body {
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
         color: #333;
@@ -122,6 +123,7 @@
         }
     }
 </style>
+
 <section>
     <div class="regis-at-container">
         <h1>Activity</h1>
@@ -138,6 +140,7 @@
                     <div class="status-dot green"></div>
                 </div>
                 <button class="register-button">Register</button>
+                <button class="back-button" onclick="window.history.back()">Back</button>
             </div>
         </div>
     </div>
