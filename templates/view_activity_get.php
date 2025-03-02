@@ -1,93 +1,38 @@
 
-    <style>
-        section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 80px 20px 20px;
-        }
 
-        /* Activity container styles */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Activity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #87CEFA, #4682B4);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
         .activity-container {
             background: rgba(0, 0, 0, 0.8);
             padding: 40px;
             border-radius: 15px;
             width: 80%;
-            max-width: 1000px;
+            max-width: 800px;
+            margin: auto;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
-            text-align: center;
         }
-
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 30px;
-            color: white;
-        }
-
-        /* Activity content container */
-        .activity-content {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        /* Activity image styles */
-        .activity-image img {
-            width: 250px;
-            height: 250px;
+        img {
+            width: 300px;
+            height: 300px;
             object-fit: cover;
             border-radius: 10px;
-            margin-bottom: 20px;
-            border: 2px solid #fff;
+            border: 2px solid white;
         }
-
-        /* Activity details styling */
-        .activity-details {
-            color: white;
-            text-align: left;
-            flex: 1;
-            max-width: 500px;
-        }
-
-        /* Activity description */
-        .activity-description {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        /* Status container for participants and status dot */
-        .status-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .status-text {
-            font-size: 1rem;
-        }
-
-        .status-dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        /* Status colors */
-        .status-dot.green {
-            background-color: #28a745;
-        }
-
-        /* Back button styling */
-        footer {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
         .back-button {
+            display: inline-block;
+            margin-top: 20px;
             padding: 12px 25px;
             font-size: 1.1rem;
             background-color: #6c757d;
@@ -95,48 +40,24 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            text-decoration: none;
         }
-
         .back-button:hover {
             background-color: #5a6268;
         }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .activity-content {
-                flex-direction: column;
-                padding: 20px;
-            }
-
-            .activity-image img {
-                width: 200px;
-                height: 200px;
-            }
-
-            .back-button {
-                width: 100%;
-            }
-        }
     </style>
+</head>
+<body>
 
-    <section>
-        <div class="activity-container">
-            <h1>Activity</h1>
-            <div class="activity-content">
-                <div class="activity-image">
-                    <img src="activity-placeholder.jpg" alt="Activity Image">
-                </div>
-                <div class="activity-details">
-                    <p class="activity-description">
-                        Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like running races, long jumps, and even fun games that bring laughter to everyone.
-                    </p>
-                    <div class="status-container">
-                        <p class="status-text">Participants: 0/50</p>
-                        <div class="status-dot green"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="container">
+        <h1><?php echo htmlspecialchars($event['Eventname']); ?></h1>
+        <p><strong>Participants:</strong> <?php echo htmlspecialchars($event['Max_participants']); ?></p>
+        <p><strong>Start Date:</strong> <?php echo htmlspecialchars($event['start_date']); ?></p>
+        <p><strong>End Date:</strong> <?php echo htmlspecialchars($event['end_date']); ?></p>
+        <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($event['description'])); ?></p>
+        <img src="../public/uploads/<?php echo htmlspecialchars($event['image_url']); ?>" alt="Event Image" style="max-width: 500px;">
+        <p><strong>Status:</strong> <?php echo htmlspecialchars($event['status_event']); ?></p>
+    </div>
 
+</body>
+</html>
