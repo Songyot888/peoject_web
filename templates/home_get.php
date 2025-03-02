@@ -69,7 +69,7 @@
     <div class="container-0">
         <h1>Activity Club</h1>
         <p>กิจกรรมที่ทุกคนรอ...คอย</p>
-        
+
         <button class="button" onclick="window.location.href='/login';">Login</button>
         <button class="button" onclick="window.location.href='/register';">Sign up</button>
     </div>
