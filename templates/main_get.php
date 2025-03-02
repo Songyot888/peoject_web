@@ -1,128 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Club</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.8);
+        body {
+            min-height: 100vh;
+            /* ทำให้หน้าเว็บมีความสูงไม่น้อยกว่าขนาดของ viewport */
         }
-        .navbar-brand, .nav-link {
-            color: white !important;
+
+        .container {
+            width: 100%;
+            padding-bottom: 50px;
+            /* เพิ่มระยะห่างด้านล่าง */
         }
-        .main-container {
-            padding-top: 80px;
-            text-align: center;
-        }
-        .card {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            transition: transform 0.3s ease;
-        }
-        .card img {
-            border-radius: 10px;
-            height: 180px;
-            object-fit: cover;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
-        .add-activity {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-            display: flex;
-            align-items: center;
+
+        .activity-container {
+            margin-top: 20px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
-        .add-activity:hover {
-            background-color: #218838;
-        }
-        .modal-content {
+
+        .activity-card {
+            width: 300px;
+            height: 400px;
+            background-color: #ccc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 10px;
+            text-align: center;
             padding: 20px;
         }
+
+        .activity-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 400px;
+            transition: 0.3s;
+        }
+
+        .activity-card .content {
+            margin-top: 10px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .activity-card .content button {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            display: block;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .activity-card:hover .content button {
+            opacity: 1;
+        }
+
+
+        .activity-card img {
+            width: 100%;
+            height: 180px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-top: 10px;
+        }
+
+        .activity-card .content {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .large-activity-card {
+            width: calc(100% + 200px);
+            /* ขยายข้างละ 100px */
+            max-width: 1700px;
+            /* ป้องกันการขยายเกินขนาดหน้าจอ */
+            height: 600px;
+            background-color: #bbb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            text-align: center;
+            margin-left: -100px;
+            /* ขยับไปทางซ้าย 100px เพื่อให้สมดุล */
+        }
     </style>
-<section>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Activity Club</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <form class="d-flex me-auto" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            Menu
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Home</a></li>
-                            <li><a class="dropdown-item" href="#">Activities</a></li>
-                            <li><a class="dropdown-item" href="#">Contact</a></li>
-                        </ul>
-                    </li>
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">User Name</a>
+                        <a class="nav-link" href="#">Home</a>
                     </li>
                 </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="ค้นหา..." aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+                </form>
             </div>
         </div>
     </nav>
+    <h2 class="text1-dark" style="margin-top: 20px; margin-left: 30px;">Activity Club</h2>
+    <div class="container">
+        <div class="container d-flex justify-content-start">
+            <div class="large-activity-card">
+                <h3>Main Activity</h3>
+            </div>
+        </div>
+        <div class="activity-container">
 
-    <!-- Main Content -->
-    <div class="container main-container">
-        <h1 class="mb-4">Activity Club</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="activity1.jpg" class="card-img-top" alt="Activity 1">
-                    <div class="card-body text-center">
-                        <button class="btn btn-primary mb-2">+</button>
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-success">View</button>
-                            <button class="btn btn-success">Sign</button>
-                        </div>
-                    </div>
+            <div class="activity-card">
+                <span>+</span>
+            </div>
+            <div class="activity-card">
+                <div class="content">
+                    <p>Activity 1</p>
+                </div>
+                <img src="https://via.placeholder.com/300x180" alt="Activity 1">
+                <div class="content">
+                    <button class="btn btn-primary">View</button>
+                    <button class="btn btn-success">Sign</button>
+                </div>
+            </div>
+            <div class="activity-card">
+                <div class="content">
+                    <p>Activity 2</p>
+                </div>
+                <img src="https://via.placeholder.com/300x180" alt="Activity 2">
+                <div class="content">
+                    <button class="btn btn-primary">View</button>
+                    <button class="btn btn-success">Sign</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Add Activity Button -->
-    <button class="add-activity" data-bs-toggle="modal" data-bs-target="#addActivityModal">+</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
-    <!-- Add Activity Modal -->
-    <div class="modal fade" id="addActivityModal" tabindex="-1" aria-labelledby="addActivityModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addActivityModalLabel">Add New Activity</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="activityName" class="form-label">Activity Name</label>
-                            <input type="text" class="form-control" id="activityName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="activityImage" class="form-label">Upload Image</label>
-                            <input type="file" class="form-control" id="activityImage">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Activity</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+</html>
