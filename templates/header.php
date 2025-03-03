@@ -25,6 +25,9 @@
 
 <body>
 <header>
+<?php
+        if (isset($_SESSION['timestamp'])) {
+        ?>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Navbar</a>
@@ -70,21 +73,16 @@
           ?>
         </div>
       </form>
-      <button class="btn btn-danger logout-btn" onclick="window.location.href='/login'">Logout</button> 
+      <button class="btn btn-danger logout-btn">Logout</button>
+    </div>
+  </div>
 </nav>
+<?php
+        }
+    ?>
 </header>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-rbsA2VBKQGpUFnj46y1c9iUqD+OMwE8lV3qQWth/1lD6D9tGtJ+KjU5Wq5qF3hG5" crossorigin="anonymous"></script>
-<script>
-  // Show search results when available
-  document.addEventListener("DOMContentLoaded", function() {
-      let searchResults = document.querySelector(".search-results");
-      if (searchResults.innerHTML.trim() !== "") {
-          searchResults.style.display = "block";
-      }
-  });
-</script>
-
 </body>
+
 </html>

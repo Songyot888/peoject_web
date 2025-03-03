@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit; 
     }
     // แฮชรหัสผ่านก่อนบันทึก
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
     // เรียกใช้ฟังก์ชัน register()
     if (register($email, $username, $password,$gender)) {
         $_SESSION['alert'] = 'ลงทะเบียนสำเร็จ';
