@@ -4,24 +4,19 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
         $result = login($username, $password);
-        
+
         if ($result) {
           $student = getUserById($result['User_id']);
           $unix_timestamp = time();
           $_SESSION['timestamp'] = $unix_timestamp;
           $_SESSION['User_id'] = $result['User_id'];
-            randerView('main_get');
+          echo "User ID: " . $_SESSION['User_id'];
 
-
-        $result = login($username, $password);
-        if ($result) {
-            $_SESSION['alert'] = 'เข้าสู่ระบบสำเร็จ';
-           randerView('main_get');
+          header('Location: /main');
         } else {
             $_SESSION['alert'] = 'เข้าสู่ระบบไม่สำเร็จ';
-            randerView('login_get');
+            header('Location: /login');
         }
     }
-}
 
 ?>

@@ -123,7 +123,7 @@
             <option value="female">Female</option>
             <option value="other">Other</option>
         </select>
-        <button type="submit" onclick="return validatePassword()">Sign up</button>
+        <button type="submit" >Sign up</button>
     </form>
     <p class="signup-link">Already have an account? <a href="/login">Login</a></p>
 </div>

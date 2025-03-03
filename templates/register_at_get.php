@@ -1,4 +1,11 @@
-
+<?php
+if (isset($_GET['eid'])) {
+    $eid = $_GET['eid'];
+    $event = getEventById($eid);
+} else {
+    echo "ไม่ได้รับ eid";
+}
+?>
     <style>
     body {
         background: linear-gradient(135deg, #ff9a9e, #fad0c4);
@@ -124,41 +131,28 @@
     }
 </style>
 
-<?php
-// ตรวจสอบว่าได้ข้อมูลกิจกรรมจากฟังก์ชัน randerView หรือไม่
-if (isset($data['event'])) {
-    $event = $data['event'];  // ดึงข้อมูลกิจกรรมจากอาร์เรย์
-    // แสดงเฉพาะคำอธิบายของกิจกรรม
-    echo "<section>";
-    echo "<div class='regis-at-container'>";
-    echo "<h1>Activity</h1>";
-    echo "<div class='activity-container'>";
-    echo "<div class='activity-image'>";
-    echo "<img src='activity-placeholder.jpg' alt='Activity Image'>";
-    echo "</div>";
-    echo "<div class='activity-details'>";
-    echo "<p class='activity-description'>";
-    // แสดงคำอธิบายกิจกรรมจากฐานข้อมูล
-    echo nl2br(htmlspecialchars($event['description']));  // แสดงคำอธิบาย
-    echo "</p>";
-    echo "<div class='status-container'>";
-    echo "<p class='status-text'>Participants: 0/50</p>";
-    echo "<div class='status-dot green'></div>";
-    echo "</div>";
-
-    // ฟอร์มสำหรับลงทะเบียนเข้าร่วมกิจกรรม
-    echo "<form action='/register_event' method='POST'>";
-    echo "<input type='hidden' name='user_id' value='" . $_SESSION['User_id'] . "'>";  // ใช้ user_id จาก session
-    echo "<input type='hidden' name='event_id' value='" . $event['event_id'] . "'>";  // ใช้ event_id ที่ได้จากฐานข้อมูล
-    echo "<button type='submit' class='register-button'>Register</button>";
-    echo "</form>";
-
-    echo "<button class='back-button' onclick='window.history.back()'>Back</button>";
-    echo "</div>";
-    echo "</div>";
-    echo "</div>";
-    echo "</section>";
-} else {
-    echo "<p>ไม่พบข้อมูลกิจกรรม.</p>";
-}
-?>
+<section>
+    <div class="regis-at-container">
+        <h1>Activity</h1>
+        <div class="activity-container">
+            <div class="activity-image">
+                <img src="activity-placeholder.jpg" alt="Activity Image">
+            </div>
+            <div class="activity-details">
+                <p class="activity-description">
+                    Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like running races, long jumps, and even fun games that bring laughter to everyone.
+                </p>
+                <div class="status-container">
+                    <p class="status-text">Participants: 0/50</p>
+                    <div class="status-dot green"></div>
+                </div>
+                <form action="/register_at" method="post">
+                <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
+                <button class="register-button" >Register</button>
+                <button class="back-button" onclick="window.history.href='/main'">>Back</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section>

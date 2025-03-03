@@ -1,4 +1,11 @@
-
+<?php
+if (isset($_GET['eid'])) {
+    $eid = $_GET['eid'];
+    $event = getEventById($eid);
+} else {
+    echo "ไม่ได้รับ eid";
+}
+?>
     <style>
         * {
             margin: 0;
@@ -144,9 +151,7 @@
         <form method="POST" action="/approval_at"> <!-- ฟอร์มที่ใช้ POST -->
             <div class="user-list">
                 <?php 
-                $event_id = 25;
-
-                $users = join_event($event_id);  
+                $users = join_event($event['Event_id'] );  
                 $grouped_users = [];
 
                 // จัดกลุ่มผู้ใช้ตาม event_id

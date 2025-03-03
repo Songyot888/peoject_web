@@ -1,21 +1,17 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_id = $_POST['user_id'] ?? null;
-    $event_id = $_POST['event_id'] ?? null;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Get the event_id and User_id
+        $event_id = $_POST['eid'] ?? '';
+        $user_id = $_SESSION['User_id'] ?? ''; 
+    
 
-    // ตรวจสอบว่า user_id และ event_id ถูกส่งมาหรือไม่
-    if ($user_id && $event_id) {
-        // เรียกฟังก์ชัน insertUserEvent เพื่อแทรกข้อมูล
-        $result = insertUserEvent($user_id, $event_id);
+        if ($event_id && $user_id) {
 
-        // ส่งผลลัพธ์กลับไปให้ JavaScript
-        if ($result) {
-            echo "Registration successful";
+            registerUserForEvent($user_id, $event_id);
         } else {
-            echo "Failed to register";
+            echo "Event ID or User ID is missing.";
         }
-    } else {
-        echo "Invalid input";
     }
 }
 ?>

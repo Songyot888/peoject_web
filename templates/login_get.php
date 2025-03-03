@@ -1,20 +1,4 @@
-<?php
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $_SESSION['alert'] = "เข้าสู่ระบบสำเร็จ";
-        header("Location: login.php"); // เปลี่ยนที่นี่เป็นหน้า Login ของคุณ
-        exit();
-    }
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -176,14 +160,12 @@
     }
 
     </style>
-</head>
-<body>
 
 <section>
     <div class="container">
         <h1>Login</h1>
 
-        <form action="" method="POST">
+        <form action="/login" method="POST">
             <input type="text" name="username" placeholder="Username" required>
             <div class="password-wrapper">
                 <input type="password" name="password" id="password" placeholder="Password" required>
@@ -218,6 +200,3 @@
         }
     }
 </script>
-
-</body>
-</html>

@@ -107,7 +107,8 @@ $events = getAllEvents();
                         <span class="like-count"></span>
                         <div class="content">
                             <button class="btn btn-primary">View</button>
-                            <button class="btn btn-success">Sign</button>
+                            <button class="btn btn-success" onclick="window.location.href='/register_at?eid=<?php echo $event['Event_id']; ?>'">Sign</button>
+                          
                     </div>
                     </div>
                 </div>
