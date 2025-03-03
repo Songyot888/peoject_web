@@ -1,22 +1,26 @@
 <?php
-
-    echo "<section>";
-    if (isset($_SESSION['alert']) && !empty($_SESSION['alert'])) {
-        if ($_SESSION['alert'] === 'เข้าสู่ระบบสำเร็จ') {
-            echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
-        }else{
-            echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
-        } 
-        unset($_SESSION['alert']);
-    } 
-    echo "</section>";
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_SESSION['alert'] = "เข้าสู่ระบบสำเร็จ";
+        header("Location: login.php"); // เปลี่ยนที่นี่เป็นหน้า Login ของคุณ
+        exit();
+    }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
@@ -24,112 +28,196 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: #87CEFA; /* สีฟ้าสดใส */
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            background-size: cover;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 40px 50px;
             width: 100%;
-            max-width: 350px;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            animation: fadeIn 0.8s ease-in-out;
+            box-sizing: border-box;
         }
 
-        h1 {
-            margin-bottom: 1rem;
-            color: #333;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #2ecc71;
+            color: white;
         }
 
         input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .ps-con {
-            position: relative;
-        }
-
-        .ps-con i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .remember-me label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        button {
-            width: 100%;
-            background: #667eea;
-            color: white;
+            padding: 15px;
+            margin: 20px 0;
             border: none;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 18px;
             transition: 0.3s;
         }
 
-        button:hover {
-            background: #5a67d8;
+        input:focus {
+            background: rgba(255, 255, 255, 0.5);
+            outline: none;
+            transform: scale(1.05);
         }
 
-        .forgot-password,
-        .signup-link a {
-            display: block;
-            margin-top: 10px;
-            color: #667eea;
-            text-decoration: none;
-            font-size: 0.9rem;
+        button {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            width: 100%;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5);
+            font-size: 18px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #0094cc);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.7);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: rgba(255, 255, 255, 1);
         }
 
         .signup-link {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: #333;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .signup-link a {
+            color: #00c6ff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+            color: #0094cc;
+        }
+
+        .form-check {
+            font-size: 12px;
+            display: inline-flex; /* แสดงให้เป็นแถวเดียวกัน */
+            align-items: center;  /* จัดให้อยู่กลางแนวตั้ง */
+            margin: 0; /* ลบ margin ที่ไม่จำเป็น */
+        }
+
+        .form-check-input {
+            padding: 5px;
+            margin-right: 8px; /* เพิ่มระยะห่างระหว่าง checkbox กับ label */
+        }
+
+        .form-check a {
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .form-check a:hover {
+            text-decoration: underline;
+            color: #0094cc;
         }
         footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            color: white;
-        }
+        text-align: center;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.1);
+        margin-top: auto; /* ดัน Footer ไปอยู่ล่างสุด */
+        font-size: 12px;
+        color: #fff;
+    }
+
     </style>
+</head>
+<body>
 
 <section>
-        <div class="container">
-            <h1>Login</h1>
-            <form action="/login" method="POST">
-                <input type="text" name="username" placeholder="Username" required>
+    <div class="container">
+        <h1>Login</h1>
+
+        <form action="" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <div class="password-wrapper">
                 <input type="password" name="password" id="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
-            <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
-        </div>
+                <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
+            </div>
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <a href="#">Forgot password?</a>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
+    </div>
 </section>
 
-    <?php require_once 'footer.php' ?>
+<script>
+    function togglePassword() {
+        var passwordField = document.getElementById("password");
+        var toggleIcon = document.getElementById("toggleIcon");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        }
+    }
+</script>
+
+</body>
+</html>

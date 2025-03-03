@@ -1,3 +1,4 @@
+
 <?php
 function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id): bool
 {
