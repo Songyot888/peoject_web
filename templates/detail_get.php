@@ -156,7 +156,7 @@ if (isset($_GET['Event_id'])) {
             <div class="activity-details">
                 <p class="activity-description">
                     <?php echo htmlspecialchars($activityDetails); ?>
-                    <input type="hidden" name="" value="value="<?php echo $activityName; ?>">
+                    c
                 </p>
                 <div class="button-container">
                 <button class="view-button" onclick="window.location.href='/approval_at?eid=<?php echo $event['Event_id']; ?>'">View</button>

@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result) {
         $data['alert'] = "แก้ไขกิจกรรมสำเร็จ";
-        header('Location: /main');
+        header('Location: /profile');
     } else {
         $data['alert'] = "แก้ไขกิจกรรมไม่สำเร็จ";
         echo $data['alert'];

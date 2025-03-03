@@ -148,10 +148,16 @@ if (isset($_GET['eid'])) {
 <section>
     <div class="approval-container">
         <h1>Activity Approval</h1>
-        <form method="POST" action="/approval_at"> <!-- ฟอร์มที่ใช้ POST -->
+        <form method="POST" action="/approval_at"> 
             <div class="user-list">
                 <?php 
-                $users = join_event($event['Event_id'] );  
+                if (!isset($event)) {
+                    echo "<p>Error: Event information is missing or invalid.</p>";
+                    exit;
+                }
+
+                // เรียกใช้ฟังก์ชัน join_event เพื่อดึงข้อมูลผู้ใช้ที่เข้าร่วมกิจกรรม
+                $users = join_event($event['Event_id']); 
                 $grouped_users = [];
 
                 // จัดกลุ่มผู้ใช้ตาม event_id
@@ -161,29 +167,32 @@ if (isset($_GET['eid'])) {
 
                 // แสดงผู้ใช้ที่เข้าร่วมกิจกรรมเดียวกัน
                 foreach ($grouped_users as $event_id => $event_users):
+                    // กรองเฉพาะ event_id 125
+                    if ($event_id == 125):
                 ?>
                     <h2>Event ID: <?= $event_id ?></h2>
                     <?php foreach ($event_users as $user): ?>
                         <div class="user-item">
                             <div class="user-info">
                                 <div class="user-icon">U</div>
-                                <div class="user-name"><?= htmlspecialchars($user['Name']) ?></div> <!-- แสดงชื่อผู้ใช้ -->
+                                <div class="user-name"><?= htmlspecialchars($user['Name']) ?></div>
                             </div>
                             <div class="user-status">
                                 <button type="button" class="detail-button">Detail</button>
-                                <!-- ใช้ radio เพื่อให้เลือกสถานะ -->
                                 <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
                                 <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
                             </div>
                         </div>
                     <?php endforeach; ?>
-                <?php endforeach; ?>
+                <?php endif; endforeach; ?>
             </div>
 
             <div class="button-container">
-                <button type="submit" class="apply-button" name="action" value="apply">Apply</button> <!-- ปุ่ม Apply -->
+                <input type="hidden" name="eid" value="<?= $event_id; ?>"> <!-- ส่ง event_id ไปด้วย -->
+                <button type="submit" class="apply-button" name="action" value="apply">Apply</button> 
             </div>
         </form>
+
     </div>
 </section>
 

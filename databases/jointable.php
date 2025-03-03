@@ -7,7 +7,7 @@
     $query = "SELECT u.Name, ue.status, ue.User_id, ue.event_id 
               FROM User u
               INNER JOIN User_Event ue ON u.User_id = ue.User_id
-              WHERE ue.event_id = ?";
+              WHERE ue.Event_id = ?";
 
     // เตรียมคำสั่ง SQL
     $stmt = $conn->prepare($query);
@@ -26,17 +26,29 @@
 }
 
 
-// ฟังก์ชันสำหรับอัปเดตสถานะของผู้ใช้ในฐานข้อมูล
-function updateUserStatus($user_id, $status) {
+// randerView('approval_at',[$eid => 'Event_id']);
+function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
-    $sql = "UPDATE User_Event SET status = ? WHERE User_id = ?";
+
+    // ตรวจสอบว่า user_id นี้เข้าร่วมกิจกรรม 125 หรือไม่
+    $sql = "SELECT * FROM User_Event WHERE User_id = ? AND Event_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("si", $status, $user_id); 
-    if ($stmt->execute()) {
-        header('Location: /approval_at');
-    } else {
-        header('Location: /approval_at');
-        exit;
+    $stmt->bind_param("ii", $user_id, $event_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {  // ถ้าผู้ใช้เข้าร่วมกิจกรรม 125
+        // อัพเดทสถานะของผู้ใช้ในกิจกรรม 125
+        $update_sql = "UPDATE User_Event SET status = ? WHERE User_id = ? AND Event_id = ?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("sii", $status, $user_id, $event_id);
+        if ($update_stmt->execute()) {
+            header('Location: /approval_at?eid='.$event_id);
+        } else {
+            header('Location: /approval_at?eid='.$event_id);
+            exit;
+        }
+        $update_stmt->close();
     }
 
     // ปิดการเชื่อมต่อฐานข้อมูล
