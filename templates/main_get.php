@@ -1,4 +1,7 @@
 <?php require_once 'header.php' ?>
+<?php
+$events = getAllEvents();
+?>
 <style>
     body {
         min-height: 100vh;
@@ -78,7 +81,47 @@
     }
 </style>
 
+
 <h2 class="text1-dark" style="margin-top: 20px; margin-left: 30px;">Activity Club</h2>
+
+<div class="container">
+    <div class="container d-flex justify-content-start">
+        <div class="large-activity-card">
+            <h3>Main Activity</h3>
+        </div>
+    </div>
+
+    <div class="activity-container">
+        <div class="activity-card" onclick="window.location.href='/create'">
+            <div class="content">
+                <h4>Create New Activity</h4>
+            </div>
+        </div>
+
+        <?php if (!empty($events)): ?>
+            <?php foreach ($events as $event): ?>
+                <!-- สร้าง container ใหม่สำหรับกิจกรรมแต่ละรายการ -->
+                <div class="activity-card">
+                    <div class="content">
+                        <h3><?php echo htmlspecialchars($event['Eventname']); ?></h3>
+                        <span class="like-count"></span>
+                        <div class="content">
+                            <button class="btn btn-primary">View</button>
+                            <button class="btn btn-success">Sign</button>
+                    </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>ไม่มีข้อมูลกิจกรรม</p>
+        <?php endif; ?>
+        
+    </div>
+</div>
+
+
+<!-- <h2 class="text1-dark" style="margin-top: 20px; margin-left: 30px;">Activity Club</h2>
+
 <div class="container">
     <div class="container d-flex justify-content-start">
         <div class="large-activity-card">
@@ -112,6 +155,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
+
 
 <?php require_once 'footer.php' ?>

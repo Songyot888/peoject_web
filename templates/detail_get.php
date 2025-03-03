@@ -1,4 +1,23 @@
 
+<?php
+if (isset($_GET['Event_id'])) {
+    $eid = $_GET['Event_id'];
+    $event = getEventById($eid);
+
+    if ($event) {
+        $activityName = $event['Eventname'];
+        $activityDetails = $event['description'];
+        $participants = $event['Max_participants'];
+        $sdate = $event['start_date'];
+        $ddate = $event['end_date'];
+
+    } else {
+        echo "ไม่พบกิจกรรม";
+    }
+} else {
+    echo "ไม่ได้รับ eid";
+}
+?>
 <style>
     body {
         margin: 0;
@@ -127,23 +146,24 @@
     }
 </style>
 
-    <section>
-        <div class="editview-container">
-            <h1>View Activity</h1>
-            <div class="form-container">
-                <div class="activity-image">
-                    <img src="placeholder-image.jpg" alt="Activity Image">
-                </div>
-                <div class="activity-details">
-                    <p class="activity-description">
-                        Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like training races, long jumps, and even fun games that bring laughter to everyone.
-                    </p>
-                    <div class="button-container">
-                        <button class="view-button">View</button>
-                        <button class="edit-button">Edit</button>
-                        <button class="delete-button">Delete</button>
-                    </div>
+<section>
+    <div class="editview-container">
+        <h1>View Activity</h1>
+        <div class="form-container">
+            <div class="activity-image">
+                <img src="placeholder-image.jpg" alt="Activity Image">
+            </div>
+            <div class="activity-details">
+                <p class="activity-description">
+                    <?php echo htmlspecialchars($activityDetails); ?>
+                    <input type="hidden" name="" value="value="<?php echo $activityName; ?>">
+                </p>
+                <div class="button-container">
+                <button class="view-button" onclick="window.location.href='/approval_at?eid=<?php echo $event['Event_id']; ?>'">View</button>
+                <button class="edit-button" onclick="window.location.href='/edit?eid=<?php echo $event['Event_id']; ?>'">Edit</button>
+                <button class="delete-button" onclick="window.location.href='/delete_activity.php?id=<?php echo $event['Event_id']; ?>'">Delete</button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>

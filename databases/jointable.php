@@ -43,3 +43,12 @@ function updateUserStatus($user_id, $status) {
     $stmt->close();
     $conn->close();
 }
+
+
+function insertUserEvent($user_id, $event_id) {
+    $conn = getConnection();
+    $sql = "INSERT INTO User_Event (user_id, event_id, status) VALUES (?, ?, 'pending')";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $user_id, $event_id);
+    return $stmt->execute();
+}

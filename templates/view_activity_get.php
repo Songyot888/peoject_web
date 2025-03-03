@@ -1,11 +1,30 @@
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Activity</title>
+<?php
+    if (isset($_GET['id'])) {
+        $event_id = $_GET['id'];
+    
+        // Fetch event details from the database
+        $conn = getConnection();
+        $sql = "SELECT * FROM Event WHERE Event_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $event_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result && $result->num_rows > 0) {
+            // Fetch the event data
+            $event = $result->fetch_assoc();
+        } else {
+            echo "Event not found!";
+            exit;
+        }
+    
+        $stmt->close();
+        $conn->close();
+    } else {
+        echo "No event ID provided!";
+        exit;
+    }
+?>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,10 +65,8 @@
             background-color: #5a6268;
         }
     </style>
-</head>
-<body>
 
-<div class="container">
+    <div class="container">
         <h1><?php echo htmlspecialchars($event['Eventname']); ?></h1>
         <p><strong>Participants:</strong> <?php echo htmlspecialchars($event['Max_participants']); ?></p>
         <p><strong>Start Date:</strong> <?php echo htmlspecialchars($event['start_date']); ?></p>
@@ -59,5 +76,3 @@
         <p><strong>Status:</strong> <?php echo htmlspecialchars($event['status_event']); ?></p>
     </div>
 
-</body>
-</html>

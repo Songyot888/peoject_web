@@ -1,4 +1,6 @@
-
+<?php
+$events = getAllEvents();
+?>
     <style>
         body {
             background: #87CEFA; /* สีฟ้าสดใส */
@@ -77,6 +79,62 @@
         .profile-name button:hover {
             background-color: #0056b3;
         }
+
+        .activity-section {
+    margin: 20px;
+}
+
+.activity-container {
+    display: flex;               /* ใช้ Flexbox เพื่อจัดเรียงบล็อกกิจกรรม */
+    flex-wrap: wrap;             /* ให้แต่ละบล็อกไหลไปแถวถัดไปเมื่อพื้นที่ไม่พอ */
+    gap: 20px;                   /* ระยะห่างระหว่างบล็อก */
+}
+
+.activity-card {
+    width: 250px;                /* ความกว้างของแต่ละบล็อก */
+    padding: 15px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;      /* ให้เนื้อหาภายในบล็อกจัดเรียงในแนวตั้ง */
+}
+
+.activity-card-img {
+    height: 150px;               /* ความสูงของภาพ */
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+}
+
+.activity-card-content {
+    padding: 10px;
+}
+
+.activity-card-content h4 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.activity-card-content p {
+    color: #555;
+    font-size: 0.9em;
+}
+
+.detail-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.detail-button:hover {
+    background-color: #45a049;
+}
     </style>
 <section>
 <div class="container">
@@ -108,14 +166,30 @@
         </div>
 
         <div class="activity-section">
-            <div class="activity-left">
-                <h3>👥 Activity</h3>
-                <p>สถานะปัจจุบัน: <span style="color: green;">Active</span></p>
+        <h3>กิจกรรมที่สร้าง</h3>
+        <?php if (!empty($events)): ?>
+            <div class="activity-container">
+                <?php foreach ($events as $event): ?>
+                    <div class="activity-card">
+                        <div class="activity-card-img" style="background-image: url('path-to-image.jpg');"></div>
+                        <div class="activity-card-content">
+                            <h4><?php echo htmlspecialchars($event['Eventname']); ?></h4>
+                            <p>"<?php echo htmlspecialchars($event['description']); ?>"</p>
+                            <button class="detail-button" onclick="window.location.href='/detail?Event_id=<?php echo $event['Event_id']; ?>';">Detail</button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <div class="activity-right">
-                <h3>⚡ Actions</h3>
-            </div>
-        </div>
+        <?php else: ?>
+            <p>ไม่มีข้อมูลกิจกรรม</p>
+        <?php endif; ?>
     </div>
+   
+
+
+    <div class="activity-right">
+        <h3>⚡ Actions</h3>
+    </div>
+</div>
 </section>
     

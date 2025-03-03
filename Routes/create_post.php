@@ -12,13 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $User_id = $_POST['User_id'] ?? '';
 
     $result = insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id);
-    
 
-    
     if ($result) {
-
-        header("Location: /view_activity");
-        exit;
+        header('Location: /main');
     } else {
         echo "Insert event failed. Check error log for details.";
     }

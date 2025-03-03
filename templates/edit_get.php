@@ -1,4 +1,22 @@
+<?php
+if (isset($_GET['eid'])) {
+    $eid = $_GET['eid'];
+    $event = getEventById($eid);
 
+    if ($event) {
+        $activityName = $event['Eventname'];
+        $activityDetails = $event['description'];
+        $participants = $event['Max_participants'];
+        $sdate = $event['start_date'];
+        $edate = $event['end_date'];
+
+    } else {
+        echo "ไม่พบกิจกรรม";
+    }
+} else {
+    echo "ไม่ได้รับ eid";
+}
+?>
     <style>
         * {
             margin: 0;
@@ -127,25 +145,26 @@
         </div>
 
         <!-- Form Section -->
-        <form class="create-form" action="update_activity.php" method="POST" enctype="multipart/form-data">
+        <form class="create-form" action="/edit" method="POST" enctype="multipart/form-data">
             <label for="activity-name">Activity Name:</label>
-            <input type="text" id="activity-name" name="activity-name" value="Sample Activity" required>
+            <input type="text" id="activity-name" name="activity-name" value="<?php echo $activityName; ?>"required>
 
             <label for="participants">Participants:</label>
-            <input type="number" id="participants" name="participants" value="50" required>
+            <input type="number" id="participants" name="participants" value="<?php echo $participants; ?>" required>
 
             <label for="start-date">Start Date:</label>
-            <input type="date" id="start-date" name="start-date" value="2025-05-01" required>
+            <input type="date" id="start-date" name="start-date" value="<?php echo $sdate; ?>" required>
 
             <label for="end-date">End Date:</label>
-            <input type="date" id="end-date" name="end-date" value="2025-05-05" required>
+            <input type="date" id="end-date" name="end-date" value="<?php echo $edate; ?>" required>
 
             <label for="description">Description:</label>
-            <textarea id="description" name="description" required>Activity description here...</textarea>
+            <textarea id="description" name="description" value="<?php echo $activityDetails; ?>" required>Activity description here...</textarea>
 
             <div class="button-container">
                 <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
-                <button type="submit" class="update-button">Update</button>
+                <input type="hidden"  name="eid" value="<?php echo $event['Event_id']; ?>">
+                <button type="submit" class="update-button" >Update</button>
             </div>
         </form>
     </div>
