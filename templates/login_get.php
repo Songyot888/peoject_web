@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<?php
+
+    echo "<section>";
+    if (isset($_SESSION['alert']) && !empty($_SESSION['alert'])) {
+        if ($_SESSION['alert'] === 'เข้าสู่ระบบสำเร็จ') {
+            echo "<div class='alert alert-success'>" . $_SESSION['alert'] . "</div>";
+        } 
+        unset($_SESSION['alert']);
+    } 
+    echo "</section>";
+?>
     <style>
         * {
             margin: 0;
@@ -158,54 +162,41 @@
 <body>
 
 <section>
-    <div class="container">
-        <?php 
-            if (isset($_SESSION['alert']) && !empty($_SESSION['alert'])) {
-                echo "<div class='alert alert-success'>{$_SESSION['alert']}</div>";
-                unset($_SESSION['alert']);
+        <div class="container">
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <div class="ps-con">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                    <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
+                </div>
+                
+                <div class="remember-me">
+                    <label>
+                        <input type="checkbox" name="remember"> Remember me
+                    </label>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
+        </div>
+    </section>
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById("password");
+            var toggleIcon = document.getElementById("toggleIcon");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye"); // เปลี่ยนเป็นเปิดตา
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash"); // เปลี่ยนเป็นปิดตา
             }
-        ?>
-
-        <h1>Login</h1>
-        <form action="/login" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-
-            <div class="password-wrapper">
-                <input type="password" name="password" id="password" placeholder="Password" required>
-                <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
-            </div>
-            
-            <div class="form-check d-flex align-items-center w-100">
-                <label class="form-check-label me-2" for="rememberMe">
-                    Remember me
-                </label>
-            <input class="form-check-input" type="checkbox" id="rememberMe">
-            </div>
-
-
-            <button type="submit">Login</button>
-        </form>
-        
-        <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
-    </div>
-</section>
-
-<script>
-    function togglePassword() {
-        var passwordField = document.getElementById("password");
-        var toggleIcon = document.getElementById("toggleIcon");
-
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("fa-eye-slash");
-            toggleIcon.classList.add("fa-eye");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("fa-eye");
-            toggleIcon.classList.add("fa-eye-slash");
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
