@@ -54,18 +54,37 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <!-- Search Form -->
+      <form class="d-flex position-relative" role="search" method="GET" action="/search">
+        <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" required>
         <button class="btn btn-outline-success" type="submit">Search</button>
+        
+        <!-- Search Results (Show if exists) -->
+        <div class="search-results p-2">
+          <?php
+          if (isset($data['result'])) {
+              while ($row = $data['result']->fetch_object()) {
+                  echo "<div>" . htmlspecialchars($row->Eventname) . "</div>";
+              }
+          }
+          ?>
+        </div>
       </form>
-      <button class="btn btn-danger logout-btn">Logout</button>
-    </div>
-  </div>
+      <button class="btn btn-danger logout-btn" onclick="window.location.href='/login'">Logout</button> 
 </nav>
 </header>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-rbsA2VBKQGpUFnj46y1c9iUqD+OMwE8lV3qQWth/1lD6D9tGtJ+KjU5Wq5qF3hG5" crossorigin="anonymous"></script>
-</body>
+<script>
+  // Show search results when available
+  document.addEventListener("DOMContentLoaded", function() {
+      let searchResults = document.querySelector(".search-results");
+      if (searchResults.innerHTML.trim() !== "") {
+          searchResults.style.display = "block";
+      }
+  });
+</script>
 
+</body>
 </html>
