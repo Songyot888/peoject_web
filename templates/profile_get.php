@@ -1,4 +1,12 @@
 <?php
+
+if (!isset($_SESSION['User_id'])) {
+    header('Location: /login');
+    exit;
+}
+
+$user_id = $_SESSION['User_id'];
+$user = getUserById($user_id);
 $events = getAllEvents();
 ?>
 
@@ -191,26 +199,26 @@ $events = getAllEvents();
         <div class="profile">
             <img src="profile.png" alt="">
             <div class="profile-name">
-                <h2>Name Admin</h2>
+                <h2><?php echo htmlspecialchars($user['Name']); ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">
                 <div class="info-section">
                     <h3>📧 Email</h3>
-                    <p>admin@example.com</p>
+                    <p><?php echo htmlspecialchars($user['Email']); ?></p>
                 </div>
                 <div class="info-section">
                     <h3>📞 Phone</h3>
-                    <p>012-345-6789</p>
+                    <p>-</p>
                 </div>
                 <div class="info-section">
                     <h3>🏠 Address</h3>
-                    <p>123 ถนนหลัก เมืองไทย</p>
+                    <p>-</p>
                 </div>
                 <div class="info-section">
                     <h3>🎂 Birthday</h3>
-                    <p>1 มกราคม 1990</p>
+                    <p>-</p>
                 </div>
             </div>
         </div>
@@ -241,5 +249,8 @@ $events = getAllEvents();
                 <p>ไม่มีข้อมูลกิจกรรม</p>
             <?php endif; ?>
         </div>
+    </div>
+    <div class="activity-right">
+        <h3>⚡ Actions</h3>
     </div>
 </section>
