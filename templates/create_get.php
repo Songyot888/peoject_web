@@ -117,6 +117,10 @@
     </style>
 
     <div class="create-container">
+        
+        <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
+        <h1>Create Activity</h1>
+
         <!-- Image Upload Section -->
         <div class="activity-image" onclick="document.getElementById('file-upload').click();">
             <img id="preview-image" src="" alt="Click to upload">
@@ -124,31 +128,35 @@
             <input type="file" id="file-upload" name="image" accept="image/*" onchange="previewFile()">
         </div>
 
-        <!-- Create Activity Form -->
-        <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
-            <h1>Create Activity</h1>
-            <input type="text" name="activity-name" placeholder="Enter activity name" required>
-            <input type="number" name="participants" placeholder="Number of participants" required>
-            <input type="date" name="start-date" required>
-            <input type="date" name="end-date" required>
-            <textarea name="description" placeholder="Describe the activity..." required></textarea>
-            <input type="hidden" name="status" value="Open" required>
-            <input type="hidden" name="User_id" value="<?=$User_id?>">
 
-            <div class="button-container">
-                <!-- Cancel Button to Go Back -->
-                <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
-                <!-- Submit Button -->
-                <button type="submit" class="create-button">Create</button>
-            </div>
-        </form>
+        <input type="text" name="activity-name" placeholder="Enter activity name" required>
+        <input type="number" name="participants" placeholder="Number of participants" required>
+        <input type="date" name="start-date" required>
+        <input type="date" name="end-date" required>
+        <textarea name="description" placeholder="Describe the activity..." required></textarea>
+        <input type="hidden" name="status" value="Open" required>
+        <input type="hidden" name="User_id" value="<?=$User_id?>">
+
+      
+        <div class="button-container">
+            <!-- Cancel Button to Go Back -->
+            <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
+            <!-- Submit Button -->
+            <button type="submit" class="create-button">Create</button>
+        </div>
+    </form>
     </div>
+
+    
+
 
     <script>
         function previewFile() {
             const file = document.getElementById("file-upload").files[0];
             const preview = document.getElementById("preview-image");
             const uploadText = document.getElementById("upload-text");
+
+            console.log("File selected:", file); // เพิ่มการตรวจสอบว่าไฟล์ถูกเลือกหรือไม่
 
             if (file) {
                 const reader = new FileReader();
@@ -158,10 +166,9 @@
                     uploadText.style.display = "none";
                 }
                 reader.readAsDataURL(file);
+            } else {
+                console.log("No file selected.");
             }
         }
 
-        function goBack() {
-            window.history.back();
-        }
     </script>

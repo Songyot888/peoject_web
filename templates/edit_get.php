@@ -7,8 +7,6 @@ if (isset($_GET['eid'])) {
         $activityName = $event['Eventname'];
         $activityDetails = $event['description'];
         $participants = $event['Max_participants'];
-        $sdate = $event['start_date'];
-        $edate = $event['end_date'];
 
     } else {
         echo "ไม่พบกิจกรรม";
@@ -153,10 +151,10 @@ if (isset($_GET['eid'])) {
             <input type="number" id="participants" name="participants" value="<?php echo $participants; ?>" required>
 
             <label for="start-date">Start Date:</label>
-            <input type="date" id="start-date" name="start-date" value="<?php echo $sdate; ?>" required>
+            <input type="date" id="start-date" name="start-date" value="<?php echo $event['start_date']; ?>" required>
 
             <label for="end-date">End Date:</label>
-            <input type="date" id="end-date" name="end-date" value="<?php echo $edate; ?>" required>
+            <input type="date" id="end-date" name="end-date" value="<?php echo $event['end_date']; ?>" required>
 
             <label for="description">Description:</label>
             <textarea id="description" name="description" value="<?php echo $activityDetails; ?>" required>Activity description here...</textarea>

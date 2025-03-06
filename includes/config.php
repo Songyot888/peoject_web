@@ -13,7 +13,7 @@ function getConnection():mysqli
     return $conn;
 }
 
-require_once DATABASE_DIR . '/user.php';
-require_once DATABASE_DIR . '/event.php';
-require_once DATABASE_DIR . '/event_img.php';
+require_once DATABASE_DIR . '/User.php';
+require_once DATABASE_DIR . '/Event.php';
+require_once DATABASE_DIR . '/Event_Img.php';
 require_once DATABASE_DIR . '/jointable.php';

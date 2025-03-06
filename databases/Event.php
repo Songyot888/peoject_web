@@ -1,15 +1,32 @@
 
 <?php
-function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id): bool
-{
+function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $image) {
+    // เชื่อมต่อฐานข้อมูล
     $conn = getConnection();
+    $conn->query("ALTER TABLE User AUTO_INCREMENT = 1");
     if ($conn->connect_error) {
         error_log("Connection failed: " . $conn->connect_error);
         return false;  // Connection failed, return false
     }
 
-    $sql = 'INSERT INTO Event (Eventname, Max_participants, start_date, end_date, description, status_event, User_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)';
+    // ตรวจสอบการอัปโหลดไฟล์
+    if (isset($image)) {
+        $uploadDir = 'uploads/';
+        $uploadFile = $uploadDir . basename($image['name']);
+        if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
+            $imagePath = $uploadFile; // เก็บเส้นทางของไฟล์
+        } else {
+            error_log("Image upload failed");
+            return false;
+        }
+    } else {
+        $imagePath = null;  // ถ้าไม่มีการอัปโหลดภาพ
+    }
+
+    // SQL คำสั่งบันทึกข้อมูลกิจกรรม
+    $sql = 'INSERT INTO Event (Eventname, Max_participants, start_date, end_date, description, status_event, User_id, image_url) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         error_log("Prepare failed: " . $conn->error);
@@ -17,18 +34,15 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
         return false;
     }
 
-    $stmt->bind_param('sissssi', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id);
+    // Binding ข้อมูลกิจกรรม
+    $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $imagePath);
 
+    // Execute การบันทึกข้อมูล
     if ($stmt->execute()) {
-        $event_id = $conn->insert_id;
-
         $stmt->close();
         $conn->close();
-
-
         return true;
     } else {
-
         error_log("Execute failed: " . $stmt->error);
         $stmt->close();
         $conn->close();
