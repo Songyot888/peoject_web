@@ -143,7 +143,7 @@ $events = getAllEvents();
             <div class="profile-name">
                 <h2>Name Admin</h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
-                <button>แก้ไขโปรไฟล์</button>
+                <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">
                 <div class="info-section">
