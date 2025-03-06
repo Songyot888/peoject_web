@@ -29,10 +29,8 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
         return false;
     }
 
-    // Binding ข้อมูลกิจกรรม
     $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $imagePath);
 
-    // Execute การบันทึกข้อมูล
     if ($stmt->execute()) {
         $stmt->close();
         $conn->close();
@@ -41,7 +39,7 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
         error_log("Execute failed: " . $stmt->error);
         $stmt->close();
         $conn->close();
-        return false;  // Execution failed, return false
+        return false; 
     }
 }
 

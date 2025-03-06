@@ -1,6 +1,4 @@
 <?php
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $activity_name = $_POST['activity-name'] ?? '';
@@ -11,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'] ?? 'open';
     $User_id = $_POST['User_id'] ?? '';
     
-    // รับข้อมูลไฟล์ภาพ
+   
     $image = $_FILES['image'] ?? null;
 
     // เรียกใช้ฟังก์ชันเพื่อบันทึกกิจกรรม
