@@ -4,17 +4,12 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
     // เชื่อมต่อฐานข้อมูล
     $conn = getConnection();
     $conn->query("ALTER TABLE User AUTO_INCREMENT = 1");
-    if ($conn->connect_error) {
-        error_log("Connection failed: " . $conn->connect_error);
-        return false;  // Connection failed, return false
-    }
 
-    // ตรวจสอบการอัปโหลดไฟล์
     if (isset($image)) {
         $uploadDir = 'uploads/';
         $uploadFile = $uploadDir . basename($image['name']);
         if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
-            $imagePath = $uploadFile; // เก็บเส้นทางของไฟล์
+            $imagePath = $uploadFile; 
         } else {
             error_log("Image upload failed");
             return false;
