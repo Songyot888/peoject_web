@@ -7,6 +7,7 @@ const INCLUDES_DIR = __DIR__ . '/../includes';
 const ROUTE_DIR = __DIR__ . '/../routes';
 const TEMPLATES_DIR = __DIR__ . '/../templates';
 const DATABASE_DIR = __DIR__ . '/../databases';
+const CSS_DIR = __DIR__ . '/../css';
 
 session_start();
 
