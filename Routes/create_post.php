@@ -10,15 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description = $_POST['description'] ?? '';
     $status = $_POST['status'] ?? 'open';
     $User_id = $_POST['User_id'] ?? '';
+    
+    // รับข้อมูลไฟล์ภาพ
+    $image = $_FILES['image'] ?? null;
 
-    $result = insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id);
+    // เรียกใช้ฟังก์ชันเพื่อบันทึกกิจกรรม
+    $result = insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $image);
 
     if ($result) {
         header('Location: /main');
     } else {
         echo "Insert event failed. Check error log for details.";
     }
-} 
+}
 
 
 

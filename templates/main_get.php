@@ -112,6 +112,10 @@ body {
         <?php if (!empty($events)): ?>
             <?php foreach ($events as $event): ?>
                 <div class="activity-card">
+                    <?php if (!empty($event['image_url'])): ?>
+                            <img src="<?php echo $event['image_url']; ?>" alt="Event Image" class="event-image">
+                    <?php endif; ?>
+
                     <div class="content">
                         <h3><?php echo htmlspecialchars($event['Eventname']); ?></h3>
                         <span class="like-count"></span>

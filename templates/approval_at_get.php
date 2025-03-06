@@ -192,7 +192,6 @@ if (isset($_GET['eid'])) {
                 <button type="submit" class="apply-button" name="action" value="apply">Apply</button> 
             </div>
         </form>
-
     </div>
 </section>
 
