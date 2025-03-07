@@ -76,3 +76,42 @@ function getUserById(int $id): array|bool
     }
     return $result->fetch_assoc();
 }
+
+function updateUser($username, $email, $phone, $address, $image, $uid): bool {
+    $conn = getConnection();
+
+    if (isset($image)) {
+        $uploadDir = 'uploads/profile/'; // กำหนดโฟลเดอร์สำหรับเก็บไฟล์ภาพ
+        $uploadFile = $uploadDir . basename($image['name']); // สร้างเส้นทางของไฟล์ที่จะอัปโหลด
+        if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
+            $imagePath = $uploadFile; 
+        } else {
+            error_log("Image upload failed");
+            return false;
+        }
+    } else {
+        $imagePath = null; 
+    }
+    // SQL คำสั่งอัปเดตข้อมูล
+    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?, img_url=? WHERE User_id=?";
+    error_log("SQL Query: " . $sql); // ตรวจสอบ SQL Query
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssi", $username, $email, $phone, $address, $imagePath, $uid);
+
+    // ถ้า execute สำเร็จ
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            error_log("Data updated successfully");
+            return true;  // ถ้าอัปเดตข้อมูลสำเร็จ
+        } else {
+            error_log("No data updated, affected rows: " . $stmt->affected_rows);
+            return false; // ถ้าไม่มีข้อมูลอัปเดต
+        }
+    } else {
+        error_log("Execute failed: " . $stmt->error);
+        return false;  // ถ้า execute ล้มเหลว
+    }
+    
+}
+

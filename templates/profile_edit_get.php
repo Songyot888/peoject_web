@@ -8,11 +8,11 @@ if (!isset($_SESSION['User_id'])) {
 $User_id = $_SESSION['User_id'];
 $user = getUserById($User_id);
 
-
 ?>
 
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,30 +112,33 @@ $user = getUserById($User_id);
         }
     </style>
 
-<section>
-    <div class="profile-container">
-        <div class="profile-image" onclick="document.getElementById('profile-pic').click()">
-            <img id="profile-img" src="profile-placeholder.jpg" alt="">
-            <input type="file" id="profile-pic" accept="image/*" onchange="previewImage(event)">
-        </div>
-        <form class="profile-info" action="/profile" method="post" enctype="multipart/form-data">
-            <input type="text" name="name" value="<?php echo htmlspecialchars($user['Name']); ?>" placeholder="Full Name">
-            <input type="email" name="email" value="<?php echo htmlspecialchars($user['Email']); ?>" placeholder="Email">
-            <input type="text" name="phone" placeholder="Phone">
-            <input type="text" name="address" placeholder="Address">
-            <input type="date" name="birthday">
-            <button type="submit" class="edit-profile-button">Save Changes</button>
-        </form>
-    </div>
-</section>
+    <section>
+        <div class="profile-container">
+            <form class="profile-info" action="/profile_edit" method="post" enctype="multipart/form-data">
+                <div class="profile-image">
+                    <img id="profile-img" src="profile-placeholder.jpg" alt="">
+                    <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
+                </div>
+                <input type="hidden" name="uid" value="<?php echo $user['User_id']; ?>">
+                <input type="text" name="username" value="<?php echo $user['Name']; ?>" placeholder="Full Name">
+                <input type="email" name="email" value="<?php echo $user['Email']; ?>" placeholder="Email">
+                <input type="text" name="phone" value="<?php echo !empty($user['phone']) ? $user['phone'] : ''; ?>" placeholder="Phone">
+                <input type="text" name="address" value="<?php echo !empty($user['Addss']) ? $user['Addss'] : ''; ?>" placeholder="Address">
 
-<script>
-    function previewImage(event) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const output = document.getElementById('profile-img');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
+                <input type="date" name="birthday" value="<?php echo !empty($user['birthday']) ? date('Y-m-d', strtotime($user['birthday'])) : ''; ?>">
+                <button type="submit" class="edit-profile-button">Save Changes</button>
+            </form>
+
+        </div>
+    </section>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('profile-img');
+                output.src = reader.result; // เปลี่ยน src ของ img
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>

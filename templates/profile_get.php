@@ -210,7 +210,9 @@ $events = getAllEvents();
                 </div>
                 <div class="info-section">
                     <h3>📞 Phone</h3>
-                    <p>-</p>
+                    <p>
+                       <?php echo !empty($user['phone']) ? $user['phone'] : 'No phone number available'; ?>
+                    </p>
                 </div>
                 <div class="info-section">
                     <h3>🏠 Address</h3>
