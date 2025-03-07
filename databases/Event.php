@@ -82,7 +82,6 @@ function getSearch(): mysqli_result|bool {
 function getUserEventsById($user_id) {
     $conn = getConnection();
 
-    // เขียน SQL Query เพื่อดึงกิจกรรมที่ผู้ใช้สร้าง
     $sql = "SELECT * FROM Event WHERE User_id = ?";  // เปลี่ยนเป็นชื่อของตารางและฟิลด์ตามที่คุณใช้
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
