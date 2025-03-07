@@ -83,3 +83,31 @@ function updateEvent($eid, $Eventname, $Max_participants, $start_date, $end_date
         return false;
     }
 }
+
+function getSearch(): mysqli_result|bool {
+    $conn = getConnection();
+    $sql = 'select * from Event';
+    $result = $conn->query($sql);
+    return $result;
+}
+
+function getUserEventsById($user_id) {
+    $conn = getConnection();
+
+    // เขียน SQL Query เพื่อดึงกิจกรรมที่ผู้ใช้สร้าง
+    $sql = "SELECT * FROM Event WHERE User_id = ?";  // เปลี่ยนเป็นชื่อของตารางและฟิลด์ตามที่คุณใช้
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $events = [];
+
+    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
+    while ($event = $result->fetch_assoc()) {
+        $events[] = $event;
+    }
+
+    return $events;
+}
+

@@ -112,33 +112,37 @@ $user = getUserById($User_id);
         }
     </style>
 
-    <section>
-        <div class="profile-container">
-            <form class="profile-info" action="/profile_edit" method="post" enctype="multipart/form-data">
-                <div class="profile-image">
-                    <img id="profile-img" src="profile-placeholder.jpg" alt="">
-                    <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
-                </div>
-                <input type="hidden" name="uid" value="<?php echo $user['User_id']; ?>">
-                <input type="text" name="username" value="<?php echo $user['Name']; ?>" placeholder="Full Name">
-                <input type="email" name="email" value="<?php echo $user['Email']; ?>" placeholder="Email">
-                <input type="text" name="phone" value="<?php echo !empty($user['phone']) ? $user['phone'] : ''; ?>" placeholder="Phone">
-                <input type="text" name="address" value="<?php echo !empty($user['Addss']) ? $user['Addss'] : ''; ?>" placeholder="Address">
+<section>
+    <div class="profile-container">
+        <form class="profile-info" action="/profile_edit" method="POST" enctype="multipart/form-data">
+            <div class="profile-image">
+                <img id="profile-img" src="profile-placeholder.jpg" alt="">
+                <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <input type="hidden" name="uid" value="<?php echo $user['User_id']; ?>">
+            <input type="text" name="username" value="<?php echo $user['Name']; ?>" placeholder="Full Name">
+            <input type="email" name="email" value="<?php echo $user['Email']; ?>" placeholder="Email">
+            <input type="text" name="phone" value="<?php echo $user['phone'] ?? ''; ?>" placeholder="Phone">
+            <input type="text" name="address" value="<?php echo $user['Addss'] ?? ''; ?>" placeholder="Address">
+            <input type="date" name="birthday" value="<?php echo $user['birthday']; ?>" placeholder="Birthday">
+            <button type="submit" class="edit-profile-button">Save Changes</button>
+        </form>
+        <?php echo $user['User_id']; ?>
+        <?php echo $user['Name']; ?>
+        <?php echo $user['Email']; ?>
+        <?php echo $user['phone']; ?>
+        <?php echo $user['Addss']; ?>
+        <?php echo $user['birthday']; ?>
+    </div>
+</section>
 
-                <input type="date" name="birthday" value="<?php echo !empty($user['birthday']) ? date('Y-m-d', strtotime($user['birthday'])) : ''; ?>">
-                <button type="submit" class="edit-profile-button">Save Changes</button>
-            </form>
-
-        </div>
-    </section>
-
-    <script>
-        function previewImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('profile-img');
-                output.src = reader.result; // เปลี่ยน src ของ img
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('profile-img');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>

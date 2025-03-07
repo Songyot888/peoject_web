@@ -151,24 +151,23 @@ if (isset($_GET['eid'])) {
         <form method="POST" action="/approval_at"> 
             <div class="user-list">
                 <?php 
-                if (!isset($event)) {
+                if (!$event) {
                     echo "<p>Error: Event information is missing or invalid.</p>";
                     exit;
                 }
 
-                // เรียกใช้ฟังก์ชัน join_event เพื่อดึงข้อมูลผู้ใช้ที่เข้าร่วมกิจกรรม
+                // ดึงข้อมูลผู้ใช้ที่เข้าร่วมกิจกรรม
                 $users = join_event($event['Event_id']); 
                 $grouped_users = [];
 
-                // จัดกลุ่มผู้ใช้ตาม event_id
+                // จัดกลุ่มตาม event_id
                 foreach ($users as $user) {
                     $grouped_users[$user['event_id']][] = $user;
                 }
 
-                // แสดงผู้ใช้ที่เข้าร่วมกิจกรรมเดียวกัน
+                // แสดงผู้ใช้ที่เข้าร่วมกิจกรรม
                 foreach ($grouped_users as $event_id => $event_users):
-                    // กรองเฉพาะ event_id 125
-                    if ($event_id == 125):
+                    if ($event_id == $eid):
                 ?>
                     <h2>Event ID: <?= $event_id ?></h2>
                     <?php foreach ($event_users as $user): ?>
@@ -188,7 +187,7 @@ if (isset($_GET['eid'])) {
             </div>
 
             <div class="button-container">
-                <input type="hidden" name="eid" value="<?= $event_id; ?>"> <!-- ส่ง event_id ไปด้วย -->
+                <input type="hidden" name="eid" value="<?= $eid; ?>"> <!-- ใช้ $eid แทน $event_id -->
                 <button type="submit" class="apply-button" name="action" value="apply">Apply</button> 
             </div>
         </form>

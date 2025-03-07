@@ -7,7 +7,8 @@ if (!isset($_SESSION['User_id'])) {
 
 $user_id = $_SESSION['User_id'];
 $user = getUserById($user_id);
-$events = getAllEvents();
+$events = getUserEventsById($user_id);
+$joined_events = getUserJoinedEvents($user_id);
 ?>
 
 <style>
@@ -112,115 +113,119 @@ $events = getAllEvents();
     }
 
     .activity-left {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    justify-items: center;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    justify-content: center;
-    padding: 20px;
-}
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        justify-items: center;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        justify-content: center;
+        padding: 20px;
+    }
 
-.activity-card {
-    padding: 12px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    height: 380px;
-    width: 280px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-}
+    .activity-card {
+        padding: 12px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        height: 380px;
+        width: 280px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+    }
 
-.activity-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-    border-color: #007bff;
-}
+    .activity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+        border-color: #007bff;
+    }
 
-.activity-card-img {
-    height: 120px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    transition: border 0.3s ease;
-}
+    .activity-card-img {
+        height: 120px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        border: 2px solid #ddd;
+        transition: border 0.3s ease;
+    }
 
-.activity-card-img:hover {
-    border-color: #007bff;
-}
+    .activity-card-img:hover {
+        border-color: #007bff;
+    }
 
-.activity-card-content {
-    padding: 10px;
-    flex-grow: 1;
-}
+    .activity-card-content {
+        padding: 10px;
+        flex-grow: 1;
+    }
 
-.activity-card-content h4 {
-    font-size: 1em;
-    margin: 10px 0;
-    color: #333;
-}
+    .activity-card-content h4 {
+        font-size: 1em;
+        margin: 10px 0;
+        color: #333;
+    }
 
-.activity-card-content p {
-    color: #555;
-    font-size: 0.9em;
-}
+    .activity-card-content p {
+        color: #555;
+        font-size: 0.9em;
+    }
 
-.detail-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-size: 0.9em;
-}
+    .detail-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        font-size: 0.9em;
+    }
 
-.detail-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.1);
-}
-
+    .detail-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.1);
+    }
 </style>
 
 <section>
     <div class="container">
         <!-- ส่วนโปรไฟล์ -->
         <div class="profile">
-            <img src="profile.png" alt="">
+            <img src="<?php echo $user['img_url'] ?? '' ?>" alt="">
             <div class="profile-name">
-                <h2><?php echo htmlspecialchars($user['Name']); ?></h2>
+                <h2><?php echo $user['Name']; ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
+                <p>เพศ: <?php echo $user['gender'] ?> </p>
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">
                 <div class="info-section">
                     <h3>📧 Email</h3>
-                    <p><?php echo htmlspecialchars($user['Email']); ?></p>
+                    <p><?php echo $user['Email']; ?></p>
                 </div>
                 <div class="info-section">
                     <h3>📞 Phone</h3>
                     <p>
-                       <?php echo !empty($user['phone']) ? $user['phone'] : 'No phone number available'; ?>
+                        <?php echo !empty($user['phone']) ? $user['phone'] : 'No phone number available'; ?>
                     </p>
                 </div>
                 <div class="info-section">
                     <h3>🏠 Address</h3>
-                    <p>-</p>
+                    <p>
+                        <?php echo !empty($user['Addss']) ? $user['Addss'] : 'No address available'; ?>
+                    </p>
                 </div>
                 <div class="info-section">
                     <h3>🎂 Birthday</h3>
-                    <p>-</p>
+                    <p>
+                        <?php echo !empty($user['birthday']) ? $user['birthday'] : 'No birthday available'; ?>
+                    </p>
                 </div>
             </div>
         </div>
@@ -230,7 +235,7 @@ $events = getAllEvents();
             <h3>กิจกรรมที่สร้าง</h3>
 
             <!-- ปุ่มเพิ่มกิจกรรม -->
-            <button class="add-event-button" onclick="window.location.href='/create_event.php';">
+            <button class="add-event-button" onclick="window.location.href='/create'">
                 <span class="plus-icon">➕</span>
             </button>
 
@@ -238,10 +243,10 @@ $events = getAllEvents();
                 <div class="activity-left">
                     <?php foreach ($events as $event): ?>
                         <div class="activity-card">
-                            <div class="activity-card-img" style="background-image: url('path-to-image.jpg');"></div>
+                            <div class="activity-card-img" style="background-image: url('<?php echo $event['image_url'] ?>');"></div>
                             <div class="activity-card-content">
                                 <h4><?php echo htmlspecialchars($event['Eventname']); ?></h4>
-                                <p>"<?php echo htmlspecialchars($event['description']); ?>"</p>
+                                <p><?php echo htmlspecialchars($event['description']); ?></p>
                                 <button class="detail-button" onclick="window.location.href='/detail?Event_id=<?php echo $event['Event_id']; ?>';">Detail</button>
                             </div>
                         </div>
@@ -251,8 +256,45 @@ $events = getAllEvents();
                 <p>ไม่มีข้อมูลกิจกรรม</p>
             <?php endif; ?>
         </div>
+        <div class="activity-right">
+            <h3>⚡ กิจกรรมที่เข้าร่วม</h3>
+            <?php if (!empty($joined_events)): ?>
+                <div class="activity-left">
+                    <?php foreach ($joined_events as $joined): ?>
+                        <div class="activity-card">
+                            <div class="activity-card-img" style="background-image: url('<?php echo $joined['image_url']; ?>');"></div>
+                            <div class="activity-card-content">
+                                <h4><?php echo htmlspecialchars($joined['Eventname']); ?></h4>
+                                <p><?php echo htmlspecialchars($joined['description']); ?></p>
+                                <p style="gap: 8px;">
+                                    <strong>สถานะ:</strong>
+                                    <span style="width: 12px; height: 12px; border-radius: 50%; display: inline-block; background-color:
+                                        <?php
+                                            if ($joined['status'] === 'approved') {
+                                                echo 'green'; 
+                                            } elseif ($joined['status'] === 'denied') {
+                                                echo 'red';  
+                                            } elseif ($joined['status'] === 'pending') {
+                                                echo 'yellow'; 
+                                            } else {
+                                                echo 'gray'; 
+                                            }
+                                        ?>">
+                                    </span>
+                                    <?php
+                                    echo htmlspecialchars($joined['status'] ?? 'รออนุมัติ');
+                                    ?>
+                                </p>
+
+                                <button class="detail-button" onclick="window.location.href='/detail?Event_id=<?php echo $event['Event_id']; ?>';">Detail</button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p>คุณยังไม่ได้เข้าร่วมกิจกรรมใด ๆ</p>
+            <?php endif; ?>
+        </div>
     </div>
-    <div class="activity-right">
-        <h3>⚡ Actions</h3>
-    </div>
+
 </section>

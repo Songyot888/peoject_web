@@ -103,11 +103,7 @@ body {
     </div>
 
     <div class="activity-container">
-        <div class="activity-card" onclick="window.location.href='/create'">
-            <div class="content">
-                <h4>Create New Activity</h4>
-            </div>
-        </div>
+     
 
         <?php if (!empty($events)): ?>
             <?php foreach ($events as $event): ?>

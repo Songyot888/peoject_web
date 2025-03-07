@@ -25,6 +25,29 @@
     return $users;
 }
 
+function getUserJoinedEvents($user_id) {
+    $conn = getConnection();
+    
+    $query = "SELECT e.Event_id, e.Eventname, e.description, e.image_url, ue.status 
+              FROM User_Event ue
+              INNER JOIN Event e ON ue.event_id = e.Event_id
+              WHERE ue.User_id = ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $events = $result->fetch_all(MYSQLI_ASSOC);
+    
+    $stmt->close();
+    $conn->close();
+    
+    return $events;
+}
+
+
+
 
 // randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {

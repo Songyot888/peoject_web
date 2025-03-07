@@ -1,4 +1,4 @@
-<?
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -10,18 +10,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'] ?? '';
     $phone = $_POST['phone'] ?? '';
     $address = $_POST['address'] ?? '';
+    $birthday = $_POST['birthday'] ?? '';  // ✅ แก้คำสะกดให้ถูกต้อง
 
     $image = $_FILES['image'] ?? null;
+    // var_dump($_FILES['image']);
+    // exit();
 
-    echo $uid;
-    echo $username;
-    echo $email;
-    echo $phone;
-    echo $address;
-    echo $image;
-    
+    // ตรวจสอบค่า birthday
+    if (empty($birthday)) {
+        $birthday = null; // ✅ ตั้งเป็น NULL แทน ""
+    }
+
     // เรียกฟังก์ชัน updateUser
-    $result = updateUser($username, $email, $phone, $address, $image, $uid);
+    $result = updateUser($username, $email, $phone, $address, $birthday, $image, $uid);
 
     if ($result) {
         header('Location: /profile');
@@ -29,3 +30,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Update user failed. Check error log for details.";
     }
 }
+?>

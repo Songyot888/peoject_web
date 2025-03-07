@@ -41,12 +41,7 @@
         }
     }
     
-    function getSearch(): mysqli_result|bool {
-        $conn = getConnection();
-        $sql = 'select * from Event';
-        $result = $conn->query($sql);
-        return $result;
-    }
+   
     
     function getSearchByKeyword(string $keyword): mysqli_result|bool
     {
@@ -77,12 +72,13 @@ function getUserById(int $id): array|bool
     return $result->fetch_assoc();
 }
 
-function updateUser($username, $email, $phone, $address, $image, $uid): bool {
+function updateUser($username, $email, $phone, $address,$brithday, $image, $uid): bool {
     $conn = getConnection();
 
+
     if (isset($image)) {
-        $uploadDir = 'uploads/profile/'; // กำหนดโฟลเดอร์สำหรับเก็บไฟล์ภาพ
-        $uploadFile = $uploadDir . basename($image['name']); // สร้างเส้นทางของไฟล์ที่จะอัปโหลด
+        $uploadDir = 'uploads/profile/'; 
+        $uploadFile = $uploadDir . basename($image['name']); 
         if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
             $imagePath = $uploadFile; 
         } else {
@@ -92,12 +88,12 @@ function updateUser($username, $email, $phone, $address, $image, $uid): bool {
     } else {
         $imagePath = null; 
     }
-    // SQL คำสั่งอัปเดตข้อมูล
-    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?, img_url=? WHERE User_id=?";
-    error_log("SQL Query: " . $sql); // ตรวจสอบ SQL Query
+ 
+    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?,birthday=?, img_url=? WHERE User_id=?";
+    error_log("SQL Query: " . $sql);
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssi", $username, $email, $phone, $address, $imagePath, $uid);
+    $stmt->bind_param("ssssssi",  $username, $email, $phone, $address,$brithday, $imagePath, $uid);
 
     // ถ้า execute สำเร็จ
     if ($stmt->execute()) {

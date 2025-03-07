@@ -1,29 +1,5 @@
 <?php
-    if (isset($_GET['id'])) {
-        $event_id = $_GET['id'];
-    
-        // Fetch event details from the database
-        $conn = getConnection();
-        $sql = "SELECT * FROM Event WHERE Event_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $event_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result && $result->num_rows > 0) {
-            // Fetch the event data
-            $event = $result->fetch_assoc();
-        } else {
-            echo "Event not found!";
-            exit;
-        }
-    
-        $stmt->close();
-        $conn->close();
-    } else {
-        echo "No event ID provided!";
-        exit;
-    }
+   
 ?>
     <style>
         body {
