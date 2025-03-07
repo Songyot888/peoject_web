@@ -1,21 +1,16 @@
 
 <?php
-function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $image) {
-    // เชื่อมต่อฐานข้อมูล
+function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $images) {
     $conn = getConnection();
-    $conn->query("ALTER TABLE User AUTO_INCREMENT = 1");
 
-    if (isset($image)) {
-        $uploadDir = 'uploads/';
-        $uploadFile = $uploadDir . basename($image['name']);
-        if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
-            $imagePath = $uploadFile; 
-        } else {
-            error_log("Image upload failed");
-            return false;
-        }
-    } else {
-        $imagePath = null;  // ถ้าไม่มีการอัปโหลดภาพ
+    // อัปโหลดรูปภาพและบันทึกรูปแรกลงใน Event
+    $uploadDir = 'uploads/event/';
+    $backgroundImagePath = null;
+
+    if (isset($images)) {
+        $backgroundImage = $images['tmp_name'][0]; // รูปแรกจะเป็นภาพพื้นหลัง
+        $backgroundImagePath = $uploadDir . basename($images['name'][0]);
+        move_uploaded_file($backgroundImage, $backgroundImagePath);
     }
 
     // SQL คำสั่งบันทึกข้อมูลกิจกรรม
@@ -23,23 +18,16 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     
     $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        error_log("Prepare failed: " . $conn->error);
-        $conn->close();
-        return false;
-    }
-
-    $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $imagePath);
+    $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $backgroundImagePath);
 
     if ($stmt->execute()) {
+        $event_id = $stmt->insert_id;  // Get the inserted event's ID
         $stmt->close();
-        $conn->close();
-        return true;
+        return $event_id;
     } else {
         error_log("Execute failed: " . $stmt->error);
         $stmt->close();
-        $conn->close();
-        return false; 
+        return false;
     }
 }
 
