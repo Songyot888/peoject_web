@@ -117,18 +117,18 @@
         }
     </style>
 
-    <div class="create-container">
-        
-        <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
+<div class="create-container">
+    <form class="create-form" action="/create" method="POST" enctype="multipart/form-data">
         <h1>Create Activity</h1>
 
         <!-- Image Upload Section -->
         <div class="activity-image" onclick="document.getElementById('file-upload').click();">
             <img id="preview-image" src="" alt="Click to upload">
-            <span id="upload-text">Click to upload image</span>
-            <input type="file" id="file-upload" name="image" accept="image/*" onchange="previewFile()">
+            <span id="upload-text">Click to upload images</span>
+            <input type="file" id="file-upload" name="images[]" accept="image/*" multiple onchange="previewFile()">
         </div>
 
+        <div id="preview-container"></div> <!-- To preview selected images -->
 
         <input type="text" name="activity-name" placeholder="Enter activity name" required>
         <input type="number" name="participants" placeholder="Number of participants" required>
@@ -138,7 +138,6 @@
         <input type="hidden" name="status" value="Open" required>
         <input type="hidden" name="User_id" value="<?=$User_id?>">
 
-      
         <div class="button-container">
             <!-- Cancel Button to Go Back -->
             <button type="button" class="cancel-button" onclick="goBack()">Cancel</button>
@@ -146,30 +145,23 @@
             <button type="submit" class="create-button">Create</button>
         </div>
     </form>
-    </div>
+</div>
 
-    
+<script>
+    function previewFile() {
+        const files = document.getElementById("file-upload").files;
+        const previewContainer = document.getElementById("preview-container");
+        previewContainer.innerHTML = ''; // Clear previous previews
 
-
-    <script>
-        function previewFile() {
-            const file = document.getElementById("file-upload").files[0];
-            const preview = document.getElementById("preview-image");
-            const uploadText = document.getElementById("upload-text");
-
-            console.log("File selected:", file); // เพิ่มการตรวจสอบว่าไฟล์ถูกเลือกหรือไม่
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = "block";
-                    uploadText.style.display = "none";
-                }
-                reader.readAsDataURL(file);
-            } else {
-                console.log("No file selected.");
-            }
-        }
-
-    </script>
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.maxWidth = "100px"; // Optional: limit image size
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+</script>

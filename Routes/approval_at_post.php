@@ -11,5 +11,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['status'])) {
         updateUserStatus($userId, $status, $event_id);  // ส่ง event_id ที่ได้รับจากฟอร์มไปด้วย
     }
 }
-
 ?>

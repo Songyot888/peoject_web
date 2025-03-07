@@ -1,4 +1,3 @@
-
 <?php
 if (isset($_GET['Event_id'])) {
     $eid = $_GET['Event_id'];
@@ -11,6 +10,7 @@ if (isset($_GET['Event_id'])) {
         $sdate = $event['start_date'];
         $ddate = $event['end_date'];
 
+        $eventImages = getEventImages($eid);
     } else {
         echo "ไม่พบกิจกรรม";
     }
@@ -18,6 +18,7 @@ if (isset($_GET['Event_id'])) {
     echo "ไม่ได้รับ eid";
 }
 ?>
+
 <style>
     body {
         margin: 0;
@@ -55,12 +56,46 @@ if (isset($_GET['Event_id'])) {
         flex-wrap: wrap;
     }
 
-    .activity-image img {
-        width: 250px;
+    /* Styles for image carousel */
+    .carousel-container {
+        position: relative;
+        width: 300px;
+        height: 250px;
+        overflow: hidden;
+        border-radius: 10px;
+        border: 2px solid #fff;
+    }
+
+    .carousel-images {
+        display: flex;
+        transition: transform 0.3s ease;
+    }
+
+    .carousel-images img {
+        width: 400px;
         height: 250px;
         object-fit: cover;
         border-radius: 10px;
-        border: 2px solid #fff;
+    }
+
+    .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    .carousel-button-left {
+        left: 10px;
+    }
+
+    .carousel-button-right {
+        right: 10px;
     }
 
     .activity-details {
@@ -139,8 +174,8 @@ if (isset($_GET['Event_id'])) {
             gap: 15px;
         }
 
-        .activity-image img {
-            width: 200px;
+        .carousel-container {
+            width: 100%;
             height: 200px;
         }
     }
@@ -150,20 +185,52 @@ if (isset($_GET['Event_id'])) {
     <div class="editview-container">
         <h1>View Activity</h1>
         <div class="form-container">
-            <div class="activity-image">
-                <img src="placeholder-image.jpg" alt="Activity Image">
+            <div class="carousel-container">
+                <div class="carousel-images">
+                    <?php
+                    if (!empty($eventImages)) {
+                        foreach ($eventImages as $image) {
+                            echo '<img src="' . $image . '" alt="Activity Image">';
+                        }
+                    } else {
+                        echo '<p>No images available for this event.</p>';
+                    }
+                    ?>
+                </div>
+                <button class="carousel-button carousel-button-left" onclick="prevImage()">❮</button>
+                <button class="carousel-button carousel-button-right" onclick="nextImage()">❯</button>
             </div>
             <div class="activity-details">
                 <p class="activity-description">
                     <?php echo htmlspecialchars($activityDetails); ?>
-                    c
                 </p>
                 <div class="button-container">
-                <button class="view-button" onclick="window.location.href='/approval_at?eid=<?php echo $event['Event_id']; ?>'">View</button>
-                <button class="edit-button" onclick="window.location.href='/edit?eid=<?php echo $event['Event_id']; ?>'">Edit</button>
-                <button class="delete-button" onclick="window.location.href='/delete_activity.php?id=<?php echo $event['Event_id']; ?>'">Delete</button>
+                    <button class="view-button" onclick="window.location.href='/approval_at?eid=<?php echo $event['Event_id']; ?>'">View</button>
+                    <button class="edit-button" onclick="window.location.href='/edit?eid=<?php echo $event['Event_id']; ?>'">Edit</button>
+                    <button class="delete-button" onclick="window.location.href='/delete_activity.php?id=<?php echo $event['Event_id']; ?>'">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.carousel-images img');
+    
+    function updateCarousel() {
+        const totalImages = images.length;
+        const newTransform = -currentIndex * 250; // Adjusting based on image width
+        document.querySelector('.carousel-images').style.transform = `translateX(${newTransform}px)`;
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+        updateCarousel();
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+        updateCarousel();
+    }
+</script>

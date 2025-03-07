@@ -187,7 +187,7 @@ if (isset($_GET['eid'])) {
             </div>
 
             <div class="button-container">
-                <input type="hidden" name="eid" value="<?= $eid; ?>"> <!-- ใช้ $eid แทน $event_id -->
+                <input type="hidden" name="eid" value="<?= $eid; ?>">
                 <button type="submit" class="apply-button" name="action" value="apply">Apply</button> 
             </div>
         </form>

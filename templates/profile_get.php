@@ -9,6 +9,7 @@ $user_id = $_SESSION['User_id'];
 $user = getUserById($user_id);
 $events = getUserEventsById($user_id);
 $joined_events = getUserJoinedEvents($user_id);
+$img = getEventImages($events);
 ?>
 
 <style>
@@ -263,6 +264,7 @@ $joined_events = getUserJoinedEvents($user_id);
                     <?php foreach ($joined_events as $joined): ?>
                         <div class="activity-card">
                             <div class="activity-card-img" style="background-image: url('<?php echo $joined['image_url']; ?>');"></div>
+                           
                             <div class="activity-card-content">
                                 <h4><?php echo htmlspecialchars($joined['Eventname']); ?></h4>
                                 <p><?php echo htmlspecialchars($joined['description']); ?></p>
@@ -281,12 +283,7 @@ $joined_events = getUserJoinedEvents($user_id);
                                             }
                                         ?>">
                                     </span>
-                                    <?php
-                                    echo htmlspecialchars($joined['status'] ?? 'รออนุมัติ');
-                                    ?>
                                 </p>
-
-                                <button class="detail-button" onclick="window.location.href='/detail?Event_id=<?php echo $event['Event_id']; ?>';">Detail</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
