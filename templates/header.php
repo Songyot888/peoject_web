@@ -1,3 +1,13 @@
+<?php
+// ตรวจสอบว่า $data['events'] มีข้อมูลหรือไม่ และเป็น array
+
+$search = isset($data['search']) ? $data['search'] : '';
+$events = isset($data['events']) && is_array($data['events']) ? $data['events'] : [];
+// รับค่าคำค้นหาจาก $data (ถ้ามี)
+$startDate = isset($data['startDate']) ? $data['startDate'] : '';
+$endDate = isset($data['endDate']) ? $data['endDate'] : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +17,10 @@
     <title>Main</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<<<<<<< HEAD
+
+=======
+>>>>>>> b8a58d248b827fc4b1080433ff6fc5b1cad45076
     <!-- Custom Styles -->
     <style>
         body {
@@ -21,6 +35,7 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             100% {
                 opacity: 1;
                 transform: translateY(0);
@@ -28,7 +43,8 @@
         }
 
         .navbar {
-            position: fixed; /* เปลี่ยนจาก fixed เป็น sticky */
+            position: fixed;
+            /* เปลี่ยนจาก fixed เป็น sticky */
             top: 0;
             left: 0;
             width: 100%;
@@ -44,6 +60,7 @@
                 opacity: 0;
                 transform: translateY(-50px);
             }
+
             100% {
                 opacity: 1;
                 transform: translateY(0);
@@ -106,67 +123,87 @@
 </head>
 
 <body>
-<header>
-<?php
+    <header>
+        <?php
         if (isset($_SESSION['timestamp'])) {
         ?>
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Activity Club</a>  
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        
-        
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          ☰
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="d-flex position-relative" role="search" method="GET" action="/search">
-        <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" required>
-        <button class="btn btn-outline-light" type="submit">Search</button>
-        <div class="search-results p-2">
-          <?php
-          if (isset($data['result'])) {
-              while ($row = $data['result']->fetch_object()) {
-                  echo "<div>" . htmlspecialchars($row->Eventname) . "</div>";
-              }
-          }
-          ?>
-        </div>
-      </form>
-      <button class="btn logout-btn" onclick="window.location.href='/login'">Logout</button> 
-    </div>
-  </div>
-</nav>
-<?php
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Activity Club</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ☰
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <form class="d-flex position-relative" role="search" method="GET" action="/search">
+                            <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" oninput="searchEvents()">
+
+                            <input class="form-control me-2" type="date" name="start_date" placeholder="Start Date">
+                            <input class="form-control me-2" type="date" name="end_date" placeholder="End Date">
+
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+
+                            <div class="search-results p-2" id="search-results"></div>
+                        </form>
+
+                        <button class="btn logout-btn" onclick="window.location.href='/login'">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        <?php
         }
-    ?>
-</header>
+        ?>
+    </header>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-rbsA2VBKQGpUFnj46y1c9iUqD+OMwE8lV3qQWth/1lD6D9tGtJ+KjU5Wq5qF3hG5" crossorigin="anonymous"></script>
-<script>
-  // Show search results when available
-  document.addEventListener("DOMContentLoaded", function() {
-      let searchResults = document.querySelector(".search-results");
-      let searchInput = document.querySelector("input[name='keyword']");
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-rbsA2VBKQGpUFnj46y1c9iUqD+OMwE8lV3qQWth/1lD6D9tGtJ+KjU5Wq5qF3hG5" crossorigin="anonymous"></script>
+    <script>
+        function searchEvents() {
+            const keyword = document.querySelector("input[name='keyword']").value;
+            const startDate = document.querySelector("input[name='start_date']").value;
+            const endDate = document.querySelector("input[name='end_date']").value;
+            const searchResults = document.getElementById("search-results");
 
-      searchInput.addEventListener("input", function() {
-          if (searchInput.value.trim() !== "") {
-              searchResults.style.display = "block";
-          } else {
-              searchResults.style.display = "none";
-          }
-      });
-  });
-</script>
+            if (keyword.trim() === "") {
+                searchResults.style.display = "none";
+                return;
+            }
+            
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    searchResults.innerHTML = xhr.responseText;
+                    searchResults.style.display = "block";
+                }
+            };
+            xhr.send();
+        }
+
+
+        // Hide search results when clicking outside
+        document.addEventListener("click", function(event) {
+            const searchResults = document.getElementById("search-results");
+            if (!searchResults.contains(event.target) && event.target !== document.querySelector("input[name='keyword']")) {
+                searchResults.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>

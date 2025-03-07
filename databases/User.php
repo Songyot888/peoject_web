@@ -43,18 +43,7 @@
     
    
     
-    function getSearchByKeyword(string $keyword): mysqli_result|bool
-    {
-        $conn = getConnection();
-        $sql = 'select * from Event where Eventname like ?';
-        $stmt = $conn->prepare($sql);
-        $keyword = '%'. $keyword .'%';
-        $stmt->bind_param('s',$keyword);
-        $res = $stmt->execute();
-        $result = $stmt->get_result();
-        return $result;
-    }
-function logout(): void
+    function logout(): void
 {
     unset($_SESSION['timestamp']);
 }

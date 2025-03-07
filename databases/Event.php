@@ -1,4 +1,3 @@
-
 <?php
 function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $images) {
     $conn = getConnection();
@@ -43,12 +42,14 @@ function getEventById($eid) {
 }
 
 
-function getAllEvents() {
+function getAllEvents(): mysqli_result|bool {
     $conn = getConnection();
     $sql = "SELECT * FROM Event";
     $result = $conn->query($sql);
-    return $result->fetch_all(MYSQLI_ASSOC);
+    $conn->close();
+    return $result;
 }
+
 
 
 function updateEvent($eid, $Eventname, $Max_participants, $start_date, $end_date, $description) {
@@ -97,4 +98,74 @@ function getUserEventsById($user_id) {
 
     return $events;
 }
+
+function getJoinedEventsById($user_id) {
+    $conn = getConnection();
+
+    // เขียน SQL Query เพื่อดึงกิจกรรมที่ผู้ใช้เข้าร่วม
+    $sql = "SELECT * FROM Event WHERE Event_id IN (SELECT Event_id FROM JoinEvent WHERE User_id = ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $events = [];
+
+    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
+    while ($event = $result->fetch_assoc()) {
+        $events[] = $event;
+    }
+
+    return $events;
+}
+
+function getSearchByKeyword(string $keyword, string $startDate = '', string $endDate = ''): mysqli_result|bool {
+    $conn = getConnection();
+    $sql = "SELECT * FROM Event WHERE Eventname LIKE ?";
+    $params = ["%$keyword%"];
+    $types = 's';
+
+    if (!empty($startDate) && !empty($endDate)) {
+        // ถ้ากำหนดทั้ง Start และ End
+        $sql .= " AND start_date >= ? AND end_date <= ?";
+        $params[] = $startDate;
+        $params[] = $endDate;
+        $types .= 'ss';
+    } elseif (!empty($startDate)) {
+        // ถ้ามีแต่ Start
+        $sql .= " AND start_date >= ?";
+        $params[] = $startDate;
+        $types .= 's';
+    } elseif (!empty($endDate)) {
+        // ถ้ามีแต่ End
+        $sql .= " AND end_date <= ?";
+        $params[] = $endDate;
+        $types .= 's';
+    }
+
+    // Debug SQL และพารามิเตอร์ที่ส่งไป
+    error_log("SQL: $sql");
+    error_log("Params: " . implode(", ", $params));
+
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        error_log("Prepare failed: " . $conn->error);
+        return false;
+    }
+
+    $stmt->bind_param($types, ...$params);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    $conn->close();
+    return $result;
+}
+
+
+
+
+
+
+
+
 
