@@ -148,15 +148,17 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
                             </li>
                         </ul>
                         <form class="d-flex position-relative" role="search" method="GET" action="/search">
-                            <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" oninput="searchEvents()">
-
-                            <input class="form-control me-2" type="date" name="start_date" placeholder="Start Date">
-                            <input class="form-control me-2" type="date" name="end_date" placeholder="End Date">
+                            <input class="form-control me-2" type="search" name="search" placeholder="Search events" value="<?php echo htmlspecialchars($search); ?>">
+                            <input class="form-control me-2" type="date" name="startDate" placeholder="Start Date From" value="<?php echo htmlspecialchars($startDate); ?>">
+                            <input class="form-control me-2" type="date" name="endDate" placeholder="Start Date To" value="<?php echo htmlspecialchars($startDate); ?>">
 
                             <button class="btn btn-outline-light" type="submit">Search</button>
-
                             <div class="search-results p-2" id="search-results"></div>
                         </form>
+                        
+
+
+
 
                         <button class="btn logout-btn" onclick="window.location.href='/login'">Logout</button>
                     </div>
@@ -171,26 +173,35 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
     <script>
         function searchEvents() {
             const keyword = document.querySelector("input[name='keyword']").value;
-            const startDate = document.querySelector("input[name='start_date']").value;
-            const endDate = document.querySelector("input[name='end_date']").value;
+            const startDateStart = document.querySelector("input[name='start_date_start']").value;
+            const startDateEnd = document.querySelector("input[name='start_date_end']").value;
             const searchResults = document.getElementById("search-results");
-            xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
 
+            // ตรวจสอบว่าผู้ใช้พิมพ์คำค้นหาหรือไม่
             if (keyword.trim() === "") {
                 searchResults.style.display = "none";
                 return;
             }
-            
+
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
+            xhr.open("GET", `/search?keyword=${keyword}&start_date_start=${startDateStart}&start_date_end=${startDateEnd}`, true);
+
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    searchResults.innerHTML = xhr.responseText;
+                    // ตรวจสอบว่ามีผลลัพธ์หรือไม่
+                    if (xhr.responseText.trim() === "") {
+                        searchResults.innerHTML = "No events found.";
+                    } else {
+                        searchResults.innerHTML = xhr.responseText;
+                    }
                     searchResults.style.display = "block";
                 }
             };
+
             xhr.send();
         }
+
+
 
 
         // Hide search results when clicking outside
