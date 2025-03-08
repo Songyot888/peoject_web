@@ -174,6 +174,7 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
             const startDate = document.querySelector("input[name='start_date']").value;
             const endDate = document.querySelector("input[name='end_date']").value;
             const searchResults = document.getElementById("search-results");
+            xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
 
             if (keyword.trim() === "") {
                 searchResults.style.display = "none";
