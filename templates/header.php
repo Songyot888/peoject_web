@@ -1,6 +1,5 @@
 <?php
 // ตรวจสอบว่า $data['events'] มีข้อมูลหรือไม่ และเป็น array
-
 $search = isset($data['search']) ? $data['search'] : '';
 $events = isset($data['events']) && is_array($data['events']) ? $data['events'] : [];
 // รับค่าคำค้นหาจาก $data (ถ้ามี)
@@ -40,7 +39,6 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
 
         .navbar {
             position: fixed;
-            /* เปลี่ยนจาก fixed เป็น sticky */
             top: 0;
             left: 0;
             width: 100%;
@@ -115,6 +113,30 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
         .logout-btn:hover {
             background-color: #c82333;
         }
+
+        @media (max-width: 768px) {
+            #menu {
+                display: none;
+                width: 100%;
+                background-color: #fff;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-collapse.show {
+                display: block;
+            }
+        }
+
+        @media (min-width: 768px) {
+            #menu {
+                display: flex;
+            }
+        }
+
     </style>
 </head>
 
@@ -125,14 +147,12 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
         ?>
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Activity Club</a>
+                    <a class="navbar-brand" href="/main">Activity Club</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ☰
@@ -140,24 +160,18 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="/profile">Profile</a></li>
                                     <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                                 </ul>
                             </li>
                         </ul>
                         <form class="d-flex position-relative" role="search" method="GET" action="/search">
                             <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" oninput="searchEvents()">
-
                             <input class="form-control me-2" type="date" name="start_date" placeholder="Start Date">
                             <input class="form-control me-2" type="date" name="end_date" placeholder="End Date">
-
                             <button class="btn btn-outline-light" type="submit">Search</button>
-
                             <div class="search-results p-2" id="search-results"></div>
                         </form>
-
                         <button class="btn logout-btn" onclick="window.location.href='/login'">Logout</button>
                     </div>
                 </div>
@@ -174,13 +188,12 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
             const startDate = document.querySelector("input[name='start_date']").value;
             const endDate = document.querySelector("input[name='end_date']").value;
             const searchResults = document.getElementById("search-results");
-            xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
 
             if (keyword.trim() === "") {
                 searchResults.style.display = "none";
                 return;
             }
-            
+
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `/search?keyword=${keyword}&start_date=${startDate}&end_date=${endDate}`, true);
             xhr.onload = function() {
@@ -192,13 +205,26 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
             xhr.send();
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuToggle = document.querySelector('.navbar-toggler');
+            const menu = document.querySelector('.navbar-collapse');
 
-        // Hide search results when clicking outside
-        document.addEventListener("click", function(event) {
-            const searchResults = document.getElementById("search-results");
-            if (!searchResults.contains(event.target) && event.target !== document.querySelector("input[name='keyword']")) {
-                searchResults.style.display = "none";
-            }
+            menuToggle.addEventListener('click', function() {
+                menu.classList.toggle('show');
+            });
+
+            document.addEventListener("click", function(event) {
+                const searchResults = document.getElementById("search-results");
+                const menuIsOpen = menu.classList.contains('show');
+                
+                if (!menu.contains(event.target) && !menuToggle.contains(event.target) && menuIsOpen) {
+                    menu.classList.remove('show');
+                }
+
+                if (!searchResults.contains(event.target) && event.target !== document.querySelector("input[name='keyword']")) {
+                    searchResults.style.display = "none";
+                }
+            });
         });
     </script>
 </body>
