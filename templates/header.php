@@ -1,5 +1,4 @@
 <?php
-// ตรวจสอบว่า $data['events'] มีข้อมูลหรือไม่ และเป็น array
 
 $search = isset($data['search']) ? $data['search'] : '';
 $events = isset($data['events']) && is_array($data['events']) ? $data['events'] : [];
