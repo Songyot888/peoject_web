@@ -1,6 +1,6 @@
 <?php
-if (isset($_GET['Event_id'])) {
-    $eid = $_GET['Event_id'];
+if (isset($_POST['event_id'])) {
+    $eid = $_POST['event_id'];
     $event = getEventById($eid);
 
     if ($event) {
@@ -205,9 +205,19 @@ if (isset($_GET['Event_id'])) {
                     <?php echo htmlspecialchars($activityDetails); ?>
                 </p>
                 <div class="button-container">
-                    <button class="view-button" onclick="window.location.href='/approval_at?eid=<?php echo $event['Event_id']; ?>'">View</button>
-                    <button class="edit-button" onclick="window.location.href='/edit?eid=<?php echo $event['Event_id']; ?>'">Edit</button>
-                    <button class="delete-button" onclick="window.location.href='/delete_activity.php?id=<?php echo $event['Event_id']; ?>'">Delete</button>
+                    <form action="/detail" method="post">
+                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
+                        <button type="submit" name="view" class="view-button" >View</button>
+                    </form>
+                    <form action="/detail" method="post">
+                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
+                        <button type="submit" name="edit" class="edit-button" >Edit</button>
+                    </form>
+                    <form action="/detail" method="post">
+                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
+                        <button type="submit" name="delete" class="delete-button" >Delete</button>
+                    </form>
+                    
                 </div>
             </div>
         </div>

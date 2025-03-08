@@ -1,6 +1,6 @@
 <?php
-if (isset($_GET['eid'])) {
-    $eid = $_GET['eid'];
+if (isset($_POST['eid'])) {
+    $eid = $_POST['eid'];
     $event = getEventById($eid);
 
     if ($event) {

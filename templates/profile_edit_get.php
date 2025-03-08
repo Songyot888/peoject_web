@@ -116,7 +116,7 @@ $user = getUserById($User_id);
     <div class="profile-container">
         <form class="profile-info" action="/profile_edit" method="POST" enctype="multipart/form-data">
             <div class="profile-image">
-                <img id="profile-img" src="profile-placeholder.jpg" alt="">
+                <img id="profile-img" src="<?php echo $user['img_url'] ?>" alt="">
                 <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
             </div>
             <input type="hidden" name="uid" value="<?php echo $user['User_id']; ?>">

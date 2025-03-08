@@ -47,8 +47,6 @@ function getUserJoinedEvents($user_id) {
 }
 
 
-
-
 // randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
@@ -83,6 +81,7 @@ function updateUserStatus($user_id, $status, $event_id) {
 function registerUserForEvent($user_id, $event_id) {
 
     $conn = getConnection(); 
+    $conn->query("ALTER TABLE User_Event AUTO_INCREMENT = 1");
 
     $sql = "INSERT INTO User_Event (User_id, Event_id) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);

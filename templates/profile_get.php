@@ -200,15 +200,15 @@ $img = getEventImages($events);
         <div class="profile">
             <img src="<?php echo $user['img_url'] ?? '' ?>" alt="">
             <div class="profile-name">
-                <h2><?php echo $user['Name']; ?></h2>
+                <h2><?php echo !empty($user['Name']) ? $user['Name'] : 'No Name available'; ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
-                <p>เพศ: <?php echo $user['gender'] ?> </p>
+                <p>เพศ: <?php !empty($user['gender']) ? $user['gender'] : 'No gender available'; ?> </p>
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">
                 <div class="info-section">
                     <h3>📧 Email</h3>
-                    <p><?php echo $user['Email']; ?></p>
+                    <p><?php echo !empty($user['Email']) ? $user['Email'] : 'No Email available'; ?></p>
                 </div>
                 <div class="info-section">
                     <h3>📞 Phone</h3>
@@ -248,7 +248,12 @@ $img = getEventImages($events);
                             <div class="activity-card-content">
                                 <h4><?php echo htmlspecialchars($event['Eventname']); ?></h4>
                                 <p><?php echo htmlspecialchars($event['description']); ?></p>
-                                <button class="detail-button" onclick="window.location.href='/detail?Event_id=<?php echo $event['Event_id']; ?>';">Detail</button>
+                                <form action="/profile" method="post">
+                                    <!-- <?php echo var_dump($event['Event_id']); ?> -->
+                                    <input type="hidden" name="event_id" value="<?= $event['Event_id']; ?>';" >
+                                    <button type="submit" class="detail-button" >Detail</button>
+                                </form>
+                                
                             </div>
                         </div>
                     <?php endforeach; ?>

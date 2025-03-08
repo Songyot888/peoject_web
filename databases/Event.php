@@ -1,7 +1,7 @@
 <?php
 function insertEvent($activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $images) {
     $conn = getConnection();
-
+    $conn->query("ALTER TABLE Event AUTO_INCREMENT = 1");
     // อัปโหลดรูปภาพและบันทึกรูปแรกลงใน Event
     $uploadDir = 'uploads/event/';
     $backgroundImagePath = null;
@@ -159,6 +159,70 @@ function getSearchByKeyword(string $keyword, string $startDate = '', string $end
     $stmt->close();
     $conn->close();
     return $result;
+}
+
+function deleteEvent($event_id) {
+    $conn = getConnection();
+
+    // ดึงรายการไฟล์ภาพที่เกี่ยวข้องกับกิจกรรม
+    $sql = "SELECT url FROM Event_Img WHERE Event_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $event_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // ลบไฟล์ภาพออกจากเซิร์ฟเวอร์
+    while ($row = $result->fetch_assoc()) {
+        $imagePath = $row['url'];
+        if (!empty($imagePath)) {
+            if (file_exists($imagePath)) {
+                if (unlink($imagePath)) {
+                    echo "Deleted: $imagePath\n";
+                } else {
+                    echo "Failed to delete: $imagePath\n";
+                }
+            } else {
+                echo "File does not exist: $imagePath\n";
+            }
+        }
+    }
+
+    $stmt->close();
+
+    // ลบรายการภาพออกจากตาราง event_images
+    $sql = "DELETE FROM Event_Img WHERE Event_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $event_id);
+    $stmt->execute();
+    $stmt->close();
+
+    // ลบรูปภาพในตาราง Event (ถ้ามี)
+    $sql = "SELECT image_url FROM Event WHERE Event_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $event_id);
+    $stmt->execute();
+    $stmt->bind_result($imagePathInEvent);
+    $stmt->fetch();
+    $stmt->close();
+
+    // ลบไฟล์จากเซิร์ฟเวอร์ถ้ามีรูปภาพใน Event
+    if ($imagePathInEvent && file_exists($imagePathInEvent)) {
+        if (unlink($imagePathInEvent)) {
+            echo "Deleted image from Event: $imagePathInEvent\n";
+        } else {
+            echo "Failed to delete image from Event: $imagePathInEvent\n";
+        }
+    }
+
+    // ลบกิจกรรมจากตาราง events
+    $sql = "DELETE FROM Event WHERE Event_id=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $event_id);
+    $success = $stmt->execute();
+    $stmt->close();
+    $conn->close();
+
+    return $success;
 }
 
 

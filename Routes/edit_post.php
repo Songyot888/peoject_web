@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $data['alert'];
         exit;
     }
-
+    var_dump($_POST['eid']);
     // ตรวจสอบว่ามี eid หรือไม่
     if (!isset($_POST['eid'])) {
         $data['alert'] = "ไม่พบ ID กิจกรรม";

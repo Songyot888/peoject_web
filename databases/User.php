@@ -61,13 +61,14 @@ function getUserById(int $id): array|bool
     return $result->fetch_assoc();
 }
 
-function updateUser($username, $email, $phone, $address,$brithday, $image, $uid): bool {
+function updateUser($username, $email, $phone, $address, $birthday, $image, $uid): bool {
     $conn = getConnection();
-
-
-    if (isset($image)) {
-        $uploadDir = 'uploads/profile/'; 
-        $uploadFile = $uploadDir . basename($image['name']); 
+    
+    // ตรวจสอบว่าเป็นการอัปโหลดรูปภาพใหม่หรือไม่
+    if (isset($image) && $image['error'] == 0) {
+        // กรณีที่มีการอัปโหลดรูปภาพใหม่
+        $uploadDir = 'uploads/profile/';
+        $uploadFile = $uploadDir . basename($image['name']);
         if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
             $imagePath = $uploadFile; 
         } else {
@@ -75,14 +76,24 @@ function updateUser($username, $email, $phone, $address,$brithday, $image, $uid)
             return false;
         }
     } else {
-        $imagePath = null; 
+        // กรณีไม่มีการอัปโหลดรูปภาพใหม่
+        // ตรวจสอบก่อนว่าผู้ใช้มีรูปภาพเดิมอยู่หรือไม่
+        $sql = "SELECT img_url FROM User WHERE User_id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $uid);
+        $stmt->execute();
+        $stmt->bind_result($currentImagePath);
+        $stmt->fetch();
+        $stmt->close();
+        
+        $imagePath = $currentImagePath; // ใช้รูปภาพเดิมถ้าไม่มีการอัปโหลดใหม่
     }
- 
-    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?,birthday=?, img_url=? WHERE User_id=?";
+
+    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?, birthday=?, img_url=? WHERE User_id=?";
     error_log("SQL Query: " . $sql);
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi",  $username, $email, $phone, $address,$brithday, $imagePath, $uid);
+    $stmt->bind_param("ssssssi",  $username, $email, $phone, $address, $birthday, $imagePath, $uid);
 
     // ถ้า execute สำเร็จ
     if ($stmt->execute()) {
@@ -97,6 +108,5 @@ function updateUser($username, $email, $phone, $address,$brithday, $image, $uid)
         error_log("Execute failed: " . $stmt->error);
         return false;  // ถ้า execute ล้มเหลว
     }
-    
 }
 
