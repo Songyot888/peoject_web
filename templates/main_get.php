@@ -1,7 +1,12 @@
-<?php require_once 'header.php' ?>
-<?php
-$events = getAllEvents();
+<?php 
+    require_once 'header.php' ;
+    $events = getAllEvents();
+    $joined_events = getUserJoinedEvents($_SESSION['User_id']);
+    $joined_event_ids = array_map(function($event) {
+        return $event['Event_id'];
+    }, $joined_events);
 ?>
+
 <style>
     
 body {
@@ -95,6 +100,8 @@ body {
 }
 </style>
 
+
+
 <div class="container">
     <div class="container d-flex justify-content-start">
         <div class="large-activity-card">
@@ -103,8 +110,6 @@ body {
     </div>
 
     <div class="activity-container">
-     
-
         <?php if (!empty($events)): ?>
             <?php foreach ($events as $event): ?>
                 <div class="activity-card">
@@ -117,7 +122,11 @@ body {
                         <span class="like-count"></span>
                         <div class="content">
                             <button class="btn btn-primary">View</button>
-                            <button class="btn btn-success" onclick="window.location.href='/register_at?eid=<?php echo $event['Event_id']; ?>'">Sign</button>
+                            
+                            <?php if (!in_array($event['Event_id'], $joined_event_ids)): ?>
+                                <button class="btn btn-success" onclick="window.location.href='/register_at?eid=<?php echo $event['Event_id']; ?>'">Sign</button>
+                                
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -125,8 +134,5 @@ body {
         <?php else: ?>
             <p>ไม่มีข้อมูลกิจกรรม</p>
         <?php endif; ?>
-        
     </div>
 </div>
-
-<?php require_once 'footer.php' ?>
