@@ -121,38 +121,57 @@ function getJoinedEventsById($user_id) {
 
 function getSearchByKeyword(string $keyword, string $startDate = '', string $endDate = ''): mysqli_result|bool {
     $conn = getConnection();
-    $sql = "SELECT * FROM Event WHERE Eventname LIKE ?";
-    $params = ["%$keyword%"];
-    $types = 's';
+    // เริ่มต้นคำสั่ง SQL
+    $sql = "SELECT * FROM Event WHERE 1";
 
+    // ถ้ามีคำค้นหาก็ใช้ LIKE
+    if (!empty($keyword)) {
+        $sql .= " AND Eventname LIKE ?";
+    }
+
+    // ถ้ามีช่วงวันที่, ให้เพิ่มเงื่อนไขในการกรอง
     if (!empty($startDate) && !empty($endDate)) {
-        // ถ้ากำหนดทั้ง Start และ End
         $sql .= " AND start_date >= ? AND end_date <= ?";
-        $params[] = $startDate;
-        $params[] = $endDate;
-        $types .= 'ss';
     } elseif (!empty($startDate)) {
         // ถ้ามีแต่ Start
         $sql .= " AND start_date >= ?";
-        $params[] = $startDate;
-        $types .= 's';
     } elseif (!empty($endDate)) {
         // ถ้ามีแต่ End
         $sql .= " AND end_date <= ?";
-        $params[] = $endDate;
-        $types .= 's';
     }
 
     // Debug SQL และพารามิเตอร์ที่ส่งไป
     error_log("SQL: $sql");
-    error_log("Params: " . implode(", ", $params));
 
+    // สร้างพารามิเตอร์
+    $params = [];
+    $types = '';
+
+    // ถ้ามีคำค้น
+    if (!empty($keyword)) {
+        $params[] = "%$keyword%";
+        $types .= 's';
+    }
+
+    // เพิ่มพารามิเตอร์สำหรับช่วงวันที่
+    if (!empty($startDate)) {
+        $params[] = $startDate;
+        $types .= 's';
+    }
+    
+    if (!empty($endDate)) {
+        $params[] = $endDate;
+        $types .= 's';
+    }
+
+    // เตรียมการคำสั่ง SQL
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
         error_log("Prepare failed: " . $conn->error);
         return false;
     }
 
+    // Bind พารามิเตอร์
     $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -160,6 +179,9 @@ function getSearchByKeyword(string $keyword, string $startDate = '', string $end
     $conn->close();
     return $result;
 }
+
+
+
 
 
 
