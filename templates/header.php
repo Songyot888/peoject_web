@@ -39,7 +39,6 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
 
         .navbar {
             position: fixed;
-            /* เปลี่ยนจาก fixed เป็น sticky */
             top: 0;
             left: 0;
             width: 100%;
@@ -200,6 +199,3 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
             }
         });
     </script>
-</body>
-
-</html>
