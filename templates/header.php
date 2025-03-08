@@ -80,6 +80,7 @@ $endDate = isset($data['endDate']) ? $data['endDate'] : '';
         .navbar-toggler-icon {
             background-color: #fff;
         }
+        
 
         .search-results {
             display: none;

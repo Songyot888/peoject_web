@@ -1,12 +1,12 @@
-<?php require_once 'header.php' ?>
-
-<?php
+<?php 
+    require_once 'header.php' ;
     $events = getAllEvents();
     $joined_events = getUserJoinedEvents($_SESSION['User_id']);
     $joined_event_ids = array_map(function($event) {
         return $event['Event_id'];
     }, $joined_events);
 ?>
+
 <style>
     
 body {
