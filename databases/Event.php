@@ -120,9 +120,6 @@ function getJoinedEventsById($user_id) {
 }
 
 
-
-
-
 function searchEvent(string $search, $startDate = null, $endDate = null): array
 {
     $conn = getConnection();

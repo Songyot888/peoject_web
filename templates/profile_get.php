@@ -308,7 +308,7 @@ body, .container {
                 <h2><?php echo !empty($user['Name']) ? $user['Name'] : 'No Name available'; ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
                 <p>เพศ: <?php !empty($user['gender']) ? $user['gender'] : 'No gender available'; ?> </p>
-                
+
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">
@@ -377,8 +377,8 @@ body, .container {
                             <div class="activity-card-img" style="background-image: url('<?php echo $joined['image_url']; ?>');"></div>
                            
                             <div class="activity-card-content">
-                                <h4><?php echo htmlspecialchars($joined['Eventname']); ?></h4>
-                                <p><?php echo htmlspecialchars($joined['description']); ?></p>
+                                <h4><?php echo $joined['Eventname']; ?></h4>
+                                <p><?php echo $joined['description']; ?></p>
                                 <p style="gap: 8px;">
                                     <strong>สถานะ:</strong>
                                     <span style="width: 12px; height: 12px; border-radius: 50%; display: inline-block; background-color:
