@@ -10,6 +10,7 @@ if (!isset($_SESSION['User_id'])) {
 $user_id = $_SESSION['User_id'];
 $user = getUserById($user_id);
 $events = getUserEventsById($user_id);
+// var_dump($events);
 $joined_events = getUserJoinedEvents($user_id);
 $img = getEventImages($events);
 ?>
@@ -434,10 +435,14 @@ $img = getEventImages($events);
                                     </span>
                                 </p>
                                 <?php if ($joined['status'] === 'approved'): ?>
-                                    <form action="/checkin?event_id=<?php echo $event_id; ?>" method="POST">
-                                        <input type="hidden" name="event_id" value="<?= $joined['Event_id']; ?>">
-                                        <button type="submit" class="checkin-btn">เช็คอิน</button>
-                                    </form>
+                                    <?php if ($joined['check_in'] == 1): ?>
+                                        <p>เช็คอินแล้ว</p>
+                                    <?php else: ?>
+                                        <form action="/checkin" method="POST">
+                                            <input type="hidden" name="event_id" value="<?= $joined['Event_id']; ?>">
+                                            <button name="checkin" type="submit" class="checkin-btn">เช็คอิน</button>
+                                        </form>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
