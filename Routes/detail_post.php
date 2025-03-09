@@ -5,9 +5,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['edit'])){
         
 
-        $result = getEventById($event_id);
+        $result = getEventById($eid);
 
         randerView('edit_get', ['event_id' => $result]);
+        
     } elseif(isset($_POST['delete'])){
         $resultdl = deleteEvent($eid);
         if ($resultdl) {
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif(isset($_POST['view'])){
 
         $result = getEventById($eid);
-        
+
         randerView('approval_at_get', ['event_id' => $result]);
     }
 }

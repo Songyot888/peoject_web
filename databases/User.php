@@ -76,8 +76,7 @@ function updateUser($username, $email, $phone, $address, $birthday, $image, $uid
             return false;
         }
     } else {
-        // กรณีไม่มีการอัปโหลดรูปภาพใหม่
-        // ตรวจสอบก่อนว่าผู้ใช้มีรูปภาพเดิมอยู่หรือไม่
+
         $sql = "SELECT img_url FROM User WHERE User_id=?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $uid);
@@ -86,7 +85,7 @@ function updateUser($username, $email, $phone, $address, $birthday, $image, $uid
         $stmt->fetch();
         $stmt->close();
         
-        $imagePath = $currentImagePath; // ใช้รูปภาพเดิมถ้าไม่มีการอัปโหลดใหม่
+        $imagePath = $currentImagePath;
     }
 
     $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?, birthday=?, img_url=? WHERE User_id=?";

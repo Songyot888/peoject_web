@@ -10,7 +10,7 @@ if (isset($_POST['event_id'])) {
         $sdate = $event['start_date'];
         $ddate = $event['end_date'];
 
-        $eventImages = getEventImages($eid);
+        $eventImages = getEventImage($eid);
     } else {
         echo "ไม่พบกิจกรรม";
     }
@@ -72,7 +72,7 @@ if (isset($_POST['event_id'])) {
     }
 
     .carousel-images img {
-        width: 400px;
+        width: 300px;
         height: 250px;
         object-fit: cover;
         border-radius: 10px;
@@ -187,37 +187,40 @@ if (isset($_POST['event_id'])) {
         <div class="form-container">
             <div class="carousel-container">
                 <div class="carousel-images">
-                    <?php
-                    if (!empty($eventImages)) {
-                        foreach ($eventImages as $image) {
-                            echo '<img src="' . $image . '" alt="Activity Image">';
+                    <div class="carousel-images">
+                        <?php
+                        // Check if eventImages array is not empty
+                        if (!empty($eventImages['images'])) {
+                            foreach ($eventImages['images'] as $image) {
+                                echo '<img src="' . $image . '" alt="Activity Image">';
+                            }
+                        } else {
+                            echo '<p>No images available for this event.</p>';
                         }
-                    } else {
-                        echo '<p>No images available for this event.</p>';
-                    }
-                    ?>
+                        ?>
+                    </div>
                 </div>
                 <button class="carousel-button carousel-button-left" onclick="prevImage()">❮</button>
                 <button class="carousel-button carousel-button-right" onclick="nextImage()">❯</button>
             </div>
             <div class="activity-details">
                 <p class="activity-description">
-                    <?php echo htmlspecialchars($activityDetails); ?>
+                    <?php echo $activityDetails; ?>
                 </p>
                 <div class="button-container">
                     <form action="/detail" method="post">
                         <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="view" class="view-button" >View</button>
+                        <button type="submit" name="view" class="view-button">View</button>
                     </form>
                     <form action="/detail" method="post">
                         <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="edit" class="edit-button" >Edit</button>
+                        <button type="submit" name="edit" class="edit-button">Edit</button>
                     </form>
                     <form action="/detail" method="post">
                         <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="delete" class="delete-button" >Delete</button>
+                        <button type="submit" name="delete" class="delete-button">Delete</button>
                     </form>
-                    
+
                 </div>
             </div>
         </div>
@@ -227,11 +230,11 @@ if (isset($_POST['event_id'])) {
 <script>
     let currentIndex = 0;
     const images = document.querySelectorAll('.carousel-images img');
-    
+
     function updateCarousel() {
         const totalImages = images.length;
-        const newTransform = -currentIndex * 250; // Adjusting based on image width
-        document.querySelector('.carousel-images').style.transform = `translateX(${newTransform}px)`;
+        const newTransform = -currentIndex * 300; // Adjusting based on image width
+        document.querySelector('.carousel-images').style.transform = `translateX(${newTransform}px)`; // Corrected syntax with template literals
     }
 
     function prevImage() {

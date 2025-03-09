@@ -190,7 +190,6 @@ function deleteEvent($event_id) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // ลบไฟล์ภาพออกจากเซิร์ฟเวอร์
     while ($row = $result->fetch_assoc()) {
         $imagePath = $row['url'];
         if (!empty($imagePath)) {
@@ -208,14 +207,13 @@ function deleteEvent($event_id) {
 
     $stmt->close();
 
-    // ลบรายการภาพออกจากตาราง event_images
+    // ลบรายการภาพออกจากตาราง Event_Img
     $sql = "DELETE FROM Event_Img WHERE Event_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $event_id);
     $stmt->execute();
     $stmt->close();
 
-    // ลบรูปภาพในตาราง Event (ถ้ามี)
     $sql = "SELECT image_url FROM Event WHERE Event_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $event_id);
@@ -233,7 +231,12 @@ function deleteEvent($event_id) {
         }
     }
 
-    // ลบกิจกรรมจากตาราง events
+    $deleteUserEventQuery = "DELETE FROM User_Event WHERE event_id = ?";
+    $stmt = $conn->prepare($deleteUserEventQuery);
+    $stmt->bind_param("i", $event_id);
+    $stmt->execute();
+    $stmt->close();
+
     $sql = "DELETE FROM Event WHERE Event_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $event_id);
@@ -243,6 +246,7 @@ function deleteEvent($event_id) {
 
     return $success;
 }
+
 
 
 
