@@ -343,11 +343,11 @@ $img = getEventImages($events);
     <div class="container">
         <!-- ส่วนโปรไฟล์ -->
         <div class="profile">
-            <img src="<?php echo $user['img_url'] ?? '' ?>" alt="">
+        <img src="<?php echo !empty($user['img_url']) ? $user['img_url'] : 'default-image.jpg'; ?>" >
             <div class="profile-name">
                 <h2><?php echo !empty($user['Name']) ? $user['Name'] : 'No Name available'; ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
-                <p>เพศ: <?php !empty($user['gender']) ? $user['gender'] : 'No gender available'; ?> </p>
+                <p>เพศ: <?php echo !empty($user['gender']) ? $user['gender'] : 'No gender available'; ?> </p>
 
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>

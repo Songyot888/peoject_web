@@ -8,6 +8,8 @@
 
     $User_id = $_SESSION['User_id'];
     $user = getUserById($User_id);
+   
+
 
 ?>
 
@@ -206,6 +208,7 @@ label {
                 <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
             </div>
 
+            <input type="hidden" name="uid" value="<?php echo $user['User_id']; ?>" >
             <label for="username">Full Name</label>
             <input type="text" name="username" value="<?php echo $user['Name']; ?>" placeholder="Full Name">
 
@@ -224,12 +227,6 @@ label {
             <button type="submit" class="edit-profile-button">ยืนยัน</button>
             <button type="button" class="cancel-button" onclick="window.location.href='/profile'">ยกเลิก</button>
         </form>
-        <?php echo $user['User_id']; ?>
-        <?php echo $user['Name']; ?>
-        <?php echo $user['Email']; ?>
-        <?php echo $user['phone']; ?>
-        <?php echo $user['Addss']; ?>
-        <?php echo $user['birthday']; ?>
     </div>
 </section>
 
