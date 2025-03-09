@@ -119,66 +119,50 @@ function getJoinedEventsById($user_id) {
     return $events;
 }
 
-function getSearchByKeyword(string $keyword, string $startDate = '', string $endDate = ''): mysqli_result|bool {
+
+
+
+
+function searchEvent(string $search, $startDate = null, $endDate = null): array
+{
     $conn = getConnection();
-    // เริ่มต้นคำสั่ง SQL
-    $sql = "SELECT * FROM Event WHERE 1";
-
-    // ถ้ามีคำค้นหาก็ใช้ LIKE
-    if (!empty($keyword)) {
-        $sql .= " AND Eventname LIKE ?";
-    }
-
-    // ถ้ามีช่วงวันที่, ให้เพิ่มเงื่อนไขในการกรอง
-    if (!empty($startDate) && !empty($endDate)) {
-        $sql .= " AND start_date >= ? AND end_date <= ?";
-    } elseif (!empty($startDate)) {
-        // ถ้ามีแต่ Start
-        $sql .= " AND start_date >= ?";
-    } elseif (!empty($endDate)) {
-        // ถ้ามีแต่ End
-        $sql .= " AND end_date <= ?";
-    }
-
-    // Debug SQL และพารามิเตอร์ที่ส่งไป
-    error_log("SQL: $sql");
-
-    // สร้างพารามิเตอร์
+    $sql = "SELECT * FROM Event WHERE Eventname LIKE ?";
     $params = [];
-    $types = '';
-
-    // ถ้ามีคำค้น
-    if (!empty($keyword)) {
-        $params[] = "%$keyword%";
-        $types .= 's';
-    }
-
-    // เพิ่มพารามิเตอร์สำหรับช่วงวันที่
-    if (!empty($startDate)) {
-        $params[] = $startDate;
-        $types .= 's';
-    }
+    $types = "s";
     
-    if (!empty($endDate)) {
+    // เพิ่ม wildcard (%) เพื่อให้ค้นหาได้ถูกต้อง
+    $search = "%" . $search . "%";
+    $params[] = $search;
+
+    if (!empty($startDate) && !empty($endDate)) {
+        $sql .= " AND start_date BETWEEN ? AND ?";
+        $params[] = $startDate;
         $params[] = $endDate;
-        $types .= 's';
+        $types .= "ss";
     }
 
-    // เตรียมการคำสั่ง SQL
     $stmt = $conn->prepare($sql);
-    if ($stmt === false) {
-        error_log("Prepare failed: " . $conn->error);
-        return false;
-    }
-
-    // Bind พารามิเตอร์
     $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
-    $stmt->close();
-    $conn->close();
-    return $result;
+
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
+function searchEvents(string $keyword): array
+{
+    $conn = getConnection();
+    $sql = 'SELECT * FROM event WHERE eventname LIKE ?';
+    $stmt = $conn->prepare($sql);
+    $keyword = '%' . $keyword . '%';
+    $stmt->bind_param('s', $keyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+
+
+
 
 function deleteEvent($event_id) {
     $conn = getConnection();
@@ -243,6 +227,7 @@ function deleteEvent($event_id) {
 
     return $success;
 }
+
 
 
 

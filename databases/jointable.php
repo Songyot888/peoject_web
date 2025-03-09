@@ -47,6 +47,8 @@ function getUserJoinedEvents($user_id) {
 }
 
 
+
+
 // randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
@@ -63,12 +65,7 @@ function updateUserStatus($user_id, $status, $event_id) {
         $update_sql = "UPDATE User_Event SET status = ? WHERE User_id = ? AND Event_id = ?";
         $update_stmt = $conn->prepare($update_sql);
         $update_stmt->bind_param("sii", $status, $user_id, $event_id);
-        if ($update_stmt->execute()) {
-            header('Location: /approval_at?eid='.$event_id);
-        } else {
-            header('Location: /approval_at?eid='.$event_id);
-            exit;
-        }
+        $update_stmt->execute();
         $update_stmt->close();
     }
 
@@ -81,7 +78,7 @@ function updateUserStatus($user_id, $status, $event_id) {
 function registerUserForEvent($user_id, $event_id) {
 
     $conn = getConnection(); 
-    $conn->query("ALTER TABLE User_Event AUTO_INCREMENT = 1");
+    $conn->query("ALTER TABLE User AUTO_INCREMENT = 1");
 
     $sql = "INSERT INTO User_Event (User_id, Event_id) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
