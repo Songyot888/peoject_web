@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data['alert'] = "แก้ไขกิจกรรมสำเร็จ";
         header('Location: /profile');
     } else {
+        header('Location: /profile');
         $data['alert'] = "แก้ไขกิจกรรมไม่สำเร็จ";
         echo $data['alert'];
     }
@@ -42,4 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data['alert'] = "Invalid request";
     echo $data['alert'];
 }
+
+
 ?>
