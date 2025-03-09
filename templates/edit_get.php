@@ -239,6 +239,7 @@ $imagePath = getEventImage($data['event_id']['Event_id']);
 
 <script>
     function goBack() {
-        window.history.back();
+        
+        window.location.href = '/profile';
     }
 </script>
