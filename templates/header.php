@@ -155,8 +155,7 @@ body {
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a class="nav-link" href="/main">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                            
                         </ul>
                         <form class="d-flex position-relative" role="search" method="GET" action="/search">
                             <input class="form-control me-2" type="search" name="search" placeholder="Search events" value="<?php echo htmlspecialchars($search); ?>" >
