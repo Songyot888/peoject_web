@@ -31,17 +31,21 @@ body {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* จัดกลางเนื้อหาทั้งหมด */
+    overflow-y: auto;
     width: 100%;
     max-width: 1200px;
-    min-height: 100vh;
+    min-height: 100vh; /* เพิ่มพื้นที่ให้เต็มหน้าจอ */
     padding: 30px;
-    padding-top: 20px;
-    margin: 30px auto 0; /* เพิ่ม margin-top เพื่อไม่ให้ติดกับ navbar */
+    padding-top: 80px; /* เพิ่มพื้นที่ด้านบน */
+    margin: 0 auto;
     background-color: #f4f7fa;
     border-radius: 15px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative; /* กำหนดให้ .container เป็น relative */
 }
-
 .navbar {
     margin-bottom: 20px; /* เพิ่ม margin-bottom เพื่อให้ห่างจาก container */
 }
@@ -60,10 +64,10 @@ body {
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    bottom: 30px; /* ตำแหน่งจากขอบล่าง */
-    right: 30px; /* ตำแหน่งจากขอบขวา */
-    z-index: 1000; /* ให้ปุ่มแสดงอยู่บนสุด */
+    position: sticky    ; /* ปักหมุดอยู่ที่ตำแหน่ง fixed */
+    bottom: 30px; /* กำหนดระยะห่างจากขอบล่าง */
+    right: 30px; /* กำหนดระยะห่างจากขอบขวา */
+    z-index: 1000; /* ปุ่มแสดงอยู่ด้านบนสุด */
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
@@ -85,26 +89,24 @@ body, .container {
     transition: transform 0.1s ease-out;
 }
 
-/* เพิ่มการขยับขึ้น-ลงแบบเบา ๆ ให้มันสมูธ */
 @keyframes smooth-up-down {
     0% {
         transform: translateY(0);
     }
     25% {
-        transform: translateY(-15px); /* ขยับขึ้นเล็กน้อย */
+        transform: translateY(-15px);
     }
     50% {
-        transform: translateY(0); /* กลับไปตำแหน่งเดิม */
+        transform: translateY(0);
     }
     75% {
-        transform: translateY(-10px); /* ขยับขึ้นอีกนิด */
+        transform: translateY(-10px);
     }
     100% {
-        transform: translateY(0); /* กลับไปตำแหน่งเดิม */
+        transform: translateY(0);
     }
 }
 
-/* ใช้ animation ให้ปุ่มขยับขึ้น-ลง */
 .add-event-button {
     animation: smooth-up-down 2s ease-in-out infinite;
 }
@@ -114,10 +116,12 @@ body, .container {
     align-items: center;
     background: white;
     padding: 25px;
+    flex-shrink: 0;
+    flex-grow: 1;
     border-radius: 20px;
     box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
     justify-content: space-between;
-    margin-bottom: 40px;
+    margin-top: 450px;
     gap: 20px;
 }
 
@@ -334,7 +338,7 @@ body, .container {
 
         <!-- ส่วนกิจกรรม -->
         <div class="activity-section">
-            <h3>กิจกรรมที่สร้าง</h3>
+            <h3 style="margin-top: 40px;">กิจกรรมที่สร้าง</h3>
 
             <!-- ปุ่มเพิ่มกิจกรรม -->
             <button class="add-event-button" onclick="window.location.href='/create'">
