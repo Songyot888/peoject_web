@@ -1,5 +1,6 @@
 <?php
-   
+   $eventImages = getEventImage($data['event_id']['Event_id']);
+   $count = countParticipants($data['event_id']['Event_id']);
 ?>
     <style>
         body {
@@ -42,13 +43,38 @@
         }
     </style>
 
-    <div class="container">
-        <h1><?php echo htmlspecialchars($event['Eventname']); ?></h1>
-        <p><strong>Participants:</strong> <?php echo htmlspecialchars($event['Max_participants']); ?></p>
-        <p><strong>Start Date:</strong> <?php echo htmlspecialchars($event['start_date']); ?></p>
-        <p><strong>End Date:</strong> <?php echo htmlspecialchars($event['end_date']); ?></p>
-        <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($event['description'])); ?></p>
-        <img src="../public/uploads/<?php echo htmlspecialchars($event['image_url']); ?>" alt="Event Image" style="max-width: 500px;">
-        <p><strong>Status:</strong> <?php echo htmlspecialchars($event['status_event']); ?></p>
+<section>
+    <div class="regis-at-container">
+        <div class="activity-container">
+            <h1><?php echo $data['event_id']['Eventname']; ?></h1>
+            <div class="activity-image">
+                <?php
+                if (!empty($eventImages['images'])) {
+                    foreach ($eventImages['images'] as $image) {
+                        echo '<img src="' . $image . '" alt="Activity Image">';
+                    }
+                } else {
+                    echo '<p>No images available for this event.</p>';
+                }
+                ?>
+            </div>
+            <div class="activity-details">
+                <p class="activity-description">
+                    <?php echo htmlspecialchars($data['event_id']['description']); ?>
+                </p>
+                <p class="activity-description">
+                  วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
+                </p>
+                <p class="activity-description">
+                  สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
+                </p>
+                <div class="status-container">
+                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
+                    <div class="status-dot green"></div>
+                </div>
+                <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
+            </div>
+        </div>
     </div>
+</section>
 

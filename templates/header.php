@@ -159,10 +159,12 @@ body {
                             <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                         </ul>
                         <form class="d-flex position-relative" role="search" method="GET" action="/search">
-                            <input class="form-control me-2" type="search" name="keyword" placeholder="ค้นหากิจกรรม">
-                            <input class="form-control me-2" type="date" name="start_date" placeholder="Start Date">
-                            <input class="form-control me-2" type="date" name="end_date" placeholder="End Date">
-                            <button class="btn btn-outline-light" type="submit">ค้นหา</button>
+                            <input class="form-control me-2" type="search" name="search" placeholder="Search events" value="<?php echo htmlspecialchars($search); ?>" >
+                            <input class="form-control me-2" type="date" name="startDate" placeholder="Start Date From" value="<?php echo htmlspecialchars($startDate); ?>">
+                            <input class="form-control me-2" type="date" name="endDate" placeholder="Start Date To" value="<?php echo htmlspecialchars($startDate); ?>">
+
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+                            <div class="search-results p-2" id="search-results"></div>
                         </form>
                         <button class="btn logout-btn" onclick="window.location.href='/login'">ออกจากระบบ</button>
                     </div>

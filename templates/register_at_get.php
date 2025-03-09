@@ -1,12 +1,10 @@
 <?php require_once 'header.php' ?>
 <?php
-if (isset($_GET['eid'])) {
-    $eid = $_GET['eid'];
-    $event = getEventById($eid);
-} else {
-    echo "ไม่ได้รับ eid";
-}
+    $event = getEventById($data['event_id']['Event_id']);
+    $eventImages = getEventImage($data['event_id']['Event_id']);
+    $count = countParticipants($data['event_id']['Event_id']);
 ?>
+
 <style>
     body {
         background: linear-gradient(135deg, #d0e9f7, #ffffff);
@@ -46,10 +44,27 @@ if (isset($_GET['eid'])) {
 
     .activity-container {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 30px;
         flex-wrap: wrap;
         transition: all 0.3s ease-in-out;
+    }
+
+    /* Carousel Styles */
+    .carousel-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        position: relative;
+        max-width: 500px;
+        margin-right: 30px;
+        height: 280px; /* Fixed height for vertical scroll */
+        overflow-y: scroll; /* Enable vertical scrolling */
+    }
+
+    .carousel {
+        display: flex;
+        flex-direction: column;
     }
 
     .activity-image {
@@ -57,22 +72,11 @@ if (isset($_GET['eid'])) {
         height: 280px;
         object-fit: cover;
         border-radius: 15px;
-        margin-bottom: 20px;
+        margin: 5px 0; /* Vertical margin between images */
         border: 3px solid #3498db;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .activity-image img {
-        width: 100%;
-        height: 100%;
-        border-radius: 15px;
-    }
-
-    .activity-image:hover {
-        transform: scale(1.05);
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    }
-
+    /* Activity Details */
     .activity-details {
         color: #333;
         text-align: left;
@@ -177,30 +181,44 @@ if (isset($_GET['eid'])) {
     }
 </style>
 
-
-
 <section>
     <div class="regis-at-container">
-        <h1>Activity</h1>
+        <h1><?php echo $data['event_id']['Eventname']; ?></h1>
+
+        <!-- Carousel Section -->
         <div class="activity-container">
-            <div class="activity-image">
-                <img src="activity-placeholder.jpg" alt="Activity Image">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <?php
+                    if (!empty($eventImages['images'])) {
+                        foreach ($eventImages['images'] as $image) {
+                            echo '<img class="activity-image" src="' . $image . '" alt="Activity Image">';
+                        }
+                    } else {
+                        echo '<p>No images available for this event.</p>';
+                    }
+                    ?>
+                </div>
             </div>
+
             <div class="activity-details">
                 <p class="activity-description">
-                    Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like running races, long jumps, and even fun games that bring laughter to everyone.
+                    <?php echo $data['event_id']['description']; ?>
+                </p>
+                <p class="activity-description">
+                  วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
+                </p>
+                <p class="activity-description">
+                  สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
                 </p>
                 <div class="status-container">
-                    <p class="status-text">จำนวนผู้เข้าร่วม: 0/50</p>
-                    <div class="status-dot green"></div>
+                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
                 </div>
                 <form action="/register_at" method="post">
-                <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
-                <button class="register-button" >เข้าร่วม</button>
-                <!-- <button onclick="window.location.href='/main'" class="back-button">กลับไปหน้าแรก</button> -->
-                <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
+                    <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
+                    <button class="register-button">เข้าร่วม</button>
+                    <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
                 </form>
-                
             </div>
         </div>
     </div>

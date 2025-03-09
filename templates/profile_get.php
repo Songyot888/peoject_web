@@ -308,6 +308,7 @@ body, .container {
                 <h2><?php echo !empty($user['Name']) ? $user['Name'] : 'No Name available'; ?></h2>
                 <p>ตำแหน่ง: ผู้ดูแลระบบ</p>
                 <p>เพศ: <?php !empty($user['gender']) ? $user['gender'] : 'No gender available'; ?> </p>
+                
                 <button onclick="window.location.href='/profile_edit'">แก้ไขโปรไฟล์</button>
             </div>
             <div class="profile-info">

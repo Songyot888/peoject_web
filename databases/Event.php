@@ -129,7 +129,7 @@ function searchEvent(string $search, $startDate = null, $endDate = null): array
     $sql = "SELECT * FROM Event WHERE Eventname LIKE ?";
     $params = [];
     $types = "s";
-    
+
     // เพิ่ม wildcard (%) เพื่อให้ค้นหาได้ถูกต้อง
     $search = "%" . $search . "%";
     $params[] = $search;
@@ -229,6 +229,18 @@ function deleteEvent($event_id) {
     $conn->close();
 
     return $success;
+}
+
+
+function countParticipants($eventId) {
+    $conn = getConnection();
+    $sql = "SELECT COUNT(*) as total FROM User_Event WHERE event_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
 }
 
 
