@@ -166,10 +166,6 @@
         <form method="POST" action="/approval_at">
             <div class="user-list">
                 <?php
-                // if (!$event) {
-                //     echo "<p>Error: Event information is missing or invalid.</p>";
-                //     exit;
-                // }
 
                 $users = join_event($data['event_id']['Event_id']);
                 $grouped_users = [];

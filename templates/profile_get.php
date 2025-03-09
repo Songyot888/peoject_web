@@ -415,8 +415,8 @@ $img = getEventImages($events);
                         <div class="activity-card">
                             <div class="activity-card-img" style="background-image: url('<?php echo $joined['image_url']; ?>');"></div>
                             <div class="activity-card-content">
-                                <h4><?php echo htmlspecialchars($joined['Eventname']); ?></h4>
-                                <p><?php echo htmlspecialchars($joined['description']); ?></p>
+                                <h4><?php echo $joined['Eventname']; ?></h4>
+                                <p><?php echo $joined['description']; ?></p>
                                 <p style="gap: 8px;">
                                     <strong>สถานะ:</strong>
                                     <span style="width: 12px; height: 12px; border-radius: 50%; display: inline-block; background-color:
