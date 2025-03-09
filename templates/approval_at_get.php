@@ -1,4 +1,3 @@
-
 <style>
     * {
         margin: 0;
@@ -138,10 +137,31 @@
     .apply-button:hover {
         background-color: #1e88e5;
     }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        z-index: 10;
+        /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
 </style>
 
 <section>
     <div class="approval-container">
+        <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
         <form method="POST" action="/approval_at">
             <div class="user-list">

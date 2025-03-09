@@ -179,10 +179,32 @@ if (isset($_POST['event_id'])) {
             height: 200px;
         }
     }
+
+    /* ปุ่มย้อนกลับ */
+    .back-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        z-index: 10;
+        /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
 </style>
 
 <section>
     <div class="editview-container">
+        <button class="back-button" onclick="window.history.back()">← Back</button>
         <h1>View Activity</h1>
         <div class="form-container">
             <div class="carousel-container">
