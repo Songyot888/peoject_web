@@ -34,119 +34,92 @@ $img = getEventImages($events);
     }
 
     .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        /* จัดกลางเนื้อหาทั้งหมด */
-        overflow-y: auto;
-        width: 100%;
-        max-width: 1200px;
-        min-height: 100vh;
-        /* เพิ่มพื้นที่ให้เต็มหน้าจอ */
-        padding: 30px;
-        padding-top: 80px;
-        /* เพิ่มพื้นที่ด้านบน */
-        margin: 0 auto;
-        background-color: #f4f7fa;
-        border-radius: 15px;
-        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-        position: relative;
-        /* กำหนดให้ .container เป็น relative */
-    }
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 700px;
+    width: 100%; /* ให้เต็มความกว้าง */
+    max-width: 1200px;
+    background-color: #f4f7fa;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+    position: relative;
+    padding-bottom: 30px;
+}
     .navbar {
         margin-bottom: 20px;
-        /* เพิ่ม margin-bottom เพื่อให้ห่างจาก container */
     }
 
     .add-event-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #007bff, #00d4ff);
-        color: white;
-        width: 70px;
-        height: 70px;
-        font-size: 2.5em;
-        font-weight: bold;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
-        position: sticky;
-        /* ปักหมุดอยู่ที่ตำแหน่ง fixed */
-        bottom: 30px;
-        /* กำหนดระยะห่างจากขอบล่าง */
-        right: 30px;
-        /* กำหนดระยะห่างจากขอบขวา */
-        z-index: 1000;
-        /* ปุ่มแสดงอยู่ด้านบนสุด */
-        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #007bff, #00d4ff);
+    color: white;
+    width: 70px;
+    height: 70px;
+    font-size: 2.5em;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.2);
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.add-event-button:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #0056b3, #00aaff);
+}
+
+.add-event-button:active {
+    transform: translateY(5px);
+    transition: transform 0.1s ease-out;
+}
+
+.add-event-button {
+    animation: smooth-up-down 2s ease-in-out infinite;
+}
+
+@keyframes smooth-up-down {
+    0% {
+        transform: translateY(0);
     }
-
-    /* เพิ่มการควบคุมค่า z-index ของ container */
-    body,
-    .container {
-        position: relative;
-        /* ควบคุมตำแหน่งขององค์ประกอบ */
+    25% {
+        transform: translateY(-15px);
     }
-
-
-    /* การเคลื่อนที่ขึ้น-ลงแบบสมูธ */
-    .add-event-button:hover {
+    50% {
+        transform: translateY(0);
+    }
+    75% {
         transform: translateY(-10px);
-        /* ทำให้ปุ่มเคลื่อนที่ขึ้นเมื่อ hover */
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-        /* เพิ่มเงาให้ชัดขึ้นเมื่อ hover */
-        background: linear-gradient(135deg, #0056b3, #00aaff);
-        /* เปลี่ยนสีเมื่อ hover */
     }
-
-    .add-event-button:active {
-        transform: translateY(5px);
-        /* เมื่อคลิก ปุ่มจะขยับลง */
-        transition: transform 0.1s ease-out;
+    100% {
+        transform: translateY(0);
     }
+}
 
-    @keyframes smooth-up-down {
-        0% {
-            transform: translateY(0);
-        }
+.profile {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
 
-        25% {
-            transform: translateY(-15px);
-        }
-
-        50% {
-            transform: translateY(0);
-        }
-
-        75% {
-            transform: translateY(-10px);
-        }
-
-        100% {
-            transform: translateY(0);
-        }
-    }
-
-    .add-event-button {
-        animation: smooth-up-down 2s ease-in-out infinite;
-    }
-
-    .profile {
-        display: flex;
-        align-items: center;
-        background: white;
-        padding: 25px;
-        flex-shrink: 0;
-        flex-grow: 1;
-        border-radius: 20px;
-        box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
-        justify-content: space-between;
-        margin-top: 450px;
-        gap: 20px;
-    }
 
     .profile img {
         width: 130px;
@@ -219,51 +192,49 @@ $img = getEventImages($events);
     }
 
     .activity-left {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        justify-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px 0;
-    }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    justify-content: start;
+    width: 100%;
+    padding: 30px 0;
+    margin-top: 80px;
+    overflow-x: auto;
+}
 
-    .activity-card {
-        padding: 15px;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 15px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        height: 380px;
-        width: 280px;
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+.activity-card {
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 450px;
+    min-width: 280px;
+    max-width: 350px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .activity-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
-        border-color: #007bff;
-    }
+.activity-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #007bff;
+}
+.activity-card-img {
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    transition: border 0.3s ease;
+}
 
-    .activity-card-img {
-        height: 120px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 10px;
-        border: 2px solid #ddd;
-        transition: border 0.3s ease;
-    }
-
-    .activity-card-img:hover {
-        border-color: #007bff;
-    }
+.activity-card-img:hover {
+    border-color: #007bff;
+}
 
     .activity-card-content {
         padding: 15px;
@@ -302,7 +273,6 @@ $img = getEventImages($events);
     .menu-button {
         position: relative;
         z-index: 2000;
-        /* เพิ่ม z-index ให้สูงกว่า */
     }
 
     .back-button {
@@ -315,7 +285,6 @@ $img = getEventImages($events);
         transition: background-color 0.3s ease;
         font-size: 1.1em;
         margin-top: 20px;
-        /* ใส่ช่องว่างด้านบน */
     }
 
     .back-button:hover {
@@ -323,20 +292,30 @@ $img = getEventImages($events);
     }
 
     .checkin-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: #28a745;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        margin-top: 10px;
-        font-weight: bold;
-        transition: background 0.3s;
-    }
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+    box-shadow: 0px 5px 15px rgba(40, 167, 69, 0.3);
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
 
-    .checkin-btn:hover {
-        background-color: #218838;
-    }
+.checkin-btn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+    box-shadow: 0px 10px 20px rgba(40, 167, 69, 0.5);
+}
+
+.checkin-btn:active {
+    background-color: #1e7e34;
+    transform: scale(0.98);
+}
+
 </style>
 
 <section>
@@ -379,7 +358,7 @@ $img = getEventImages($events);
 
         <!-- ส่วนกิจกรรม -->
         <div class="activity-section">
-            <h3 style="margin-top: 40px;">กิจกรรมที่สร้าง</h3>
+            <h3 style="margin-top: 300px;">กิจกรรมที่สร้าง</h3>
 
             <!-- ปุ่มเพิ่มกิจกรรม -->
             <button class="add-event-button" onclick="window.location.href='/create'">
