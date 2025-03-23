@@ -49,22 +49,21 @@ body {
 }
 
 .activity-image {
-    width: 150px;
-    height: 150px;
+    width: 100px; /* ลดขนาดให้เล็กลง */
+    height: 100px;
     border-radius: 10px;
-    border: 3px solid #3498db;
+    border: 2px solid #3498db; /* ปรับเส้นขอบให้เล็กลง */
     overflow: hidden;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(52, 152, 219, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     transition: all 0.3s ease;
-    transform: scale(1);
-    opacity: 0;
-    animation: imageFadeIn 0.6s forwards ease-in-out;
 }
+
+
 
 @keyframes imageFadeIn {
     0% {
@@ -189,6 +188,32 @@ button:focus {
 button:active {
     transform: scale(0.98);
 }
+
+.preview-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .preview-item {
+        position: relative;
+        text-align: center;
+    }
+    .preview-item img {
+        max-width: 100px;
+        border-radius: 5px;
+        display: block;
+    }
+    .preview-number {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 2px 5px;
+        font-size: 12px;
+        border-radius: 3px;
+    }
   
 </style>
 
@@ -203,7 +228,7 @@ button:active {
             <input type="file" id="file-upload" name="images[]" accept="image/*" multiple onchange="previewFile()">
         </div>
 
-        <div id="preview-container"></div>
+        <div id="preview-container" class="preview-grid"></div>
 
         <input type="text" name="activity-name" placeholder="ใส่ชื่อกิจกรรม" required>
         <input type="number" name="participants" placeholder="จำนวนผู้เข้าร่วมสูงสุด" required>
@@ -224,15 +249,24 @@ button:active {
     function previewFile() {
         const files = document.getElementById("file-upload").files;
         const previewContainer = document.getElementById("preview-container");
-        previewContainer.innerHTML = ''; // Clear previous previews
+        previewContainer.innerHTML = ''; // เคลียร์รูปเก่าก่อน
 
-        Array.from(files).forEach(file => {
+        Array.from(files).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
+                const previewItem = document.createElement("div");
+                previewItem.classList.add("preview-item");
+
                 const img = document.createElement("img");
                 img.src = e.target.result;
-                img.style.maxWidth = "100px"; // Optional: limit image size
-                previewContainer.appendChild(img);
+
+                const numberLabel = document.createElement("div");
+                numberLabel.classList.add("preview-number");
+                numberLabel.innerText = index + 1; // กำหนดลำดับให้รูป
+
+                previewItem.appendChild(img);
+                previewItem.appendChild(numberLabel);
+                previewContainer.appendChild(previewItem);
             };
             reader.readAsDataURL(file);
         });

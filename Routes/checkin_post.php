@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['checkin'])) {
         
         randerView('checkin_get', ['event_id' => $events]);
+        
     } elseif (isset($_POST['ub'])) {
         if (isset($_POST['user_input'])) {
             $user_input = strtoupper(trim($_POST['user_input'])); 

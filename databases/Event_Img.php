@@ -5,11 +5,9 @@ function insertEventImages($event_id, $images) {
     
     if (isset($images['tmp_name'])) {
         foreach ($images['tmp_name'] as $key => $tmp_name) {
-            // เพิ่มรูปภาพถัดไปหลังจากรูปแรก
             if ($key > 0) {
                 $imagePath = $uploadDir . basename($images['name'][$key]);
                 if (move_uploaded_file($tmp_name, $imagePath)) {
-                    // เพิ่มรูปภาพเข้าไปใน Event_Img โดยอ้างอิงกับ event_id
                     $sql = 'INSERT INTO Event_Img (Event_id, url) VALUES (?, ?)';
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('is', $event_id, $imagePath);
@@ -109,19 +107,12 @@ function updateEventImages($imageFiles, $event_id, $old_image_url) {
 
     foreach ($imageFiles['tmp_name'] as $index => $tmpName) {
         if ($imageFiles['error'][$index] == 0) {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!in_array($imageFiles['type'][$index], $allowedTypes)) {
-                echo "ประเภทไฟล์ไม่ถูกต้อง!";
-                return false;
-            }
-
             $uploadDir = 'uploads/event/';
             $fileExtension = pathinfo($imageFiles['name'][$index], PATHINFO_EXTENSION);
             $fileName = uniqid('event_', true) . '.' . $fileExtension; 
             $filePath = $uploadDir . $fileName;
 
             if (move_uploaded_file($tmpName, $filePath)) {
-                // ลบรูปเดิมที่ต้องการเปลี่ยน
                 if ($old_image_url && file_exists($old_image_url)) {
                     unlink($old_image_url);
                 }

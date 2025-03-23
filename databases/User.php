@@ -63,10 +63,8 @@ function getUserById(int $id): array|bool
 
 function updateUser($username, $email, $phone, $address, $birthday, $image, $uid): bool {
     $conn = getConnection();
-    
-    // ตรวจสอบว่าเป็นการอัปโหลดรูปภาพใหม่หรือไม่
+
     if (isset($image) && $image['error'] == 0) {
-        // กรณีที่มีการอัปโหลดรูปภาพใหม่
         $uploadDir = 'uploads/profile/';
         $uploadFile = $uploadDir . basename($image['name']);
         if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
@@ -94,18 +92,18 @@ function updateUser($username, $email, $phone, $address, $birthday, $image, $uid
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssssi",  $username, $email, $phone, $address, $birthday, $imagePath, $uid);
 
-    // ถ้า execute สำเร็จ
+
     if ($stmt->execute()) {
         if ($stmt->affected_rows > 0) {
             error_log("Data updated successfully");
-            return true;  // ถ้าอัปเดตข้อมูลสำเร็จ
+            return true;
         } else {
             error_log("No data updated, affected rows: " . $stmt->affected_rows);
-            return false; // ถ้าไม่มีข้อมูลอัปเดต
+            return false; 
         }
     } else {
         error_log("Execute failed: " . $stmt->error);
-        return false;  // ถ้า execute ล้มเหลว
+        return false; 
     }
 }
 

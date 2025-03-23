@@ -204,7 +204,7 @@ label {
     <div class="profile-container">
         <form class="profile-info" action="/profile_edit" method="POST" enctype="multipart/form-data">
             <div class="profile-image">
-                <img id="profile-img" src="profile-placeholder.jpg" alt="">
+                <img id="profile-img" src="<?php echo !empty($user['img_url']) ? $user['img_url'] : 'default-image.jpg'; ?>" alt="">
                 <input type="file" name="image" id="profile-pic" accept="image/*" onchange="previewImage(event)">
             </div>
 

@@ -7,12 +7,11 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
     $backgroundImagePath = null;
 
     if (isset($images)) {
-        $backgroundImage = $images['tmp_name'][0]; // รูปแรกจะเป็นภาพพื้นหลัง
+        $backgroundImage = $images['tmp_name'][0];
         $backgroundImagePath = $uploadDir . basename($images['name'][0]);
         move_uploaded_file($backgroundImage, $backgroundImagePath);
     }
 
-    // SQL คำสั่งบันทึกข้อมูลกิจกรรม
     $sql = 'INSERT INTO Event (Eventname, Max_participants, start_date, end_date, description, status_event, User_id, image_url) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     
@@ -20,7 +19,7 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
     $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $backgroundImagePath);
 
     if ($stmt->execute()) {
-        $event_id = $stmt->insert_id;  // Get the inserted event's ID
+        $event_id = $stmt->insert_id;
         $stmt->close();
         return $event_id;
     } else {
@@ -83,15 +82,15 @@ function getSearch(): mysqli_result|bool {
 function getUserEventsById($user_id) {
     $conn = getConnection();
 
-    $sql = "SELECT * FROM Event WHERE User_id = ?";  // เปลี่ยนเป็นชื่อของตารางและฟิลด์ตามที่คุณใช้
+    $sql = "SELECT * FROM Event WHERE User_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $events = [];
 
-    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
+
     while ($event = $result->fetch_assoc()) {
         $events[] = $event;
     }
@@ -102,16 +101,14 @@ function getUserEventsById($user_id) {
 function getJoinedEventsById($user_id) {
     $conn = getConnection();
 
-    // เขียน SQL Query เพื่อดึงกิจกรรมที่ผู้ใช้เข้าร่วม
     $sql = "SELECT * FROM Event WHERE Event_id IN (SELECT Event_id FROM JoinEvent WHERE User_id = ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $events = [];
 
-    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
     while ($event = $result->fetch_assoc()) {
         $events[] = $event;
     }
@@ -127,7 +124,6 @@ function searchEvent(string $search, $startDate = null, $endDate = null): array
     $params = [];
     $types = "s";
 
-    // เพิ่ม wildcard (%) เพื่อให้ค้นหาได้ถูกต้อง
     $search = "%" . $search . "%";
     $params[] = $search;
 
@@ -159,8 +155,6 @@ function searchEvents(string $keyword): array
 
 
 
-
-
 function deleteEvent($event_id) {
     $conn = getConnection();
 
@@ -188,7 +182,6 @@ function deleteEvent($event_id) {
 
     $stmt->close();
 
-    // ลบรายการภาพออกจากตาราง Event_Img
     $sql = "DELETE FROM Event_Img WHERE Event_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $event_id);
@@ -203,7 +196,6 @@ function deleteEvent($event_id) {
     $stmt->fetch();
     $stmt->close();
 
-    // ลบไฟล์จากเซิร์ฟเวอร์ถ้ามีรูปภาพใน Event
     if ($imagePathInEvent && file_exists($imagePathInEvent)) {
         if (unlink($imagePathInEvent)) {
             echo "Deleted image from Event: $imagePathInEvent\n";

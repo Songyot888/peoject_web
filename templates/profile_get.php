@@ -25,12 +25,13 @@ $img = getEventImages($events);
 
     body {
         font-family: 'Arial', sans-serif;
-        background-color: #f4f7fa;
-        color: #333;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+    background-color: #f4f7fa;
+    color: #333;
+    display: flex;
+    flex-direction: column; /* จัดเรียงองค์ประกอบแนวตั้ง */
+    align-items: center;
+    min-height: 100vh; /* ให้ body สูงเต็มจอ */
+    margin: 0;
     }
 
     .container {
@@ -41,8 +42,7 @@ $img = getEventImages($events);
         overflow-y: auto;
         width: 100%;
         max-width: 1200px;
-        min-height: 100vh;
-        /* เพิ่มพื้นที่ให้เต็มหน้าจอ */
+        /* min-height: 100vh; */
         padding: 30px;
         padding-top: 80px;
         /* เพิ่มพื้นที่ด้านบน */
@@ -144,7 +144,7 @@ $img = getEventImages($events);
         border-radius: 20px;
         box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
         justify-content: space-between;
-        margin-top: 450px;
+        margin-top: -5%;
         gap: 20px;
     }
 
@@ -338,7 +338,6 @@ $img = getEventImages($events);
         background-color: #218838;
     }
 </style>
-
 <section>
     <div class="container">
         <!-- ส่วนโปรไฟล์ -->
@@ -353,11 +352,11 @@ $img = getEventImages($events);
             </div>
             <div class="profile-info">
                 <div class="info-section">
-                    <h3>📧 Email</h3>
+                    <h3>📧 <br> Email</h3>
                     <p><?php echo !empty($user['Email']) ? $user['Email'] : 'No Email available'; ?></p>
                 </div>
                 <div class="info-section">
-                    <h3>📞 Phone</h3>
+                    <h3>📞<br> Phone</h3>
                     <p>
                         <?php echo !empty($user['phone']) ? $user['phone'] : 'No phone number available'; ?>
                     </p>
@@ -395,7 +394,6 @@ $img = getEventImages($events);
                                 <h4><?php echo htmlspecialchars($event['Eventname']); ?></h4>
                                 <p><?php echo htmlspecialchars($event['description']); ?></p>
                                 <form action="/profile" method="post">
-                                    <!-- <?php echo var_dump($event['Event_id']); ?> -->
                                     <input type="hidden" name="event_id" value="<?= $event['Event_id']; ?>';">
                                     <button type="submit" class="detail-button">Detail</button>
                                 </form>

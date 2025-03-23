@@ -48,8 +48,6 @@ function getUserJoinedEvents($user_id) {
 
 
 
-
-// randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
 
