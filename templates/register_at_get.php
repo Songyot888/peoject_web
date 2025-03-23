@@ -3,6 +3,17 @@
     $event = getEventById($data['event_id']['Event_id']);
     $eventImages = getEventImage($data['event_id']['Event_id']);
     $count = countParticipants($data['event_id']['Event_id']);
+
+    $joined_event_ids = []; // กำหนดเป็นอาร์เรย์ว่างก่อน
+
+    if (isset($_SESSION['User_id'])) {
+        $joined_events = getUserJoinedEvents($_SESSION['User_id']);
+        if (!empty($joined_events)) {
+            $joined_event_ids = array_map(function ($event) {
+                return $event['Event_id'];
+            }, $joined_events);
+        }
+    }
 ?>
 
 <style>
@@ -58,8 +69,8 @@
         position: relative;
         max-width: 500px;
         margin-right: 30px;
-        height: 280px; /* Fixed height for vertical scroll */
-        overflow-y: scroll; /* Enable vertical scrolling */
+        height: 280px;
+        overflow-y: scroll;
     }
 
     .carousel {
@@ -72,7 +83,7 @@
         height: 280px;
         object-fit: cover;
         border-radius: 15px;
-        margin: 5px 0; /* Vertical margin between images */
+        margin: 5px 0;
         border: 3px solid #3498db;
     }
 
@@ -185,7 +196,6 @@
     <div class="regis-at-container">
         <h1><?php echo $data['event_id']['Eventname']; ?></h1>
 
-        <!-- Carousel Section -->
         <div class="activity-container">
             <div class="carousel-container">
                 <div class="carousel">
@@ -214,11 +224,20 @@
                 <div class="status-container">
                     <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
                 </div>
-                <form action="/register_at" method="post">
-                    <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
-                    <button class="register-button">เข้าร่วม</button>
-                    <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
-                </form>
+
+                <!-- ตรวจสอบการเข้าร่วมกิจกรรม -->
+                <?php if (in_array($data['event_id']['Event_id'], $joined_event_ids)): ?>
+                    <!-- ถ้าเคยเข้าร่วมแล้ว -->
+                    <p class="status-text" style="color: red;">คุณได้เข้าร่วมกิจกรรมนี้แล้ว</p>
+                <?php else: ?>
+                    <!-- ถ้ายังไม่เข้าร่วมให้แสดงปุ่ม "เข้าร่วม" -->
+                    <form action="/register_at" method="post">
+                        <input type="hidden" name="eid" value="<?= $data['event_id']['Event_id'] ?>">
+                        <button class="register-button">เข้าร่วม</button>
+                        <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
+                    </form>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>

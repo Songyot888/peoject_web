@@ -20,186 +20,225 @@ if (isset($_POST['event_id'])) {
 ?>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #87CEFA;
-        font-family: Arial, sans-serif;
-        color: white;
-    }
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+/* Set the base font and background */
+html, body {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: #f0f8ff; /* Light Blue Background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for the main content */
+.editview-container {
+    background: rgba(255, 255, 255, 0.9); /* Slight transparency to give depth */
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1000px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow for a modern look */
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(8px); /* Blurred background effect */
+}
+
+/* Title styling */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #0066cc; /* Blue color for the title */
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Form container with flexible layout */
+.form-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+/* Styles for the image carousel */
+.carousel-container {
+    position: relative;
+    width: 320px;
+    height: 270px;
+    overflow: hidden;
+    border-radius: 15px;
+    background-color: #f7f9fc;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-images {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.carousel-images img {
+    width: 320px;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Carousel buttons */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 2rem;
+    border-radius: 50%;
+}
+
+.carousel-button-left {
+    left: 10px;
+}
+
+.carousel-button-right {
+    right: 10px;
+}
+
+/* Activity details block */
+.activity-details {
+    max-width: 650px;
+    text-align: left;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+/* Activity description styling */
+.activity-description {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.button-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 30px;
+}
+
+button {
+    padding: 14px 25px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* View button */
+.view-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.view-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Edit button */
+.edit-button {
+    background-color: #ff9900;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #e68a00;
+    transform: scale(1.05);
+}
+
+/* Delete button */
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
     .editview-container {
-        background: rgba(0, 0, 0, 0.8);
-        padding: 40px;
-        border-radius: 15px;
-        width: 80%;
-        max-width: 1000px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.7);
-        text-align: center;
-    }
-
-    h1 {
-        font-size: 2.8rem;
-        margin-bottom: 30px;
-        color: #ffffff;
+        width: 90%;
+        padding: 25px;
     }
 
     .form-container {
-        display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        gap: 40px;
-        flex-wrap: wrap;
-    }
-
-    /* Styles for image carousel */
-    .carousel-container {
-        position: relative;
-        width: 300px;
-        height: 250px;
-        overflow: hidden;
-        border-radius: 10px;
-        border: 2px solid #fff;
-    }
-
-    .carousel-images {
-        display: flex;
-        transition: transform 0.3s ease;
-    }
-
-    .carousel-images img {
-        width: 300px;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 10px;
-    }
-
-    .carousel-button {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        border: none;
-        padding: 10px;
-        cursor: pointer;
-        font-size: 1.5rem;
-    }
-
-    .carousel-button-left {
-        left: 10px;
-    }
-
-    .carousel-button-right {
-        right: 10px;
     }
 
     .activity-details {
-        max-width: 600px;
-        text-align: left;
-        padding: 20px;
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        color: black;
-    }
-
-    .activity-description {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
+        max-width: 90%;
+        text-align: center;
     }
 
     .button-container {
-        display: flex;
-        justify-content: space-around;
+        flex-direction: column;
+        gap: 20px;
     }
 
-    button {
-        padding: 12px 20px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+    .carousel-container {
+        width: 100%;
+        height: 220px;
     }
 
-    .view-button {
-        background-color: #007bff;
-        color: white;
+    .carousel-images img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
+}
 
-    .view-button:hover {
-        background-color: #0056b3;
-    }
+/* Back button */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 12px 25px;
+    font-size: 1.3rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
 
-    .edit-button {
-        background-color: #ffc107;
-        color: white;
-    }
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+}
 
-    .edit-button:hover {
-        background-color: #e0a800;
-    }
-
-    .delete-button {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    .delete-button:hover {
-        background-color: #c82333;
-    }
-
-    @media (max-width: 768px) {
-        .editview-container {
-            width: 90%;
-            padding: 20px;
-        }
-
-        .form-container {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .activity-details {
-            max-width: 90%;
-            text-align: center;
-        }
-
-        .button-container {
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .carousel-container {
-            width: 100%;
-            height: 200px;
-        }
-    }
-
-    /* ปุ่มย้อนกลับ */
-    .back-button {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        font-size: 1.2rem;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        z-index: 10;
-        /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
-    }
-
-    .back-button:hover {
-        background-color: rgba(0, 0, 0, 0.9);
-    }
 </style>
 
 <section>
