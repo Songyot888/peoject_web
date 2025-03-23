@@ -1,243 +1,212 @@
-<?php require_once 'header.php' ?>
 <?php
-    $event = getEventById($data['event_id']['Event_id']);
-    $eventImages = getEventImage($data['event_id']['Event_id']);
-    $count = countParticipants($data['event_id']['Event_id']);
-
-    $joined_event_ids = []; // กำหนดเป็นอาร์เรย์ว่างก่อน
-
-    if (isset($_SESSION['User_id'])) {
-        $joined_events = getUserJoinedEvents($_SESSION['User_id']);
-        if (!empty($joined_events)) {
-            $joined_event_ids = array_map(function ($event) {
-                return $event['Event_id'];
-            }, $joined_events);
-        }
-    }
+if (isset($_GET['eid'])) {
+    $eid = $_GET['eid'];
+    $event = getEventById($eid);
+} else {
+    echo "ไม่ได้รับ eid";
+}
 ?>
-
-<style>
+    <style>
     body {
-        background: linear-gradient(135deg, #d0e9f7, #ffffff);
-        color: #333;
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+    background: linear-gradient(135deg, #87CEFA, #4682B4);
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
 
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 80px 20px 20px;
+    box-sizing: border-box;
+}
+
+.regis-at-container {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 1000px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.regis-at-container:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.activity-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.activity-image img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 3px solid #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.activity-image img:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.activity-details {
+    color: #ffffff;
+    text-align: left;
+    flex: 1;
+    max-width: 500px;
+}
+
+.activity-description {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.status-text {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.status-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.green {
+    background-color: #28a745;
+}
+
+.register-button, .back-button {
+    padding: 15px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: auto;
+    margin-top: 20px;
+}
+
+.register-button {
+    background-color: #ff6f61;
+    color: white;
+}
+
+.register-button:hover {
+    background-color: #e35d56;
+    transform: scale(1.05);
+}
+
+.back-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
     section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
         padding: 40px 20px;
-        box-sizing: border-box;
     }
 
     .regis-at-container {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 40px;
-        border-radius: 20px;
         width: 100%;
-        max-width: 900px;
-        box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        animation: fadeIn 1s ease-out;
+        padding: 25px;
+    }
+
+    .activity-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .activity-image img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .register-button, .back-button {
+        width: 100%;
+        padding: 15px;
     }
 
     h1 {
         font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #3498db;
-        font-weight: 600;
-        letter-spacing: 1px;
-    }
-
-    .activity-container {
-        display: flex;
-        justify-content: flex-start;
-        gap: 30px;
-        flex-wrap: wrap;
-        transition: all 0.3s ease-in-out;
-    }
-
-    /* Carousel Styles */
-    .carousel-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        position: relative;
-        max-width: 500px;
-        margin-right: 30px;
-        height: 280px;
-        overflow-y: scroll;
-    }
-
-    .carousel {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .activity-image {
-        width: 280px;
-        height: 280px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin: 5px 0;
-        border: 3px solid #3498db;
-    }
-
-    /* Activity Details */
-    .activity-details {
-        color: #333;
-        text-align: left;
-        flex: 1;
-        max-width: 500px;
     }
 
     .activity-description {
-        font-size: 1.4rem;
-        margin-bottom: 20px;
-        line-height: 1.6;
-        color: #555;
-    }
-
-    .status-container {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
+        font-size: 1.3rem;
     }
 
     .status-text {
-        font-size: 1.2rem;
-        margin: 0;
-        color: #777;
+        font-size: 1.1rem;
     }
+}
 
-    .status-dot {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        display: inline-block;
-    }
 
-    .status-dot.green {
-        background-color: #28a745;
-    }
-
-    .register-button, .back-button {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.3s ease;
-        text-transform: uppercase;
-        font-weight: 600;
-        width: auto;
-    }
-
-    .register-button {
-        background-color: #3498db;
-        color: white;
-        box-shadow: 0px 6px 12px rgba(52, 152, 219, 0.5);
-    }
-
-    .register-button:hover {
-        background-color: #2980b9;
-        transform: translateY(-5px);
-        box-shadow: 0px 12px 24px rgba(52, 152, 219, 0.6);
-    }
-
-    .back-button {
-        background-color: #95a5a6;
-        color: white;
-        box-shadow: 0px 6px 12px rgba(149, 165, 166, 0.5);
-    }
-
-    .back-button:hover {
-        background-color: #7f8c8d;
-        transform: translateY(-5px);
-        box-shadow: 0px 12px 24px rgba(149, 165, 166, 0.6);
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .activity-container {
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .activity-image {
-            width: 220px;
-            height: 220px;
-        }
-
-        .register-button, .back-button {
-            width: 100%;
-            padding: 12px 25px;
-            font-size: 1rem;
-        }
-    }
 </style>
 
 <section>
     <div class="regis-at-container">
-        <h1><?php echo $data['event_id']['Eventname']; ?></h1>
-
+        <h1>Activity</h1>
         <div class="activity-container">
-            <div class="carousel-container">
-                <div class="carousel">
-                    <?php
-                    if (!empty($eventImages['images'])) {
-                        foreach ($eventImages['images'] as $image) {
-                            echo '<img class="activity-image" src="' . $image . '" alt="Activity Image">';
-                        }
-                    } else {
-                        echo '<p>No images available for this event.</p>';
-                    }
-                    ?>
-                </div>
+            <div class="activity-image">
+                <img src="activity-placeholder.jpg" alt="Activity Image">
             </div>
-
             <div class="activity-details">
                 <p class="activity-description">
-                    <?php echo $data['event_id']['description']; ?>
-                </p>
-                <p class="activity-description">
-                  วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
-                </p>
-                <p class="activity-description">
-                  สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
+                    Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like running races, long jumps, and even fun games that bring laughter to everyone.
                 </p>
                 <div class="status-container">
-                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
+                    <p class="status-text">Participants: 0/50</p>
+                    <div class="status-dot green"></div>
                 </div>
-
-                <!-- ตรวจสอบการเข้าร่วมกิจกรรม -->
-                <?php if (in_array($data['event_id']['Event_id'], $joined_event_ids)): ?>
-                    <!-- ถ้าเคยเข้าร่วมแล้ว -->
-                    <p class="status-text" style="color: red;">คุณได้เข้าร่วมกิจกรรมนี้แล้ว</p>
-                <?php else: ?>
-                    <!-- ถ้ายังไม่เข้าร่วมให้แสดงปุ่ม "เข้าร่วม" -->
-                    <form action="/register_at" method="post">
-                        <input type="hidden" name="eid" value="<?= $data['event_id']['Event_id'] ?>">
-                        <button class="register-button">เข้าร่วม</button>
-                        <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
-                    </form>
-                <?php endif; ?>
-
+                <form action="/register_at" method="post">
+                <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
+                <button class="register-button" >Register</button>
+                <button class="back-button" onclick="window.history.href='/main'">>Back</button>
+                </form>
+                
             </div>
         </div>
     </div>

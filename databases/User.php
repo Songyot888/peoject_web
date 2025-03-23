@@ -41,9 +41,25 @@
         }
     }
     
-   
+    function getSearch(): mysqli_result|bool {
+        $conn = getConnection();
+        $sql = 'select * from Event';
+        $result = $conn->query($sql);
+        return $result;
+    }
     
-    function logout(): void
+    function getSearchByKeyword(string $keyword): mysqli_result|bool
+    {
+        $conn = getConnection();
+        $sql = 'select * from Event where Eventname like ?';
+        $stmt = $conn->prepare($sql);
+        $keyword = '%'. $keyword .'%';
+        $stmt->bind_param('s',$keyword);
+        $res = $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
+function logout(): void
 {
     unset($_SESSION['timestamp']);
 }
@@ -60,50 +76,3 @@ function getUserById(int $id): array|bool
     }
     return $result->fetch_assoc();
 }
-
-function updateUser($username, $email, $phone, $address, $birthday, $image, $uid): bool {
-    $conn = getConnection();
-
-    if (isset($image) && $image['error'] == 0) {
-        $uploadDir = 'uploads/profile/';
-        $uploadFile = $uploadDir . basename($image['name']);
-        if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
-            $imagePath = $uploadFile; 
-        } else {
-            error_log("Image upload failed");
-            return false;
-        }
-    } else {
-
-        $sql = "SELECT img_url FROM User WHERE User_id=?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $uid);
-        $stmt->execute();
-        $stmt->bind_result($currentImagePath);
-        $stmt->fetch();
-        $stmt->close();
-        
-        $imagePath = $currentImagePath;
-    }
-
-    $sql = "UPDATE User SET Name=?, Email=?, phone=?, Addss=?, birthday=?, img_url=? WHERE User_id=?";
-    error_log("SQL Query: " . $sql);
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi",  $username, $email, $phone, $address, $birthday, $imagePath, $uid);
-
-
-    if ($stmt->execute()) {
-        if ($stmt->affected_rows > 0) {
-            error_log("Data updated successfully");
-            return true;
-        } else {
-            error_log("No data updated, affected rows: " . $stmt->affected_rows);
-            return false; 
-        }
-    } else {
-        error_log("Execute failed: " . $stmt->error);
-        return false; 
-    }
-}
-

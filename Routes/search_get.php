@@ -1,20 +1,13 @@
 <?php
+declare(strict_types=1);
 
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
-$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
-
-if (!empty($search) || (!empty($startDate) && !empty($endDate))) {
-    $events = searchEvent($search, $startDate, $endDate);
+if (!isset($_GET['keyword'])) {
+    $result = getSearch();
+    randerView('search_get', array('result' => $result));
+} elseif ($_GET['keyword'] == '') {
+    $result = getSearch();
+    randerView('search_get', array('result' => $result));
 } else {
-    $events = getAllEvents();
+    $result = getSearchByKeyword($_GET['keyword']);
+    randerView('search_get', array('result' => $result));
 }
-
-randerView('search_get', [
-    'events' => $events,
-    'search' => $search,
-    'startDate' => $startDate,
-    'endDate' => $endDate
-]);
-
-?>

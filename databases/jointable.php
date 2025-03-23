@@ -25,29 +25,8 @@
     return $users;
 }
 
-function getUserJoinedEvents($user_id) {
-    $conn = getConnection();
-    
-    $query = "SELECT e.Event_id, e.Eventname, e.description, e.image_url, ue.status ,ue.check_in
-              FROM User_Event ue
-              INNER JOIN Event e ON ue.event_id = e.Event_id
-              WHERE ue.User_id = ?";
-    
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    $events = $result->fetch_all(MYSQLI_ASSOC);
-    
-    $stmt->close();
-    $conn->close();
-    
-    return $events;
-}
 
-
-
+// randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
 
@@ -63,7 +42,12 @@ function updateUserStatus($user_id, $status, $event_id) {
         $update_sql = "UPDATE User_Event SET status = ? WHERE User_id = ? AND Event_id = ?";
         $update_stmt = $conn->prepare($update_sql);
         $update_stmt->bind_param("sii", $status, $user_id, $event_id);
-        $update_stmt->execute();
+        if ($update_stmt->execute()) {
+            header('Location: /approval_at?eid='.$event_id);
+        } else {
+            header('Location: /approval_at?eid='.$event_id);
+            exit;
+        }
         $update_stmt->close();
     }
 
@@ -76,7 +60,6 @@ function updateUserStatus($user_id, $status, $event_id) {
 function registerUserForEvent($user_id, $event_id) {
 
     $conn = getConnection(); 
-    $conn->query("ALTER TABLE User AUTO_INCREMENT = 1");
 
     $sql = "INSERT INTO User_Event (User_id, Event_id) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
@@ -93,25 +76,7 @@ function registerUserForEvent($user_id, $event_id) {
         echo "Failed to register for the event.";
     }
 
+    // Close the statement and connection
     $stmt->close();
     $conn->close();
 }
-
-
-function updateCheckIn($userId, $eventId, $checkInStatus) {
-    // Connect to the database
-    $conn = getConnection(); 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $sql = "UPDATE User_Event SET check_in = ? WHERE user_id = ? AND event_id = ?";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("iii", $checkInStatus, $userId, $eventId);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    $conn->close();
-}
-

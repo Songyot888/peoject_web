@@ -1,276 +1,198 @@
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+<?php
+if (isset($_GET['eid'])) {
+    $eid = $_GET['eid'];
+    $event = getEventById($eid);
+} else {
+    echo "ไม่ได้รับ eid";
 }
+?>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-html, body {
-    height: 100%;
-    width: 100%;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    background: linear-gradient(135deg, #ff758c, #e84364);
-}
+        html, body {
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+        }
 
-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f1f1f1;
-    padding: 50px 20px;
-    min-height: 100vh;
-}
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            min-height: 100vh;
+            width: 100%;
+        }
 
-.approval-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 1200px;
-    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    animation: slideIn 0.5s ease-out;
-}
+        .approval-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1200px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
 
-@keyframes slideIn {
-    0% {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-h1 {
-    font-size: 3rem;
-    color: #222;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
+        .user-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
 
-h2 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-    color: #555;
-    font-weight: 600;
-}
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        }
 
-.user-list {
-    max-height: 500px;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin-bottom: 30px;
-}
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-.user-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 15px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .user-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #ff758c;
+            color: white;
+            font-size: 1.8rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.user-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
-}
+        .user-name {
+            font-size: 1.5rem;
+            color: #333;
+        }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .user-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-.user-icon {
-    width: 60px;
-    height: 60px;
-    background-color: #ff758c;
-    color: white;
-    font-size: 1.8rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        input[type="radio"] {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
 
-.user-name {
-    font-size: 1.5rem;
-    color: #333;
-}
+        .detail-button {
+            padding: 8px 15px;
+            background-color: #ff758c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-.user-status {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .detail-button:hover {
+            background-color: #e84364;
+        }
 
-input[type="radio"] {
-    transform: scale(1.5);
-    cursor: pointer;
-}
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
 
-.detail-button {
-    padding: 10px 20px;
-    background-color: #ff758c;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
+        .deny-button, .apply-button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-.detail-button:hover {
-    background-color: #e84364;
-}
+        .deny-button {
+            background-color: #ff5252;
+        }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 25px;
-}
+        .deny-button:hover {
+            background-color: #e84343;
+        }
 
-.deny-button,
-.apply-button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        .apply-button {
+            background-color: #42a5f5;
+        }
 
-.deny-button {
-    background-color: #ff5252;
-}
-
-.deny-button:hover {
-    background-color: #e84343;
-}
-
-.apply-button {
-    background-color: #42a5f5;
-}
-
-.apply-button:hover {
-    background-color: #1e88e5;
-}
-
-.back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-}
-
-.back-button:hover {
-    background-color: #444;
-}
-
-@media (max-width: 768px) {
-    .approval-container {
-        padding: 20px;
-        width: 95%;
-        max-width: 100%;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .user-item {
-        padding: 15px;
-    }
-
-    .user-name {
-        font-size: 1.3rem;
-    }
-
-    .user-status {
-        flex-direction: column;
-    }
-
-    .detail-button {
-        margin-bottom: 10px;
-    }
-
-    .button-container {
-        flex-direction: column;
-        gap: 15px;
-    }
-}
-
-</style>
+        .apply-button:hover {
+            background-color: #1e88e5;
+        }
+    </style>
 
 <section>
     <div class="approval-container">
-        <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
-        <form method="POST" action="/approval_at">
+        <form method="POST" action="/approval_at"> 
             <div class="user-list">
-                <?php
+                <?php 
+                if (!isset($event)) {
+                    echo "<p>Error: Event information is missing or invalid.</p>";
+                    exit;
+                }
 
-                $users = join_event($data['event_id']['Event_id']);
+                // เรียกใช้ฟังก์ชัน join_event เพื่อดึงข้อมูลผู้ใช้ที่เข้าร่วมกิจกรรม
+                $users = join_event($event['Event_id']); 
                 $grouped_users = [];
 
+                // จัดกลุ่มผู้ใช้ตาม event_id
                 foreach ($users as $user) {
                     $grouped_users[$user['event_id']][] = $user;
                 }
 
+                // แสดงผู้ใช้ที่เข้าร่วมกิจกรรมเดียวกัน
                 foreach ($grouped_users as $event_id => $event_users):
-                    if ($event_id == $data['event_id']['Event_id']):
+                    // กรองเฉพาะ event_id 125
+                    if ($event_id == 125):
                 ?>
-                        <h2>Event ID: <?= $event_id ?></h2>
-                        <?php
-                        if (empty($event_users)) {
-                            echo "<p>No users found for this event.</p>";
-                        }
-                        ?>
-                        <?php foreach ($event_users as $user): ?>
-                            <div class="user-item">
-                                <div class="user-info">
-                                    <div class="user-icon">U</div>
-                                    <div class="user-name"><?= $user['Name'] ?></div>
-                                </div>
-                                <div class="user-status">
-                                    <button type="button" class="detail-button">Detail</button>
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
-                                </div>
+                    <h2>Event ID: <?= $event_id ?></h2>
+                    <?php foreach ($event_users as $user): ?>
+                        <div class="user-item">
+                            <div class="user-info">
+                                <div class="user-icon">U</div>
+                                <div class="user-name"><?= htmlspecialchars($user['Name']) ?></div>
                             </div>
-                        <?php endforeach; ?>
-                <?php endif;
-                endforeach; ?>
+                            <div class="user-status">
+                                <button type="button" class="detail-button">Detail</button>
+                                <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
+                                <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; endforeach; ?>
             </div>
 
             <div class="button-container">
-                <input type="hidden" name="eid" value="<?= $data['event_id']['Event_id']; ?>">
-                <button type="submit" class="apply-button" name="action" value="apply">Apply</button>
+                <input type="hidden" name="eid" value="<?= $event_id; ?>"> <!-- ส่ง event_id ไปด้วย -->
+                <button type="submit" class="apply-button" name="action" value="apply">Apply</button> 
             </div>
         </form>
     </div>
 </section>
+
+

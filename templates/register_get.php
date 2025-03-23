@@ -18,7 +18,7 @@ body {
 .container {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(15px);
-    padding: 40px 80px;
+    padding: 40px 50px;
     width: 100%;
     max-width: 500px;
     border-radius: 15px;

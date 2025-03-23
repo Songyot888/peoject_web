@@ -82,7 +82,7 @@
         top: -10px;
         left: 15px;
         font-size: 14px;
-        color:rgb(255, 255, 255);
+        color: #00c6ff;
     }
 
     button {
@@ -214,7 +214,7 @@
                 <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
             </div>
 
-            <div class="remember-forgot-wrapper" style="color: white;">
+            <div class="remember-forgot-wrapper">
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
                     <label class="form-check-label" for="rememberMe">Remember me</label>

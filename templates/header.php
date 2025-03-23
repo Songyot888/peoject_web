@@ -1,178 +1,143 @@
-<?php
-// ตรวจสอบว่า $data['events'] มีข้อมูลหรือไม่ และเป็น array
-
-$search = isset($data['search']) ? $data['search'] : '';
-$events = isset($data['events']) && is_array($data['events']) ? $data['events'] : [];
-// รับค่าคำค้นหาจาก $data (ถ้ามี)
-$startDate = isset($data['startDate']) ? $data['startDate'] : '';
-$endDate = isset($data['endDate']) ? $data['endDate'] : '';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-/* General */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-    padding-top: 70px;
-    opacity: 0;
-    animation: fadeIn 1s ease-in-out forwards;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: white;
+            color: #333;
+            padding-top: 80px;
+            animation: fadeIn 1s ease-in-out;
+        }
 
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* Navbar */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-    background: linear-gradient(135deg, #007bff, #3399ff);
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-    animation: navbarFadeIn 1s ease-in-out forwards;
-}
+        .navbar {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 4px 10px rgba(0, 191, 255, 0.2);
+        }
 
-@keyframes navbarFadeIn {
-    0% { opacity: 0; transform: translateY(-30px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: white !important;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
 
-.navbar-brand {
-    color: #ffffff !important;
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-}
+        .nav-link {
+            color: white !important;
+            font-size: 1.1rem;
+        }
 
-.navbar-nav .nav-link {
-    color: #fff !important;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
 
-.navbar-nav .nav-link:hover {
-    color: #ffd700;
-    transform: scale(1.05);
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-}
+        .btn-search {
+            background-color: #00d1ff;
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
 
-/* Search Form */
-.d-flex.position-relative {
-    gap: 10px; /* ทำให้ช่อง Search มีระยะห่างที่สวยขึ้น */
-}
+        .btn-search:hover {
+            background-color: white;
+            color: #00d1ff;
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+        }
 
-.form-control {
-    background-color: #ffffff;
-    border: 2px solid #007bff;
-    color: #333;
-    transition: all 0.3s ease;
-    padding: 8px 12px;
-}
+        .logout-btn {
+            background: linear-gradient(135deg, #ff3b3b, #c82333);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-.form-control:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
-}
+        .logout-btn:hover {
+            background: linear-gradient(135deg, #c82333, #9a1c1c);
+        }
 
-/* ปุ่ม Search */
-.btn-outline-light {
-    border: 2px solid #fff;
-    color: #fff;
-    font-weight: bold;
-    padding: 8px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-}
+        .profile-link {
+            color: #00d1ff;
+            font-weight: bold;
+            text-decoration: none;
+            padding-left: 10px;
+        }
 
-.btn-outline-light:hover {
-    background: #0056b3;
-    color: #fff;
-    box-shadow: 0 0 12px rgba(0, 86, 179, 0.7);
-    transform: scale(1.05);
-}
+        .profile-link:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
 
-/* ปุ่ม Logout */
-.logout-btn {
-    background-color: #dc3545;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    padding: 8px 15px;
-    margin-left: 15px;
-    transition: all 0.3s ease;
-}
+        .navbar-toggler-icon {
+            background-color: white;
+            transition: transform 0.3s ease-in-out;
+        }
 
-.logout-btn:hover {
-    background-color: #c82333;
-    box-shadow: 0 0 12px rgba(220, 53, 69, 0.7);
-    transform: scale(1.05);
-}
+        .navbar-toggler-icon.collapsed {
+            transform: rotate(90deg);
+        }
 
-/* Responsive Navbar */
-@media (max-width: 992px) {
-    .navbar-nav {
-        text-align: center;
-    }
+        .navbar-collapse {
+            justify-content: flex-end;
+        }
 
-    .d-flex.position-relative {
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-    }
+        /* Remove responsive styles */
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+        }
 
-    .logout-btn {
-        width: 100%;
-        margin-top: 10px;
-    }
-}
+        .navbar-nav .nav-item .profile-link {
+            display: inline-block;
+            padding: 0 10px;
+        }
 
+        .navbar-toggler {
+            display: block;
+        }
     </style>
 </head>
-
 <body>
-    <header>
-        <?php if (isset($_SESSION['timestamp'])) { ?>
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="/main">Activity Club</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="/main">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
-                            
-                        </ul>
-                        <form class="d-flex position-relative" role="search" method="GET" action="/search">
-                            <input class="form-control me-2" type="search" name="search" placeholder="Search events" value="<?php echo htmlspecialchars($search); ?>" >
-                            <input class="form-control me-2" type="date" name="startDate" placeholder="Start Date From" value="<?php echo htmlspecialchars($startDate); ?>">
-                            <input class="form-control me-2" type="date" name="endDate" placeholder="Start Date To" value="<?php echo htmlspecialchars($startDate); ?>">
+<header>
+<?php if (isset($_SESSION['timestamp'])) { ?>
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Activity Club</a>  
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <a href="/profile" class="profile-link">Profile</a> <!-- Show Profile link in all screen sizes -->
+        <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
+      </ul>
+      <form class="d-flex" method="GET" action="/search">
+        <input class="form-control me-2" type="search" name="keyword" placeholder="Search events" required>
+        <button class="btn btn-search" type="submit">Search</button>
+      </form>
+      <button class="btn logout-btn ms-3" onclick="window.location.href='/login'">Logout</button>
+    </div>
+  </div>
+</nav>
+<?php } ?>
+</header>
 
-                            <button class="btn btn-outline-light" type="submit">Search</button>
-                            <div class="search-results p-2" id="search-results"></div>
-                        </form>
-                        <button class="btn logout-btn" onclick="window.location.href='/login'">ออกจากระบบ</button>
-                    </div>
-                </div>
-            </nav>
-        <?php } ?>
-    </header>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

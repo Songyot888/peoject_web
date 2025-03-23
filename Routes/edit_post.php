@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $data['alert'];
         exit;
     }
-    var_dump($_POST['eid']);
+
     // ตรวจสอบว่ามี eid หรือไม่
     if (!isset($_POST['eid'])) {
         $data['alert'] = "ไม่พบ ID กิจกรรม";
@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data['alert'] = "แก้ไขกิจกรรมสำเร็จ";
         header('Location: /profile');
     } else {
-        header('Location: /profile');
         $data['alert'] = "แก้ไขกิจกรรมไม่สำเร็จ";
         echo $data['alert'];
     }
@@ -43,6 +42,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data['alert'] = "Invalid request";
     echo $data['alert'];
 }
-
-
 ?>
