@@ -16,18 +16,17 @@
     }
 
     .container {
-        background: rgba(255, 255, 255, 0.6); /* พื้นหลังโปร่งใส */
+        background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(15px);
         padding: 40px 50px;
         width: 100%;
         max-width: 500px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
         text-align: center;
-        color: #333;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        color: #fff;
         animation: fadeIn 0.8s ease-in-out;
         box-sizing: border-box;
-        transition: all 0.3s ease;
     }
 
     @keyframes fadeIn {
@@ -42,29 +41,48 @@
     }
 
     h1 {
+        font-size: 30px;
+        color: #fff;
         margin-bottom: 30px;
-        color: #4ca1af;
-        font-size: 2rem;
-        font-weight: 700;
+    }
+
+    .input-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .input-wrapper label {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s ease-in-out;
     }
 
     input {
         width: 100%;
-        padding: 15px;
-        margin: 20px 0;
-        border: 2px solid #ddd;
+        padding: 15px 20px;
+        border: none;
         border-radius: 25px;
-        background: rgba(255, 255, 255, 0.8);
-        color: #333;
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
         font-size: 18px;
-        transition: all 0.3s ease;
+        transition: 0.3s;
     }
 
     input:focus {
-        background: #fff;
+        background: rgba(255, 255, 255, 0.5);
         outline: none;
-        border-color: #4ca1af;
         transform: scale(1.05);
+    }
+
+    input:focus + label, input:not(:placeholder-shown) + label {
+        top: -10px;
+        left: 15px;
+        font-size: 14px;
+        color:rgb(255, 255, 255);
     }
 
     button {
@@ -76,16 +94,15 @@
         color: white;
         font-weight: bold;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.5);
         font-size: 18px;
-        margin-top: 10px;
-        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
     }
 
     button:hover {
         background: linear-gradient(135deg, #0056b3, #0094cc);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
+        box-shadow: 0 6px 15px rgba(0, 123, 255, 0.7);
     }
 
     .password-wrapper {
@@ -99,12 +116,55 @@
         transform: translateY(-50%);
         cursor: pointer;
         font-size: 20px;
-        color: rgba(0, 0, 0, 0.6);
-        transition: 0.3s ease;
+        color: rgba(255, 255, 255, 0.7);
+        transition: 0.3s;
     }
 
     .toggle-password:hover {
-        color: rgba(0, 0, 0, 1);
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .remember-forgot-wrapper {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        gap: 100px;
+        align-items: center;
+        flex-wrap: nowrap; /* Add this to ensure no wrapping */
+    }
+
+    .remember-forgot-wrapper label {
+        font-size: 14px;
+        white-space: nowrap; /* Prevent breaking the label */
+    }
+
+    .form-check {
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-check-input {
+        padding: 5px;
+        margin-right: 8px;
+        display: inline-block;
+    }
+
+    .form-check label {
+        display: inline-block;
+        font-size: 14px;
+    }
+
+    .form-check a {
+        font-size: 12px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .form-check a:hover {
+        text-decoration: underline;
+        color: #0094cc;
     }
 
     .signup-link {
@@ -116,35 +176,12 @@
         color: #00c6ff;
         font-weight: bold;
         text-decoration: none;
-        transition: 0.3s ease;
+        transition: 0.3s;
     }
 
     .signup-link a:hover {
         text-decoration: underline;
         color: #0094cc;
-    }
-
-    .form-check {
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        width: auto;
-        margin-top: 10px;
-        text-align: left;
-        color: #555;
-    }
-
-    .form-check-input {
-        padding: 5px;
-        margin-right: 8px;
-    }
-
-    .form-check-label {
-        font-size: 14px;
-        font-weight: 500;
-        text-decoration: none;
-        transition: 0.3s ease;
-        background-color: transparent;
     }
 
     footer {
@@ -156,54 +193,38 @@
         color: #fff;
     }
 
-    .input-label {
-        text-align: left;
-        width: 100%;
-        margin-bottom: 5px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #333;
-        display: inline-block;
-        background-color: transparent;
-    }
-
-    .input-group {
-        width: 100%;
-        margin-bottom: 20px;
-        text-align: left;
-    }
-
-    .container:hover {
-        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-        transform: translateY(-10px);
-    }
 </style>
-
+<head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
 <section>
     <div class="container">
         <h1>Login</h1>
 
         <form action="/login" method="POST">
-            <div class="input-group">
-                <label for="username" class="input-label">Username</label>
-                <input type="text" name="username" id="username" placeholder="Enter your username" required>
+            <div class="input-wrapper" id="username-wrapper">
+                <input type="text" name="username" placeholder=" " id="username" required>
+                <label for="username">Username</label>
             </div>
 
-            <div class="input-group password-wrapper">
-                <label for="password" class="input-label">Password</label>
-                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+            <div class="input-wrapper" id="password-wrapper">
+                <input type="password" name="password" id="password" placeholder=" " required>
+                <label for="password">Password</label>
                 <i class="fa-solid fa-eye-slash toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
             </div>
 
-            <div class="mb-3 d-flex justify-content-between align-items-center">
+            <div class="remember-forgot-wrapper" style="color: white;">
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
                     <label class="form-check-label" for="rememberMe">Remember me</label>
                 </div>
                 <a href="#">Forgot password?</a>
             </div>
+
             <button type="submit">Login</button>
         </form>
+
         <p class="signup-link">Don't have an account? <a href="/register">Sign up</a></p>
     </div>
 </section>

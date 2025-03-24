@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($event_id) {
         insertEventImages($event_id, $images);
-        header('Location: /main');
+        header('Location: /profile');
     } else {
         echo "Insert event failed. Check error log for details.";
     }

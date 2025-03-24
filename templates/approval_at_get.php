@@ -1,155 +1,238 @@
-
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    html,
-    body {
-        height: 100%;
-        width: 100%;
-        font-family: Arial, sans-serif;
-    }
+html, body {
+    height: 100%;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #ff758c, #e84364);
+}
 
-    section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 50px 20px;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        min-height: 100vh;
-        width: 100%;
-    }
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f1f1f1;
+    padding: 50px 20px;
+    min-height: 100vh;
+}
 
+.approval-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    font-size: 3rem;
+    color: #222;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #555;
+    font-weight: 600;
+}
+
+.user-list {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 30px;
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #ff758c;
+    color: white;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.user-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+input[type="radio"] {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.detail-button {
+    padding: 10px 20px;
+    background-color: #ff758c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.detail-button:hover {
+    background-color: #e84364;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.deny-button,
+.apply-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.deny-button {
+    background-color: #ff5252;
+}
+
+.deny-button:hover {
+    background-color: #e84343;
+}
+
+.apply-button {
+    background-color: #42a5f5;
+}
+
+.apply-button:hover {
+    background-color: #1e88e5;
+}
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.back-button:hover {
+    background-color: #444;
+}
+
+@media (max-width: 768px) {
     .approval-container {
-        background: rgba(255, 255, 255, 0.9);
-        padding: 40px;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 1200px;
-        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
-        text-align: center;
+        padding: 20px;
+        width: 95%;
+        max-width: 100%;
     }
 
     h1 {
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #333;
+        font-size: 2rem;
     }
 
-    .user-list {
-        max-height: 500px;
-        overflow-y: auto;
-        padding-right: 10px;
+    h2 {
+        font-size: 1.5rem;
     }
 
     .user-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 15px;
-        border-radius: 12px;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .user-info {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .user-icon {
-        width: 60px;
-        height: 60px;
-        background-color: #ff758c;
-        color: white;
-        font-size: 1.8rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 15px;
     }
 
     .user-name {
-        font-size: 1.5rem;
-        color: #333;
+        font-size: 1.3rem;
     }
 
     .user-status {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    input[type="radio"] {
-        transform: scale(1.5);
-        cursor: pointer;
+        flex-direction: column;
     }
 
     .detail-button {
-        padding: 8px 15px;
-        background-color: #ff758c;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .detail-button:hover {
-        background-color: #e84364;
+        margin-bottom: 10px;
     }
 
     .button-container {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-top: 25px;
+        flex-direction: column;
+        gap: 15px;
     }
+}
 
-    .deny-button,
-    .apply-button {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .deny-button {
-        background-color: #ff5252;
-    }
-
-    .deny-button:hover {
-        background-color: #e84343;
-    }
-
-    .apply-button {
-        background-color: #42a5f5;
-    }
-
-    .apply-button:hover {
-        background-color: #1e88e5;
-    }
 </style>
 
 <section>
     <div class="approval-container">
+        <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
         <form method="POST" action="/approval_at">
             <div class="user-list">
                 <?php
-                // if (!$event) {
-                //     echo "<p>Error: Event information is missing or invalid.</p>";
-                //     exit;
-                // }
 
                 $users = join_event($data['event_id']['Event_id']);
                 $grouped_users = [];
