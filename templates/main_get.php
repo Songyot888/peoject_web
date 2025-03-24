@@ -113,9 +113,11 @@ $joined_event_ids = array_map(function ($event) {
             <?php foreach ($events as $event): ?>
                 <div class="activity-card">
                     <?php if (!empty($event['image_url'])): ?>
-                        <img src="<?php echo $event['image_url']; ?>" alt="Event Image" class="event-image">
+                        <!-- เพิ่มลิงก์ที่กรอบรูปภาพ -->
+                        <a href="/register_at?eid=<?php echo $event['Event_id']; ?>">
+                            <img src="<?php echo $event['image_url']; ?>" alt="Event Image" class="event-image">
+                        </a>
                     <?php endif; ?>
-
 
                     <div class="content">
                         <h3><?php echo htmlspecialchars($event['Eventname']); ?></h3>

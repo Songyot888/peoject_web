@@ -113,12 +113,7 @@ h2 {
     gap: 15px;
 }
 
-input[type="radio"] {
-    transform: scale(1.5);
-    cursor: pointer;
-}
-
-.detail-button {
+.status-button {
     padding: 10px 20px;
     background-color: #ff758c;
     color: white;
@@ -127,11 +122,26 @@ input[type="radio"] {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
 }
 
-.detail-button:hover {
+.status-button:hover {
     background-color: #e84364;
+}
+
+.approved-button {
+    background-color: #42a5f5;
+}
+
+.approved-button:hover {
+    background-color: #1e88e5;
+}
+
+.denied-button {
+    background-color: #ff5252;
+}
+
+.denied-button:hover {
+    background-color: #e84343;
 }
 
 .button-container {
@@ -214,23 +224,19 @@ input[type="radio"] {
         flex-direction: column;
     }
 
-    .detail-button {
-        margin-bottom: 10px;
-    }
-
     .button-container {
         flex-direction: column;
         gap: 15px;
     }
 }
-
 </style>
+
 
 <section>
     <div class="approval-container">
         <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
-        <form method="POST" action="/approval_at">
+        <form method="POST" action="/approval_at" id="approval-form">
             <div class="user-list">
                 <?php
 
@@ -251,15 +257,15 @@ input[type="radio"] {
                         }
                         ?>
                         <?php foreach ($event_users as $user): ?>
-                            <div class="user-item">
+                            <div class="user-item" data-user-id="<?= $user['User_id'] ?>">
                                 <div class="user-info">
                                     <div class="user-icon">U</div>
                                     <div class="user-name"><?= $user['Name'] ?></div>
                                 </div>
                                 <div class="user-status">
-                                    <button type="button" class="detail-button">Detail</button>
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
+                                    <!-- เปลี่ยนปุ่มเป็นสีต่างกัน -->
+                                    <button type="button" class="status-button approved-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'approved')">Approve</button>
+                                    <button type="button" class="status-button denied-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'denied')">Deny</button>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -274,3 +280,26 @@ input[type="radio"] {
         </form>
     </div>
 </section>
+
+<script>
+    function updateStatus(userId, status) {
+        const statusButtons = document.querySelectorAll(`.user-item[data-user-id="${userId}"] .status-button`);
+
+        // ทำให้ปุ่มทั้งหมดหายไปเมื่อเลือกสถานะ
+        statusButtons.forEach(button => {
+            button.disabled = true;
+            button.style.display = 'none'; // ซ่อนปุ่ม
+        });
+
+        // สร้าง input ซ่อนเพื่อส่งข้อมูลไปที่ server
+        const form = document.getElementById('approval-form');
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = `status[${userId}]`;
+        input.value = status;
+        form.appendChild(input);
+
+        // เมื่ออัปเดตสถานะเสร็จแล้วส่งแบบฟอร์ม
+        form.submit();
+    }
+</script>

@@ -116,4 +116,25 @@ function updateCheckIn($userId, $eventId, $checkInStatus) {
 
     $conn->close();
 }
+function getJoinedEvent($user_id, $event_id) {
+    global $pdo;
+    $query = "SELECT * FROM user_events WHERE user_id = :user_id AND event_id = :event_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':event_id', $event_id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// ฟังก์ชันอัพเดตสถานะการเช็คอิน
+function updateCheckInStatus($user_id, $event_id, $image_url) {
+    global $pdo;
+    $query = "UPDATE user_events SET check_in = 1, check_in_image = :image_url WHERE user_id = :user_id AND event_id = :event_id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':image_url', $image_url);
+    $stmt->bindParam(':user_id', $user_id);
+    $stmt->bindParam(':event_id', $event_id);
+    $stmt->execute();
+}
+
 
