@@ -23,5 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['eid'] = $result;
 
         randerView('approval_at_get', ['event_id' => $result]);
+    }elseif(isset($_POST['checkin'])){
+
+        $result = getEventById($eid);
+        $_SESSION['eid'] = $result;
+
+        randerView('check_get', ['event_id' => $result]);
     }
 }
