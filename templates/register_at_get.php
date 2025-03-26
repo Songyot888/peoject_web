@@ -42,6 +42,131 @@
         letter-spacing: 1px;
     }
 
+.regis-at-container:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: 30px;
+    color: #4a90e2;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.activity-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    transition: all 0.3s ease-in-out;
+}
+
+.activity-image-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    max-width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.activity-image {
+    flex: 0 0 auto;
+    margin-right: 10px;
+    border-radius: 15px;
+}
+
+.activity-image img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: 15px;
+}
+
+.activity-image img:hover {
+    transform: scale(1.1);
+}
+
+.activity-details {
+    color: #333;
+    text-align: left;
+    flex: 1;
+    max-width: 500px;
+}
+
+.activity-description {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.status-text {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #777;
+}
+
+.status-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.green {
+    background-color: #28a745;
+}
+
+.register-button, .back-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.register-button {
+    background-color: #4a90e2;
+    color: white;
+    box-shadow: 0px 6px 12px rgba(74, 144, 226, 0.5);
+}
+
+.register-button:hover {
+    background-color: #007bb5;
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 24px rgba(74, 144, 226, 0.6);
+}
+
+.back-button {
+    background-color: #95a5a6;
+    color: white;
+    box-shadow: 0px 6px 12px rgba(149, 165, 166, 0.5);
+}
+
+.back-button:hover {
+    background-color: #7f8c8d;
+    transform: translateY(-5px);
+    box-shadow: 0px 12px 24px rgba(149, 165, 166, 0.6);
+}
+
+@media (max-width: 768px) {
     .activity-container {
         display: flex;
         justify-content: flex-start;
@@ -126,59 +251,18 @@
         font-weight: 600;
         width: auto;
     }
+}
 
-    .register-button {
-        background-color: #3498db;
-        color: white;
-        box-shadow: 0px 6px 12px rgba(52, 152, 219, 0.5);
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
     }
-
-    .register-button:hover {
-        background-color: #2980b9;
-        transform: translateY(-5px);
-        box-shadow: 0px 12px 24px rgba(52, 152, 219, 0.6);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-
-    .back-button {
-        background-color: #95a5a6;
-        color: white;
-        box-shadow: 0px 6px 12px rgba(149, 165, 166, 0.5);
-    }
-
-    .back-button:hover {
-        background-color: #7f8c8d;
-        transform: translateY(-5px);
-        box-shadow: 0px 12px 24px rgba(149, 165, 166, 0.6);
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .activity-container {
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .activity-image {
-            width: 220px;
-            height: 220px;
-        }
-
-        .register-button, .back-button {
-            width: 100%;
-            padding: 12px 25px;
-            font-size: 1rem;
-        }
-    }
+}
 </style>
 
 <section>

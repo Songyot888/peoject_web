@@ -158,4 +158,5 @@ function submitForm(eventId, action) {
 }
 </script>
 
+
 <?php require_once 'footer.php' ?>

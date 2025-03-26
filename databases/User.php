@@ -106,4 +106,5 @@ function updateUser($username, $email, $phone, $address, $birthday, $image, $uid
         return false; 
     }
 }
+ 
 
