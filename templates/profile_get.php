@@ -430,14 +430,6 @@ $img = getEventImages($events);
                                     <button type="submit" name="de" class="detail-button">Detail</button>
                                 </form>
 
-                                <form action="/profile" method="post">
-                                    <input type="hidden" name="eid" value="<?= $event['Event_id']; ?>">
-                                    <button type="submit" name="toggle"
-                                        class="toggle-button <?= ($event['status_event'] == 'active') ? 'active' : 'inactive'; ?>">
-                                        <?= ($event['status_event'] == 'active') ? 'เปิดกิจกรรม' : 'ปิดกิจกรรม'; ?>
-                                    </button>
-                                </form>
-
 
                             </div>
                         </div>

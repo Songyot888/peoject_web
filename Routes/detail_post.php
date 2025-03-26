@@ -1,7 +1,7 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $eid = $_POST['eid']  ?? ''; 
-
+    $uid = $_SESSION['User_id'] ?? '';
     if(isset($_POST['edit'])){
         
 
@@ -20,14 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif(isset($_POST['view'])){
 
         $result = getEventById($eid);
-        $_SESSION['eid'] = $result;
 
         randerView('approval_at_get', ['event_id' => $result]);
     }elseif(isset($_POST['checkin'])){
 
         $result = getEventById($eid);
-        $_SESSION['eid'] = $result;
-
-        randerView('check_get', ['event_id' => $result]);
+        $ue = getUeById($uid);
+        
+        randerView('check_get', ['event_id' => $result, 'ue' => $ue]);
     }
 }

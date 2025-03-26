@@ -4,7 +4,7 @@
     $conn = getConnection();
 
     // คำสั่ง SQL สำหรับดึงชื่อผู้ใช้และสถานะจากตาราง User และ User_Event
-    $query = "SELECT u.Name, ue.status, ue.User_id, ue.event_id 
+    $query = "SELECT u.Name, ue.status, ue.User_id, ue.event_id, ue.checkin_img, ue.check_in
               FROM User u
               INNER JOIN User_Event ue ON u.User_id = ue.User_id
               WHERE ue.Event_id = ?";
@@ -23,6 +23,25 @@
     $conn->close();
 
     return $users;
+}
+
+
+function getUeById($eid) {
+    $conn = getConnection();
+    
+    $query = "SELECT * FROM User_Event WHERE Event_id= ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $eid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $event = $result->fetch_assoc();
+    
+    $stmt->close();
+    $conn->close();
+    
+    return $event;
 }
 
 function getUserJoinedEvents($user_id) {
@@ -98,22 +117,36 @@ function registerUserForEvent($user_id, $event_id) {
 }
 
 
-function updateCheckIn($userId, $eventId, $checkInStatus) {
-    // Connect to the database
-    $conn = getConnection(); 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $sql = "UPDATE User_Event SET check_in = ? WHERE user_id = ? AND event_id = ?";
+function updateCheckInStatus($event_id, $statusData) {
+    $conn = getConnection();
 
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("iii", $checkInStatus, $userId, $eventId);
-        $stmt->execute();
-        $stmt->close();
-    }
+    foreach ($statusData as $userId => $status) {
+        // กำหนดค่าของ check_in ตามสถานะที่ได้รับจากฟอร์ม
+        if ($status == '1') {
+            $check_in = 1; // เข้าร่วม
+        } elseif ($status == '0') {
+            $check_in = 0; // ไม่เข้าร่วม
+        } else {
+            $check_in = 2; // ยกเลิก
+        }
 
-    $conn->close();
+        // เตรียมคำสั่ง SQL เพื่ออัพเดท check_in ในฐานข้อมูล
+        $sql = "UPDATE User_Event SET check_in = ? WHERE User_id = ? AND Event_id = ?";
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("iii", $check_in, $userId, $event_id);
+            if (!$stmt->execute()) {
+                // เพิ่มการตรวจสอบข้อผิดพลาด
+                echo "Error updating check_in for user ID: $userId. " . $stmt->error;
+            }
+        } else {
+            echo "Error preparing SQL statement.";
+        }
+    }
 }
+
+
+
 function updateCheckinImage($user_id, $image) {
     $conn = getConnection();
 
@@ -175,14 +208,4 @@ function updateCheckinImage($user_id, $image) {
     }
 }
 
-
-function getCheckinImage($user_id) {
-    global $conn;
-    $stmt = $conn->prepare("SELECT checkin_img FROM User_Event WHERE user_id = ?");
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
-    return $result->fetch_assoc();
-}
 

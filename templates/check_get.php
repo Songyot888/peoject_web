@@ -81,6 +81,14 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .user-image img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-left: 15px;
+    }
+
     .user-item:hover {
         transform: translateY(-5px);
         box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
@@ -375,39 +383,39 @@
             background-color: #444;
         }
 
-            @media (max-width: 768px) {
-                .approval-container {
-                    padding: 20px;
-                    width: 95%;
-                    max-width: 100%;
-                }
-    
-                h1 {
-                    font-size: 2rem;
-                }
-    
-                h2 {
-                    font-size: 1.5rem;
-                }
-    
-                .user-item {
-                    padding: 15px;
-                }
-    
-                .user-name {
-                    font-size: 1.3rem;
-                }
-    
-                .user-status {
-                    flex-direction: column;
-                }
-    
-                .button-container {
-                    flex-direction: column;
-                    gap: 15px;
-                }
+        @media (max-width: 768px) {
+            .approval-container {
+                padding: 20px;
+                width: 95%;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .user-item {
+                padding: 15px;
+            }
+
+            .user-name {
+                font-size: 1.3rem;
+            }
+
+            .user-status {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 15px;
             }
         }
+    }
 </style>
 
 
@@ -415,10 +423,11 @@
     <div class="approval-container">
         <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
-        <form method="POST" action="/approval_at" id="approval-form">
+        <form method="POST" action="/check" id="approval-form">
             <div class="user-list">
                 <?php
                 $users = join_event($data['event_id']['Event_id']);
+                
                 $grouped_users = [];
                 foreach ($users as $user) {
                     $grouped_users[$user['event_id']][] = $user;
@@ -436,20 +445,31 @@
                             <div class="user-item" data-user-id="<?= $user['User_id'] ?>">
                                 <div class="user-info">
                                     <div class="user-icon">U</div>
-                                    <div class="user-name"><?= $user['Name'] ?></div>
+                                    <div class="user-name">
+                                        <?= $user['Name'] ?>
+                                    </div>
                                 </div>
-                                <div class="user-status">
-                                    <?php if ($user['status'] == 'approved' || $user['status'] == 'denied'): ?>
-                                        <button type="button" class="status-button cancel-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'pending')">Cancel</button>
+
+                                <div class="user-image">
+                                    <?php if (!empty($user['checkin_img']) && file_exists($user['checkin_img'])): ?>
+                                        <img src="<?= $user['checkin_img'] ?>" alt="User Image">
                                     <?php else: ?>
-                                        <button type="button" class="status-button approved-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'approved')">เข้าร่วม</button>
-                                        <button type="button" class="status-button denied-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'denied')">ไม่มาเข้าร่วม</button>
+                                        <div class="no-image">ไม่มีรูป</div>
+
                                     <?php endif; ?>
                                 </div>
+
+                                <div class="user-status">
+                                    <?php if ($user['check_in'] == '0' || $user['check_in'] == '1'): ?>
+                                        <button type="button" class="status-button cancel-button" onclick="updateStatus(<?= $user['User_id'] ?>, '2')">Cancel</button>
+                                    <?php else: ?>
+                                        <button type="button" class="status-button approved-button" onclick="updateStatus(<?= $user['User_id'] ?>, '1')">เข้าร่วม</button>
+                                        <button type="button" class="status-button denied-button" onclick="updateStatus(<?= $user['User_id'] ?>, '0')">ไม่มาเข้าร่วม</button>
+                                    <?php endif; ?>
+                                </div>
+
                             </div>
                         <?php endforeach; ?>
-
-
                 <?php endif;
                 endforeach; ?>
             </div>
@@ -480,7 +500,6 @@
 
             form.submit();
 
-            // แทนที่จะใช้ window.location.reload() คุณอาจต้องการทำการอัปเดตหน้าแบบไม่โหลดใหม่ (AJAX หรือวิธีอื่น)
         }
     }
 </script>
