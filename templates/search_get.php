@@ -93,9 +93,9 @@ $joined_event_ids = array_map(fn($event) => $event['Event_id'], $joined_events);
                     <div class="btn-container">
                         <form action="/main" method="post">
                             <input type="hidden" name="eid" value="<?php echo $event['Event_id']; ?>">
-                            <button type="submit" name="view" class="btn btn-primary">View</button>
+                            <button type="submit" name="view" class="btn btn-primary" >View</button>
                             <?php if (!in_array($event['Event_id'], $joined_event_ids)): ?>
-                                <button type="submit" name="sign" class="btn btn-success">Sign</button>
+                                <button type="submit" name="sign" class="btn btn-success" >Sign</button>
                             <?php endif; ?>
                         </form>
                     </div>
