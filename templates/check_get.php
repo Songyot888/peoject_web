@@ -422,7 +422,7 @@
 <section>
     <div class="approval-container">
         <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
-        <h1>Activity Approval</h1>
+        <h1>เช็คชื่อผู้เข้าร่วม</h1>
         <form method="POST" action="/check" id="approval-form">
             <div class="user-list">
                 <?php

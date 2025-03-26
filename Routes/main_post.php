@@ -4,9 +4,11 @@ $events = getAllEvents();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_id = $_POST['eid'] ?? '';
     $action = $_POST['action'] ?? '';
+    
 
     if (!empty($event_id) && !empty($action)) {
         $result = getEventById($event_id);
+        
 
         if ($result) { 
             if ($action === 'sing') {

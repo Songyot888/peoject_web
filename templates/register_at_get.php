@@ -1,46 +1,46 @@
 <?php require_once 'header.php' ?>
 <?php
+    
+    
     $event = getEventById($data['event_id']['Event_id']);
     $eventImages = getEventImage($data['event_id']['Event_id']);
     $count = countParticipants($data['event_id']['Event_id']);
+
+    
+    $loggedInUserId = $_SESSION['User_id']; 
+    $eventCreatorId = $data['event_id']['User_id'];
+    $isCreator = ($loggedInUserId == $eventCreatorId); 
 ?>
 
 <style>
-    body {
-        background: linear-gradient(135deg, #d0e9f7, #ffffff);
-        color: #333;
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
+body {
+    background: linear-gradient(135deg, #a6c8ff, #e1f0ff);
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    section {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 40px 20px;
-        box-sizing: border-box;
-    }
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px;
+    height: 100vh;
+}
 
-    .regis-at-container {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 40px;
-        border-radius: 20px;
-        width: 100%;
-        max-width: 900px;
-        box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        animation: fadeIn 1s ease-out;
-    }
-
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 30px;
-        color: #3498db;
-        font-weight: 600;
-        letter-spacing: 1px;
-    }
+.regis-at-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
 
 .regis-at-container:hover {
     transform: translateY(-5px);
@@ -168,88 +168,19 @@ h1 {
 
 @media (max-width: 768px) {
     .activity-container {
-        display: flex;
-        justify-content: flex-start;
-        gap: 30px;
-        flex-wrap: wrap;
-        transition: all 0.3s ease-in-out;
-    }
-
-    /* Carousel Styles */
-    .carousel-container {
-        display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        position: relative;
-        max-width: 500px;
-        margin-right: 30px;
-        height: 280px; /* Fixed height for vertical scroll */
-        overflow-y: scroll; /* Enable vertical scrolling */
+        padding: 20px;
     }
 
-    .carousel {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .activity-image {
-        width: 280px;
-        height: 280px;
-        object-fit: cover;
-        border-radius: 15px;
-        margin: 5px 0; /* Vertical margin between images */
-        border: 3px solid #3498db;
-    }
-
-    /* Activity Details */
-    .activity-details {
-        color: #333;
-        text-align: left;
-        flex: 1;
-        max-width: 500px;
-    }
-
-    .activity-description {
-        font-size: 1.4rem;
-        margin-bottom: 20px;
-        line-height: 1.6;
-        color: #555;
-    }
-
-    .status-container {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .status-text {
-        font-size: 1.2rem;
-        margin: 0;
-        color: #777;
-    }
-
-    .status-dot {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-
-    .status-dot.green {
-        background-color: #28a745;
+    .activity-image img {
+        width: 100%;
+        height: 100%;
     }
 
     .register-button, .back-button {
-        padding: 15px 30px;
-        font-size: 1.2rem;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.3s ease;
-        text-transform: uppercase;
-        font-weight: 600;
-        width: auto;
+        width: 100%;
+        padding: 12px 25px;
+        font-size: 1rem;
     }
 }
 
@@ -263,47 +194,88 @@ h1 {
         transform: translateY(0);
     }
 }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 </style>
-
 <section>
     <div class="regis-at-container">
-        <h1><?php echo $data['event_id']['Eventname']; ?></h1>
+        <h1><?php echo $event['Eventname']; ?></h1>
 
-        <!-- Carousel Section -->
         <div class="activity-container">
-            <div class="carousel-container">
-                <div class="carousel">
-                    <?php
-                    if (!empty($eventImages['images'])) {
-                        foreach ($eventImages['images'] as $image) {
-                            echo '<img class="activity-image" src="' . $image . '" alt="Activity Image">';
-                        }
-                    } else {
-                        echo '<p>No images available for this event.</p>';
+            <div class="activity-image-container" id="carousel">
+                <?php
+                if (!empty($eventImages['images'])) {
+                    foreach ($eventImages['images'] as $image) {
+                        echo '<div class="activity-image"><img src="' . $image . '" alt="Activity Image"></div>';
                     }
-                    ?>
-                </div>
+                } else {
+                    echo '<p>No images available for this event.</p>';
+                }
+                ?>
             </div>
 
             <div class="activity-details">
                 <p class="activity-description">
-                    <?php echo $data['event_id']['description']; ?>
+                    <?php echo $event['description']; ?>
                 </p>
                 <p class="activity-description">
-                  วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
+                    วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($event['start_date'])); ?>
                 </p>
                 <p class="activity-description">
-                  สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
+                    สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($event['end_date'])); ?>
                 </p>
                 <div class="status-container">
-                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
+                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $event['Max_participants']; ?></p>
                 </div>
-                <form action="/register_at" method="post">
-                    <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
-                    <button class="register-button">เข้าร่วม</button>
-                    <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
-                </form>
+
+                <!-- ตรวจสอบการเข้าร่วมกิจกรรม -->
+                <?php if (!$isCreator): ?>
+                    <form action="/register_at" method="post">
+                        <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
+                        <button class="register-button">เข้าร่วม</button>
+                    </form>
+                <?php else: ?>
+                    <p>คุณไม่สามารถเข้าร่วมกิจกรรมที่คุณสร้างได้</p> <!-- Message for event creator -->
+                <?php endif; ?>
+
+                <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    // เมื่อเลื่อนแล้วให้การเลื่อนเป็นไปอย่างราบรื่น
+    const carousel = document.getElementById('carousel');
+    let scrollAmount = 0;
+
+    // ฟังก์ชั่นในการเลื่อนภาพ
+    function scrollCarousel(direction) {
+        const imageWidth = document.querySelector('.activity-image').offsetWidth;
+        if (direction === 'left') {
+            scrollAmount -= imageWidth + 10; // เพิ่มค่า 10px สำหรับระยะห่าง
+        } else {
+            scrollAmount += imageWidth + 10;
+        }
+        carousel.scrollLeft = scrollAmount;
+    }
+
+    // ถ้าเลื่อนซ้าย
+    document.getElementById('prevButton').addEventListener('click', function() {
+        scrollCarousel('left');
+    });
+
+    // ถ้าเลื่อนขวา
+    document.getElementById('nextButton').addEventListener('click', function() {
+        scrollCarousel('right');
+    });
+</script>
+
