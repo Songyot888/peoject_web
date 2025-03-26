@@ -375,36 +375,37 @@
             background-color: #444;
         }
 
-        @media (max-width: 768px) {
-            .approval-container {
-                padding: 20px;
-                width: 95%;
-                max-width: 100%;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-            }
-
-            .user-item {
-                padding: 15px;
-            }
-
-            .user-name {
-                font-size: 1.3rem;
-            }
-
-            .user-status {
-                flex-direction: column;
-            }
-
-            .button-container {
-                flex-direction: column;
-                gap: 15px;
+            @media (max-width: 768px) {
+                .approval-container {
+                    padding: 20px;
+                    width: 95%;
+                    max-width: 100%;
+                }
+    
+                h1 {
+                    font-size: 2rem;
+                }
+    
+                h2 {
+                    font-size: 1.5rem;
+                }
+    
+                .user-item {
+                    padding: 15px;
+                }
+    
+                .user-name {
+                    font-size: 1.3rem;
+                }
+    
+                .user-status {
+                    flex-direction: column;
+                }
+    
+                .button-container {
+                    flex-direction: column;
+                    gap: 15px;
+                }
             }
         }
 </style>
