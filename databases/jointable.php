@@ -28,7 +28,7 @@
 function getUserJoinedEvents($user_id) {
     $conn = getConnection();
     
-    $query = "SELECT e.Event_id, e.Eventname, e.description, e.image_url, ue.status 
+    $query = "SELECT e.Event_id, e.Eventname, e.description, e.image_url, ue.status ,ue.check_in
               FROM User_Event ue
               INNER JOIN Event e ON ue.event_id = e.Event_id
               WHERE ue.User_id = ?";
@@ -48,8 +48,6 @@ function getUserJoinedEvents($user_id) {
 
 
 
-
-// randerView('approval_at',[$eid => 'Event_id']);
 function updateUserStatus($user_id, $status, $event_id) {
     $conn = getConnection();
 
@@ -95,7 +93,25 @@ function registerUserForEvent($user_id, $event_id) {
         echo "Failed to register for the event.";
     }
 
-    // Close the statement and connection
     $stmt->close();
     $conn->close();
 }
+
+
+function updateCheckIn($userId, $eventId, $checkInStatus) {
+    // Connect to the database
+    $conn = getConnection(); 
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "UPDATE User_Event SET check_in = ? WHERE user_id = ? AND event_id = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("iii", $checkInStatus, $userId, $eventId);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    $conn->close();
+}
+

@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif(isset($_POST['view'])){
 
         $result = getEventById($eid);
+        $_SESSION['eid'] = $result;
 
         randerView('approval_at_get', ['event_id' => $result]);
     }

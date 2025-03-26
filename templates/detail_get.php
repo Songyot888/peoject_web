@@ -1,22 +1,6 @@
 <?php
-if (isset($_POST['event_id'])) {
-    $eid = $_POST['event_id'];
-    $event = getEventById($eid);
+    $eventImages = getEventImage($data['event_id']['Event_id']);
 
-    if ($event) {
-        $activityName = $event['Eventname'];
-        $activityDetails = $event['description'];
-        $participants = $event['Max_participants'];
-        $sdate = $event['start_date'];
-        $ddate = $event['end_date'];
-
-        $eventImages = getEventImage($eid);
-    } else {
-        echo "ไม่พบกิจกรรม";
-    }
-} else {
-    echo "ไม่ได้รับ eid";
-}
 ?>
 
 <style>
@@ -115,6 +99,7 @@ if (isset($_POST['event_id'])) {
     .button-container {
         display: flex;
         justify-content: space-around;
+        gap: 2%;
     }
 
     button {
@@ -169,21 +154,45 @@ if (isset($_POST['event_id'])) {
             text-align: center;
         }
 
-        .button-container {
-            flex-direction: column;
-            gap: 15px;
-        }
-
         .carousel-container {
             width: 100%;
             height: 200px;
         }
     }
+
+    /* ปุ่มย้อนกลับ */
+    .back-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        z-index: 10;
+        /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+    .activity-description-name{
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: -5%;
+        text-align: center;
+    }
 </style>
 
 <section>
     <div class="editview-container">
-        <h1>View Activity</h1>
+        <button class="back-button" onclick="window.history.back()">← Back</button>
+        <h1>รายละเอียดของผู้สร้าง</h1>
         <div class="form-container">
             <div class="carousel-container">
                 <div class="carousel-images">
@@ -204,22 +213,34 @@ if (isset($_POST['event_id'])) {
                 <button class="carousel-button carousel-button-right" onclick="nextImage()">❯</button>
             </div>
             <div class="activity-details">
+                <p class="activity-description-name">
+                   ชื่อกิจกรรม : <?php echo $data['event_id']['Eventname']; ?>
+                </p>
                 <p class="activity-description">
-                    <?php echo $activityDetails; ?>
+                   วันเริ่มกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
+                </p>
+                <p class="activity-description">
+                   วันสิ้นสุดกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
+                </p>
+                <p class="activity-description">
+                   เนื้อหา : <?php echo $data['event_id']['description']; ?>
                 </p>
                 <div class="button-container">
                     <form action="/detail" method="post">
-                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="view" class="view-button">View</button>
+                        <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
+                        <button type="submit" name="view" class="view-button">คำขอเข้าร่วม</button>
                     </form>
                     <form action="/detail" method="post">
-                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="edit" class="edit-button">Edit</button>
+                        <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
+                        <button type="submit" name="edit" class="edit-button">แก้ไข</button>
                     </form>
                     <form action="/detail" method="post">
-                        <input type="hidden" name="eid" value="<?php echo $eid; ?>">
-                        <button type="submit" name="delete" class="delete-button">Delete</button>
+                        <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
+                        <button type="submit" name="delete" class="delete-button">ลบ</button>
                     </form>
+
+
+                    
 
                 </div>
             </div>

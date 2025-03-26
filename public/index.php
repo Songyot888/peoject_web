@@ -7,7 +7,6 @@ const INCLUDES_DIR = __DIR__ . '/../includes';
 const ROUTE_DIR = __DIR__ . '/../routes';
 const TEMPLATES_DIR = __DIR__ . '/../templates';
 const DATABASE_DIR = __DIR__ . '/../databases';
-const CSS_DIR = __DIR__ . '/../css';
 
 session_start();
 
@@ -17,8 +16,7 @@ require_once INCLUDES_DIR . '/view.php';
 require_once INCLUDES_DIR . '/config.php';
 
 // Call dispatch to handle requests
-// echo '$_SERVER["REQUEST_URI"]='.$_SERVER['REQUEST_URI'];
-const PUBLIC_ROUTES = ['/','/login','/register'];
+const PUBLIC_ROUTES = ['/', '/login', '/singup', '/homeactivity'];
 
 if (in_array(strtolower($_SERVER['REQUEST_URI']), PUBLIC_ROUTES)) {
     dispatch($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

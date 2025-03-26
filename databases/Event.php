@@ -7,12 +7,11 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
     $backgroundImagePath = null;
 
     if (isset($images)) {
-        $backgroundImage = $images['tmp_name'][0]; // รูปแรกจะเป็นภาพพื้นหลัง
+        $backgroundImage = $images['tmp_name'][0];
         $backgroundImagePath = $uploadDir . basename($images['name'][0]);
         move_uploaded_file($backgroundImage, $backgroundImagePath);
     }
 
-    // SQL คำสั่งบันทึกข้อมูลกิจกรรม
     $sql = 'INSERT INTO Event (Eventname, Max_participants, start_date, end_date, description, status_event, User_id, image_url) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     
@@ -20,7 +19,7 @@ function insertEvent($activity_name, $participants, $start_date, $end_date, $des
     $stmt->bind_param('sissssss', $activity_name, $participants, $start_date, $end_date, $description, $status, $User_id, $backgroundImagePath);
 
     if ($stmt->execute()) {
-        $event_id = $stmt->insert_id;  // Get the inserted event's ID
+        $event_id = $stmt->insert_id;
         $stmt->close();
         return $event_id;
     } else {
@@ -83,15 +82,15 @@ function getSearch(): mysqli_result|bool {
 function getUserEventsById($user_id) {
     $conn = getConnection();
 
-    $sql = "SELECT * FROM Event WHERE User_id = ?";  // เปลี่ยนเป็นชื่อของตารางและฟิลด์ตามที่คุณใช้
+    $sql = "SELECT * FROM Event WHERE User_id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $events = [];
 
-    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
+
     while ($event = $result->fetch_assoc()) {
         $events[] = $event;
     }
@@ -102,16 +101,14 @@ function getUserEventsById($user_id) {
 function getJoinedEventsById($user_id) {
     $conn = getConnection();
 
-    // เขียน SQL Query เพื่อดึงกิจกรรมที่ผู้ใช้เข้าร่วม
     $sql = "SELECT * FROM Event WHERE Event_id IN (SELECT Event_id FROM JoinEvent WHERE User_id = ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id); // ผูกตัวแปร $user_id กับ query
+    $stmt->bind_param("i", $user_id);
     $stmt->execute();
 
     $result = $stmt->get_result();
     $events = [];
 
-    // ดึงข้อมูลกิจกรรมทั้งหมดที่ตรงกับ user_id
     while ($event = $result->fetch_assoc()) {
         $events[] = $event;
     }
@@ -119,66 +116,44 @@ function getJoinedEventsById($user_id) {
     return $events;
 }
 
-function getSearchByKeyword(string $keyword, string $startDate = '', string $endDate = ''): mysqli_result|bool {
+
+function searchEvent(string $search, $startDate = null, $endDate = null): array
+{
     $conn = getConnection();
-    // เริ่มต้นคำสั่ง SQL
-    $sql = "SELECT * FROM Event WHERE 1";
-
-    // ถ้ามีคำค้นหาก็ใช้ LIKE
-    if (!empty($keyword)) {
-        $sql .= " AND Eventname LIKE ?";
-    }
-
-    // ถ้ามีช่วงวันที่, ให้เพิ่มเงื่อนไขในการกรอง
-    if (!empty($startDate) && !empty($endDate)) {
-        $sql .= " AND start_date >= ? AND end_date <= ?";
-    } elseif (!empty($startDate)) {
-        // ถ้ามีแต่ Start
-        $sql .= " AND start_date >= ?";
-    } elseif (!empty($endDate)) {
-        // ถ้ามีแต่ End
-        $sql .= " AND end_date <= ?";
-    }
-
-    // Debug SQL และพารามิเตอร์ที่ส่งไป
-    error_log("SQL: $sql");
-
-    // สร้างพารามิเตอร์
+    $sql = "SELECT * FROM Event WHERE Eventname LIKE ?";
     $params = [];
-    $types = '';
+    $types = "s";
 
-    // ถ้ามีคำค้น
-    if (!empty($keyword)) {
-        $params[] = "%$keyword%";
-        $types .= 's';
-    }
+    $search = "%" . $search . "%";
+    $params[] = $search;
 
-    // เพิ่มพารามิเตอร์สำหรับช่วงวันที่
-    if (!empty($startDate)) {
+    if (!empty($startDate) && !empty($endDate)) {
+        $sql .= " AND start_date BETWEEN ? AND ?";
         $params[] = $startDate;
-        $types .= 's';
-    }
-    
-    if (!empty($endDate)) {
         $params[] = $endDate;
-        $types .= 's';
+        $types .= "ss";
     }
 
-    // เตรียมการคำสั่ง SQL
     $stmt = $conn->prepare($sql);
-    if ($stmt === false) {
-        error_log("Prepare failed: " . $conn->error);
-        return false;
-    }
-
-    // Bind พารามิเตอร์
     $stmt->bind_param($types, ...$params);
     $stmt->execute();
     $result = $stmt->get_result();
-    $stmt->close();
-    $conn->close();
-    return $result;
+
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
+function searchEvents(string $keyword): array
+{
+    $conn = getConnection();
+    $sql = 'SELECT * FROM event WHERE eventname LIKE ?';
+    $stmt = $conn->prepare($sql);
+    $keyword = '%' . $keyword . '%';
+    $stmt->bind_param('s', $keyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+
 
 function deleteEvent($event_id) {
     $conn = getConnection();
@@ -207,7 +182,6 @@ function deleteEvent($event_id) {
 
     $stmt->close();
 
-    // ลบรายการภาพออกจากตาราง Event_Img
     $sql = "DELETE FROM Event_Img WHERE Event_id=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $event_id);
@@ -222,7 +196,6 @@ function deleteEvent($event_id) {
     $stmt->fetch();
     $stmt->close();
 
-    // ลบไฟล์จากเซิร์ฟเวอร์ถ้ามีรูปภาพใน Event
     if ($imagePathInEvent && file_exists($imagePathInEvent)) {
         if (unlink($imagePathInEvent)) {
             echo "Deleted image from Event: $imagePathInEvent\n";
@@ -245,6 +218,18 @@ function deleteEvent($event_id) {
     $conn->close();
 
     return $success;
+}
+
+
+function countParticipants($eventId) {
+    $conn = getConnection();
+    $sql = "SELECT COUNT(*) as total FROM User_Event WHERE event_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+    return $result['total'] ?? 0;
 }
 
 

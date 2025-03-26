@@ -1,4 +1,3 @@
-
 <style>
     * {
         margin: 0;
@@ -10,39 +9,64 @@
     body {
         height: 100%;
         width: 100%;
-        font-family: Arial, sans-serif;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        background: linear-gradient(135deg, #ff758c, #e84364);
     }
 
     section {
         display: flex;
         justify-content: center;
         align-items: center;
+        background: #f1f1f1;
         padding: 50px 20px;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
         min-height: 100vh;
-        width: 100%;
     }
 
     .approval-container {
         background: rgba(255, 255, 255, 0.9);
         padding: 40px;
         border-radius: 15px;
-        width: 90%;
+        width: 100%;
         max-width: 1200px;
-        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        0% {
+            transform: translateY(50px);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 
     h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
+        color: #222;
         margin-bottom: 30px;
-        color: #333;
+        font-weight: 600;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        color: #555;
+        font-weight: 600;
     }
 
     .user-list {
         max-height: 500px;
         overflow-y: auto;
         padding-right: 10px;
+        margin-bottom: 30px;
     }
 
     .user-item {
@@ -53,7 +77,13 @@
         background-color: rgba(255, 255, 255, 0.8);
         margin-bottom: 15px;
         border-radius: 12px;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .user-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
     }
 
     .user-info {
@@ -85,13 +115,8 @@
         gap: 15px;
     }
 
-    input[type="radio"] {
-        transform: scale(1.5);
-        cursor: pointer;
-    }
-
-    .detail-button {
-        padding: 8px 15px;
+    .status-button {
+        padding: 10px 20px;
         background-color: #ff758c;
         color: white;
         border: none;
@@ -101,14 +126,30 @@
         transition: background-color 0.3s ease;
     }
 
-    .detail-button:hover {
+    .status-button:hover {
         background-color: #e84364;
+    }
+
+    .approved-button {
+        background-color: #42a5f5;
+    }
+
+    .approved-button:hover {
+        background-color: #1e88e5;
+    }
+
+    .denied-button {
+        background-color: #ff5252;
+    }
+
+    .denied-button:hover {
+        background-color: #e84343;
     }
 
     .button-container {
         display: flex;
         justify-content: center;
-        gap: 20px;
+        gap: 30px;
         margin-top: 25px;
     }
 
@@ -138,29 +179,76 @@
     .apply-button:hover {
         background-color: #1e88e5;
     }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        z-index: 10;
+    }
+
+    .back-button:hover {
+        background-color: #444;
+    }
+
+    @media (max-width: 768px) {
+        .approval-container {
+            padding: 20px;
+            width: 95%;
+            max-width: 100%;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        .user-item {
+            padding: 15px;
+        }
+
+        .user-name {
+            font-size: 1.3rem;
+        }
+
+        .user-status {
+            flex-direction: column;
+        }
+
+        .button-container {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
 </style>
+
 
 <section>
     <div class="approval-container">
+        <button class="back-button" onclick="window.location.href='/profile'">← Back</button>
         <h1>Activity Approval</h1>
-        <form method="POST" action="/approval_at">
+        <form method="POST" action="/approval_at" id="approval-form">
             <div class="user-list">
                 <?php
-                // if (!$event) {
-                //     echo "<p>Error: Event information is missing or invalid.</p>";
-                //     exit;
-                // }
-
                 $users = join_event($data['event_id']['Event_id']);
                 $grouped_users = [];
-
                 foreach ($users as $user) {
                     $grouped_users[$user['event_id']][] = $user;
                 }
 
                 foreach ($grouped_users as $event_id => $event_users):
-                    if ($event_id == $data['event_id']['Event_id']):
-                ?>
+                    if ($event_id == $data['event_id']['Event_id']): ?>
                         <h2>Event ID: <?= $event_id ?></h2>
                         <?php
                         if (empty($event_users)) {
@@ -168,26 +256,54 @@
                         }
                         ?>
                         <?php foreach ($event_users as $user): ?>
-                            <div class="user-item">
+                            <div class="user-item" data-user-id="<?= $user['User_id'] ?>">
                                 <div class="user-info">
                                     <div class="user-icon">U</div>
                                     <div class="user-name"><?= $user['Name'] ?></div>
                                 </div>
                                 <div class="user-status">
-                                    <button type="button" class="detail-button">Detail</button>
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="approved" <?= $user['status'] === 'approved' ? 'checked' : '' ?>> Approved
-                                    <input type="radio" name="status[<?= $user['User_id'] ?>]" value="denied" <?= $user['status'] === 'denied' ? 'checked' : '' ?>> Denied
+                                    <?php if ($user['status'] == 'approved' || $user['status'] == 'denied'): ?>
+                                        <button type="button" class="status-button cancel-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'pending')">Cancel</button>
+                                    <?php else: ?>
+                                        <button type="button" class="status-button approved-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'approved')">Approve</button>
+                                        <button type="button" class="status-button denied-button" onclick="updateStatus(<?= $user['User_id'] ?>, 'denied')">Deny</button>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>
+
+
                 <?php endif;
                 endforeach; ?>
             </div>
 
-            <div class="button-container">
-                <input type="hidden" name="eid" value="<?= $data['event_id']['Event_id']; ?>">
-                <button type="submit" class="apply-button" name="action" value="apply">Apply</button>
-            </div>
+            <input type="hidden" name="eid" value="<?= $data['event_id']['Event_id']; ?>">
         </form>
     </div>
 </section>
+
+<script>
+    function updateStatus(userId, status) {
+        const confirmAction = confirm(`Are you sure you want to ${status} this user?`);
+
+        if (confirmAction) {
+            const statusButtons = document.querySelectorAll(`.user-item[data-user-id="${userId}"] .status-button`);
+
+            statusButtons.forEach(button => {
+                button.disabled = true;
+                button.style.display = 'none';
+            });
+
+            const form = document.getElementById('approval-form');
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'status[' + userId + ']';
+            input.value = status;
+            form.appendChild(input);
+
+            form.submit();
+
+            // แทนที่จะใช้ window.location.reload() คุณอาจต้องการทำการอัปเดตหน้าแบบไม่โหลดใหม่ (AJAX หรือวิธีอื่น)
+        }
+    }
+</script>

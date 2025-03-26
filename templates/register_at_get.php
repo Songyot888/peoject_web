@@ -1,57 +1,82 @@
+<?php require_once 'header.php' ?>
 <?php
-if (isset($_GET['eid'])) {
-    $eid = $_GET['eid'];
-    $event = getEventById($eid);
-} else {
-    echo "ไม่ได้รับ eid";
-}
+    $event = getEventById($data['event_id']['Event_id']);
+    $eventImages = getEventImage($data['event_id']['Event_id']);
+    $count = countParticipants($data['event_id']['Event_id']);
 ?>
-    <style>
+
+<style>
     body {
-        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        background: linear-gradient(135deg, #d0e9f7, #ffffff);
         color: #333;
-        font-family: Arial, sans-serif;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     section {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 80px 20px 20px;
+        min-height: 100vh;
+        padding: 40px 20px;
+        box-sizing: border-box;
     }
 
     .regis-at-container {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         padding: 40px;
-        border-radius: 15px;
-        width: 80%;
-        max-width: 1000px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 900px;
+        box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.1);
         text-align: center;
+        animation: fadeIn 1s ease-out;
     }
 
     h1 {
-        font-size: 3rem;
+        font-size: 2.5rem;
         margin-bottom: 30px;
-        color: #ff6f61;
+        color: #3498db;
+        font-weight: 600;
+        letter-spacing: 1px;
     }
 
     .activity-container {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         gap: 30px;
         flex-wrap: wrap;
+        transition: all 0.3s ease-in-out;
     }
 
-    .activity-image img {
+    /* Carousel Styles */
+    .carousel-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        position: relative;
+        max-width: 500px;
+        margin-right: 30px;
+        height: 280px; /* Fixed height for vertical scroll */
+        overflow-y: scroll; /* Enable vertical scrolling */
+    }
+
+    .carousel {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .activity-image {
         width: 280px;
         height: 280px;
         object-fit: cover;
         border-radius: 15px;
-        margin-bottom: 20px;
-        border: 3px solid #ff6f61;
+        margin: 5px 0; /* Vertical margin between images */
+        border: 3px solid #3498db;
     }
 
+    /* Activity Details */
     .activity-details {
         color: #333;
         text-align: left;
@@ -62,6 +87,8 @@ if (isset($_GET['eid'])) {
     .activity-description {
         font-size: 1.4rem;
         margin-bottom: 20px;
+        line-height: 1.6;
+        color: #555;
     }
 
     .status-container {
@@ -74,6 +101,7 @@ if (isset($_GET['eid'])) {
     .status-text {
         font-size: 1.2rem;
         margin: 0;
+        color: #777;
     }
 
     .status-dot {
@@ -88,30 +116,50 @@ if (isset($_GET['eid'])) {
     }
 
     .register-button, .back-button {
-        padding: 15px 25px;
+        padding: 15px 30px;
         font-size: 1.2rem;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         transition: 0.3s ease;
+        text-transform: uppercase;
+        font-weight: 600;
+        width: auto;
     }
 
     .register-button {
-        background-color: #ff6f61;
+        background-color: #3498db;
         color: white;
+        box-shadow: 0px 6px 12px rgba(52, 152, 219, 0.5);
     }
 
     .register-button:hover {
-        background-color: #e35d56;
+        background-color: #2980b9;
+        transform: translateY(-5px);
+        box-shadow: 0px 12px 24px rgba(52, 152, 219, 0.6);
     }
 
     .back-button {
-        background-color: #6c757d;
+        background-color: #95a5a6;
         color: white;
+        box-shadow: 0px 6px 12px rgba(149, 165, 166, 0.5);
     }
 
     .back-button:hover {
-        background-color: #5a6268;
+        background-color: #7f8c8d;
+        transform: translateY(-5px);
+        box-shadow: 0px 12px 24px rgba(149, 165, 166, 0.6);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     @media (max-width: 768px) {
@@ -120,38 +168,57 @@ if (isset($_GET['eid'])) {
             padding: 20px;
         }
 
-        .activity-image img {
+        .activity-image {
             width: 220px;
             height: 220px;
         }
 
         .register-button, .back-button {
             width: 100%;
+            padding: 12px 25px;
+            font-size: 1rem;
         }
     }
 </style>
 
 <section>
     <div class="regis-at-container">
-        <h1>Activity</h1>
+        <h1><?php echo $data['event_id']['Eventname']; ?></h1>
+
+        <!-- Carousel Section -->
         <div class="activity-container">
-            <div class="activity-image">
-                <img src="activity-placeholder.jpg" alt="Activity Image">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <?php
+                    if (!empty($eventImages['images'])) {
+                        foreach ($eventImages['images'] as $image) {
+                            echo '<img class="activity-image" src="' . $image . '" alt="Activity Image">';
+                        }
+                    } else {
+                        echo '<p>No images available for this event.</p>';
+                    }
+                    ?>
+                </div>
             </div>
+
             <div class="activity-details">
                 <p class="activity-description">
-                    Lorem School Sports Day is an event that everyone eagerly awaits. It is a day when students can showcase their athletic abilities and team spirit with their color groups. The event begins with a vibrant parade, beautifully decorated and accompanied by cheerful music and energetic cheers. After the parade, the competitions start, featuring various sports like running races, long jumps, and even fun games that bring laughter to everyone.
+                    <?php echo $data['event_id']['description']; ?>
+                </p>
+                <p class="activity-description">
+                  วันเริ่มกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
+                </p>
+                <p class="activity-description">
+                  สิ้นสุดกิจกรรม :  <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
                 </p>
                 <div class="status-container">
-                    <p class="status-text">Participants: 0/50</p>
-                    <div class="status-dot green"></div>
+                    <p class="status-text">จำนวนผู้เข้าร่วม: <?php echo $count; ?> / <?php echo $data['event_id']['Max_participants']; ?></p>
                 </div>
                 <form action="/register_at" method="post">
-                <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
-                <button class="register-button" >Register</button>
-                <button class="back-button" onclick="window.history.href='/main'">>Back</button>
+                    <input type="hidden" name="eid" value="<?= $event['Event_id'] ?>">
+                    <button class="register-button">เข้าร่วม</button>
+                    <button type="button" class="back-button" onclick="window.location.href='/main'">กลับไปหน้าแรก</button>
                 </form>
-                
             </div>
         </div>
     </div>

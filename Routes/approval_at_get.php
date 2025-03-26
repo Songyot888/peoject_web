@@ -1,2 +1,4 @@
 <?php
-    randerView('approval_at_get');
+
+    $result = getEventById($_SESSION['eid']);
+     randerView('approval_at_get', ['event_id' => $result]);
