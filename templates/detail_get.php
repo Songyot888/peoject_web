@@ -261,24 +261,24 @@ button {
 
     /* ปุ่มย้อนกลับ */
     .back-button {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        font-size: 1.2rem;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        z-index: 10;
-        /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
-    }
+    position: absolute;
+    top: 20px; /* ระยะห่างจากด้านบน */
+    left: 20px; /* ระยะห่างจากด้านซ้าย */
+    padding: 12px 25px;
+    font-size: 1.3rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10; /* ให้แน่ใจว่าปุ่มอยู่เหนือคอนเทนต์ */
+}
 
-    .back-button:hover {
-        background-color: rgba(0, 0, 0, 0.9);
-    }
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+}
     .activity-description-name{
         font-size: 1.5rem;
         font-weight: bold;
@@ -286,44 +286,50 @@ button {
         margin-top: -5%;
         text-align: center;
     }
+
+    .checkin-button {
+    background-color: #28a745;
+    color: white;
+    padding: 14px 25px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.checkin-button:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
 </style>
 
 <section>
     <div class="editview-container">
-        <button class="back-button" onclick="window.history.back()">← Back</button>
+        <button class="back-button" onclick="window.history.back()">&#8592; กลับ</button>
         <h1>รายละเอียดของผู้สร้าง</h1>
         <div class="form-container">
             <div class="carousel-container">
                 <div class="carousel-images">
-                    <div class="carousel-images">
-                        <?php
-                        // Check if eventImages array is not empty
-                        if (!empty($eventImages['images'])) {
-                            foreach ($eventImages['images'] as $image) {
-                                echo '<img src="' . $image . '" alt="Activity Image">';
-                            }
-                        } else {
-                            echo '<p>No images available for this event.</p>';
+                    <?php
+                    if (!empty($eventImages['images'])) {
+                        foreach ($eventImages['images'] as $image) {
+                            echo '<img src="' . $image . '" alt="Activity Image">';
                         }
-                        ?>
-                    </div>
+                    } else {
+                        echo '<p>No images available for this event.</p>';
+                    }
+                    ?>
                 </div>
-                <button class="carousel-button carousel-button-left" onclick="prevImage()">❮</button>
-                <button class="carousel-button carousel-button-right" onclick="nextImage()">❯</button>
+                <button class="carousel-button carousel-button-left" onclick="prevImage()">&#10094;</button>
+                <button class="carousel-button carousel-button-right" onclick="nextImage()">&#10095;</button>
             </div>
             <div class="activity-details">
-                <p class="activity-description-name">
-                   ชื่อกิจกรรม : <?php echo $data['event_id']['Eventname']; ?>
-                </p>
-                <p class="activity-description">
-                   วันเริ่มกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?>
-                </p>
-                <p class="activity-description">
-                   วันสิ้นสุดกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?>
-                </p>
-                <p class="activity-description">
-                   เนื้อหา : <?php echo $data['event_id']['description']; ?>
-                </p>
+                <p class="activity-description-name">ชื่อกิจกรรม : <?php echo $data['event_id']['Eventname']; ?></p>
+                <p class="activity-description">วันเริ่มกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['start_date'])); ?></p>
+                <p class="activity-description">วันสิ้นสุดกิจกรรม : <?php echo date("d-m-y", strtotime($data['event_id']['end_date'])); ?></p>
+                <p class="activity-description">เนื้อหา : <?php echo $data['event_id']['description']; ?></p>
                 <div class="button-container">
                     <form action="/detail" method="post">
                         <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
@@ -337,10 +343,10 @@ button {
                         <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
                         <button type="submit" name="delete" class="delete-button">ลบ</button>
                     </form>
-
-
-                    
-
+                    <form action="/detail" method="post">
+                        <input type="hidden" name="eid" value="<?php echo $data['event_id']['Event_id']; ?>">
+                        <button type="submit" name="checkin" class="checkin-button">เช็คชื่อ</button>
+                    </form>
                 </div>
             </div>
         </div>

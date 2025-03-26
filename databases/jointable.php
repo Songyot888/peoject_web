@@ -114,4 +114,75 @@ function updateCheckIn($userId, $eventId, $checkInStatus) {
 
     $conn->close();
 }
+function updateCheckinImage($user_id, $image) {
+    $conn = getConnection();
+
+    if (isset($image) && $image['error'] == 0) {
+        $uploadDir = 'uploads/checkin/'; 
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        // สร้างชื่อไฟล์ใหม่ให้ไม่ซ้ำ
+        $fileExt = pathinfo($image['name'], PATHINFO_EXTENSION);
+        $uploadFile = $uploadDir . uniqid($user_id . "_") . "." . $fileExt;
+
+        if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
+            $imagePath = $uploadFile; 
+        } else {
+            error_log("❌ Image upload failed");
+            return false;
+        }
+    } else {
+        // ถ้าไม่มีการอัปโหลดใหม่ ให้ดึงค่ารูปเดิมจากฐานข้อมูล
+        $sql = "SELECT checkin_img FROM User_Event WHERE user_id=?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            error_log("❌ Prepare failed: " . $conn->error);
+            return false;
+        }
+
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $stmt->bind_result($currentImagePath);
+        $stmt->fetch();
+        $stmt->close();
+
+        $imagePath = $currentImagePath;
+    }
+
+    // อัปเดตรูปภาพลงฐานข้อมูล
+    $sql = "UPDATE User_Event SET checkin_img=? WHERE user_id=?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log("❌ Prepare failed: " . $conn->error);
+        return false;
+    }
+
+    $stmt->bind_param("si", $imagePath, $user_id);
+
+    if ($stmt->execute()) {
+        if ($stmt->affected_rows > 0) {
+            error_log("✅ Check-in image updated successfully");
+            return true;
+        } else {
+            error_log("⚠️ No check-in image updated, affected rows: " . $stmt->affected_rows);
+            return false;
+        }
+    } else {
+        error_log("❌ Execute failed: " . $stmt->error);
+        return false;
+    }
+}
+
+
+function getCheckinImage($user_id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT checkin_img FROM User_Event WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result->fetch_assoc();
+}
 
